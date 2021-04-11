@@ -3,182 +3,83 @@ from typing import Any, Callable, Dict, List, Type, Union
 from pydantic.main import BaseModel
 
 import schema
+from random import randint
+
+
+def getRandPoints(Vsize: int, type: str) -> List[Dict[str, int]]:
+    res: List[Dict[str, int]] = []
+    if type == "Day":
+        for i in range(11):
+            x = 3*i-2
+            y = randint(0, Vsize)
+            res += [{"X": x, "Y": y}]
+        return res
+    if type == "Month":
+        for i in range(1, 13):
+            x = i
+            y = randint(0, Vsize)
+            res += [{"X": x, "Y": y}]
+        return res
+    if type == "Year":
+        for i in range(2011, 2021):
+            x = i
+            y = randint(0, Vsize)
+            res += [{"X": x, "Y": y}]
+        return res
+    return res
 
 
 def getFireDataStatistics() -> schema.FireDataStatistics:
+    Vsize_1 = 29
+    Vsize_2 = 586
+    Vsize_3 = 4556
     data = {
         "Day": {
-            "VSize": 29,
+            "VSize": Vsize_1,
             "Categories": [
                 {
                     "Name": "电气故障",
-                    "Points": [
-                        {"X": 1, "Y": 22},
-                        {"X": 4, "Y": 5},
-                        {"X": 7, "Y": 19},
-                        {"X": 10, "Y": 12},
-                        {"X": 13, "Y": 15},
-                        {"X": 16, "Y": 7},
-                        {"X": 19, "Y": 26},
-                        {"X": 22, "Y": 4},
-                        {"X": 25, "Y": 16},
-                        {"X": 28, "Y": 20},
-                        {"X": 31, "Y": 14},
-                    ],
+                    "Points": getRandPoints(Vsize_1, "Day")
                 },
                 {
                     "Name": "用火不慎",
-                    "Points": [
-                        {"X": 1, "Y": 19},
-                        {"X": 4, "Y": 3},
-                        {"X": 7, "Y": 26},
-                        {"X": 10, "Y": 1},
-                        {"X": 13, "Y": 11},
-                        {"X": 16, "Y": 10},
-                        {"X": 19, "Y": 5},
-                        {"X": 22, "Y": 23},
-                        {"X": 25, "Y": 13},
-                        {"X": 28, "Y": 26},
-                        {"X": 31, "Y": 23},
-                    ],
+                    "Points": getRandPoints(Vsize_1, "Day")
                 },
                 {
                     "Name": "违章作业",
-                    "Points": [
-                        {"X": 1, "Y": 2},
-                        {"X": 4, "Y": 23},
-                        {"X": 7, "Y": 8},
-                        {"X": 10, "Y": 28},
-                        {"X": 13, "Y": 8},
-                        {"X": 16, "Y": 2},
-                        {"X": 19, "Y": 4},
-                        {"X": 22, "Y": 15},
-                        {"X": 25, "Y": 28},
-                        {"X": 28, "Y": 21},
-                        {"X": 31, "Y": 19},
-                    ],
+                    "Points": getRandPoints(Vsize_1, "Day")
                 },
                 {
                     "Name": "违规吸烟",
-                    "Points": [
-                        {"X": 1, "Y": 14},
-                        {"X": 4, "Y": 9},
-                        {"X": 7, "Y": 27},
-                        {"X": 10, "Y": 15},
-                        {"X": 13, "Y": 10},
-                        {"X": 16, "Y": 11},
-                        {"X": 19, "Y": 22},
-                        {"X": 22, "Y": 2},
-                        {"X": 25, "Y": 5},
-                        {"X": 28, "Y": 13},
-                        {"X": 31, "Y": 20},
-                    ],
+                    "Points": getRandPoints(Vsize_1, "Day")
                 },
                 {
                     "Name": "其他",
-                    "Points": [
-                        {"X": 1, "Y": 19},
-                        {"X": 4, "Y": 7},
-                        {"X": 7, "Y": 15},
-                        {"X": 10, "Y": 17},
-                        {"X": 13, "Y": 1},
-                        {"X": 16, "Y": 23},
-                        {"X": 19, "Y": 18},
-                        {"X": 22, "Y": 18},
-                        {"X": 25, "Y": 19},
-                        {"X": 28, "Y": 15},
-                        {"X": 31, "Y": 3},
-                    ],
-                },
+                    "Points": getRandPoints(Vsize_1, "Day")},
             ],
         },
         "Month": {
-            "VSize": 586,
+            "VSize": Vsize_2,
             "Categories": [
                 {
                     "Name": "电气故障",
-                    "Points": [
-                        {"X": 1, "Y": 160},
-                        {"X": 2, "Y": 522},
-                        {"X": 3, "Y": 174},
-                        {"X": 4, "Y": 357},
-                        {"X": 5, "Y": 567},
-                        {"X": 6, "Y": 516},
-                        {"X": 7, "Y": 106},
-                        {"X": 8, "Y": 130},
-                        {"X": 9, "Y": 456},
-                        {"X": 10, "Y": 457},
-                        {"X": 11, "Y": 100},
-                        {"X": 12, "Y": 397},
-                    ],
+                    "Points": getRandPoints(Vsize_2, "Month")
                 },
                 {
                     "Name": "用火不慎",
-                    "Points": [
-                        {"X": 1, "Y": 385},
-                        {"X": 2, "Y": 135},
-                        {"X": 3, "Y": 520},
-                        {"X": 4, "Y": 102},
-                        {"X": 5, "Y": 476},
-                        {"X": 6, "Y": 116},
-                        {"X": 7, "Y": 290},
-                        {"X": 8, "Y": 464},
-                        {"X": 9, "Y": 285},
-                        {"X": 10, "Y": 271},
-                        {"X": 11, "Y": 152},
-                        {"X": 12, "Y": 110},
-                    ],
+                    "Points": getRandPoints(Vsize_2, "Month")
                 },
                 {
                     "Name": "违章作业",
-                    "Points": [
-                        {"X": 1, "Y": 329},
-                        {"X": 2, "Y": 430},
-                        {"X": 3, "Y": 116},
-                        {"X": 4, "Y": 246},
-                        {"X": 5, "Y": 527},
-                        {"X": 6, "Y": 270},
-                        {"X": 7, "Y": 138},
-                        {"X": 8, "Y": 166},
-                        {"X": 9, "Y": 296},
-                        {"X": 10, "Y": 271},
-                        {"X": 11, "Y": 497},
-                        {"X": 12, "Y": 406},
-                    ],
+                    "Points": getRandPoints(Vsize_2, "Month")
                 },
                 {
                     "Name": "违规吸烟",
-                    "Points": [
-                        {"X": 1, "Y": 187},
-                        {"X": 2, "Y": 512},
-                        {"X": 3, "Y": 495},
-                        {"X": 4, "Y": 190},
-                        {"X": 5, "Y": 169},
-                        {"X": 6, "Y": 280},
-                        {"X": 7, "Y": 563},
-                        {"X": 8, "Y": 557},
-                        {"X": 9, "Y": 211},
-                        {"X": 10, "Y": 542},
-                        {"X": 11, "Y": 107},
-                        {"X": 12, "Y": 552},
-                    ],
+                    "Points": getRandPoints(Vsize_2, "Month")
                 },
                 {
                     "Name": "其他",
-                    "Points": [
-                        {"X": 1, "Y": 562},
-                        {"X": 2, "Y": 400},
-                        {"X": 3, "Y": 507},
-                        {"X": 4, "Y": 404},
-                        {"X": 5, "Y": 163},
-                        {"X": 6, "Y": 262},
-                        {"X": 7, "Y": 378},
-                        {"X": 8, "Y": 474},
-                        {"X": 9, "Y": 469},
-                        {"X": 10, "Y": 163},
-                        {"X": 11, "Y": 128},
-                        {"X": 12, "Y": 237},
-                    ],
+                    "Points": getRandPoints(Vsize_2, "Month")
                 },
             ],
         },
@@ -187,78 +88,23 @@ def getFireDataStatistics() -> schema.FireDataStatistics:
             "Categories": [
                 {
                     "Name": "电气故障",
-                    "Points": [
-                        {"X": 2011, "Y": 3536},
-                        {"X": 2012, "Y": 1648},
-                        {"X": 2013, "Y": 2358},
-                        {"X": 2014, "Y": 3333},
-                        {"X": 2015, "Y": 4068},
-                        {"X": 2016, "Y": 1739},
-                        {"X": 2017, "Y": 1839},
-                        {"X": 2018, "Y": 1908},
-                        {"X": 2019, "Y": 1833},
-                        {"X": 2020, "Y": 3936},
-                    ],
+                    "Points": getRandPoints(Vsize_3, "Year")
                 },
                 {
                     "Name": "用火不慎",
-                    "Points": [
-                        {"X": 2011, "Y": 4296},
-                        {"X": 2012, "Y": 1783},
-                        {"X": 2013, "Y": 1732},
-                        {"X": 2014, "Y": 3154},
-                        {"X": 2015, "Y": 1035},
-                        {"X": 2016, "Y": 2423},
-                        {"X": 2017, "Y": 1589},
-                        {"X": 2018, "Y": 3820},
-                        {"X": 2019, "Y": 2992},
-                        {"X": 2020, "Y": 3361},
-                    ],
+                    "Points": getRandPoints(Vsize_3, "Year")
                 },
                 {
                     "Name": "违章作业",
-                    "Points": [
-                        {"X": 2011, "Y": 1367},
-                        {"X": 2012, "Y": 2239},
-                        {"X": 2013, "Y": 1934},
-                        {"X": 2014, "Y": 2821},
-                        {"X": 2015, "Y": 2611},
-                        {"X": 2016, "Y": 1021},
-                        {"X": 2017, "Y": 1249},
-                        {"X": 2018, "Y": 3769},
-                        {"X": 2019, "Y": 1166},
-                        {"X": 2020, "Y": 4092},
-                    ],
+                    "Points": getRandPoints(Vsize_3, "Year")
                 },
                 {
                     "Name": "违规吸烟",
-                    "Points": [
-                        {"X": 2011, "Y": 1174},
-                        {"X": 2012, "Y": 3807},
-                        {"X": 2013, "Y": 2886},
-                        {"X": 2014, "Y": 2291},
-                        {"X": 2015, "Y": 2531},
-                        {"X": 2016, "Y": 1674},
-                        {"X": 2017, "Y": 3030},
-                        {"X": 2018, "Y": 2016},
-                        {"X": 2019, "Y": 2300},
-                        {"X": 2020, "Y": 3501},
-                    ],
+                    "Points": getRandPoints(Vsize_3, "Year")
                 },
                 {
                     "Name": "其他",
-                    "Points": [
-                        {"X": 2011, "Y": 3772},
-                        {"X": 2012, "Y": 3403},
-                        {"X": 2013, "Y": 3553},
-                        {"X": 2014, "Y": 3815},
-                        {"X": 2015, "Y": 4244},
-                        {"X": 2016, "Y": 2443},
-                        {"X": 2017, "Y": 4291},
-                        {"X": 2018, "Y": 3589},
-                        {"X": 2019, "Y": 3001},
-                        {"X": 2020, "Y": 2315},
-                    ],
+                    "Points": getRandPoints(Vsize_3, "Year")
                 },
             ],
         },
@@ -692,4 +538,5 @@ def get_data(methodName: str) -> str:
 if __name__ == "__main__":
     for k, v in METHODNAME_2_METHOD.items():
         res = get_data(k)
-        print(res)
+        if k == "fireDataStatistics":
+            print(res)
