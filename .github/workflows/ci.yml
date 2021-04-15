@@ -14,7 +14,6 @@ jobs:
           port: ${{ secrets.PORT }}
           script: |
             cd ~/MqRpcServer
-            ls -al
-            # git reset --hard && git pull -f
-            # screen -S mq -X quit
-            # screen -dmS mq python3 rpc.py
+            git reset --hard && git pull -f
+            screen -S mq -X quit
+            screen -dmS mq python3 rpc.py
