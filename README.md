@@ -11,7 +11,7 @@
 (setup venv)
 
 ```bash
-pip3 -r requirements.txt
+pip3 install -r requirements.txt
 python3 rpc.py
 ```
 
