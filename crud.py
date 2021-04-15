@@ -1,16 +1,16 @@
+from random import randint
 from typing import Any, Callable, Dict, List, Type, Union
 
 from pydantic.main import BaseModel
 
 import schema
-from random import randint
 
 
 def getRandPoints(Vsize: int, type: str) -> List[Dict[str, int]]:
     res: List[Dict[str, int]] = []
     if type == "Day":
         for i in range(11):
-            x = 3*i-2
+            x = 3 * i - 2
             y = randint(0, Vsize)
             res += [{"X": x, "Y": y}]
         return res
@@ -29,7 +29,7 @@ def getRandPoints(Vsize: int, type: str) -> List[Dict[str, int]]:
     return res
 
 
-def getFireDataStatistics() -> schema.FireDataStatistics:
+def getFireDataStatistics(companyID: str) -> schema.FireDataStatistics:
     Vsize_1 = 29
     Vsize_2 = 586
     Vsize_3 = 4556
@@ -37,82 +37,38 @@ def getFireDataStatistics() -> schema.FireDataStatistics:
         "Day": {
             "VSize": Vsize_1,
             "Categories": [
-                {
-                    "Name": "电气故障",
-                    "Points": getRandPoints(Vsize_1, "Day")
-                },
-                {
-                    "Name": "用火不慎",
-                    "Points": getRandPoints(Vsize_1, "Day")
-                },
-                {
-                    "Name": "违章作业",
-                    "Points": getRandPoints(Vsize_1, "Day")
-                },
-                {
-                    "Name": "违规吸烟",
-                    "Points": getRandPoints(Vsize_1, "Day")
-                },
-                {
-                    "Name": "其他",
-                    "Points": getRandPoints(Vsize_1, "Day")},
+                {"Name": "电气故障", "Points": getRandPoints(Vsize_1, "Day")},
+                {"Name": "用火不慎", "Points": getRandPoints(Vsize_1, "Day")},
+                {"Name": "违章作业", "Points": getRandPoints(Vsize_1, "Day")},
+                {"Name": "违规吸烟", "Points": getRandPoints(Vsize_1, "Day")},
+                {"Name": "其他", "Points": getRandPoints(Vsize_1, "Day")},
             ],
         },
         "Month": {
             "VSize": Vsize_2,
             "Categories": [
-                {
-                    "Name": "电气故障",
-                    "Points": getRandPoints(Vsize_2, "Month")
-                },
-                {
-                    "Name": "用火不慎",
-                    "Points": getRandPoints(Vsize_2, "Month")
-                },
-                {
-                    "Name": "违章作业",
-                    "Points": getRandPoints(Vsize_2, "Month")
-                },
-                {
-                    "Name": "违规吸烟",
-                    "Points": getRandPoints(Vsize_2, "Month")
-                },
-                {
-                    "Name": "其他",
-                    "Points": getRandPoints(Vsize_2, "Month")
-                },
+                {"Name": "电气故障", "Points": getRandPoints(Vsize_2, "Month")},
+                {"Name": "用火不慎", "Points": getRandPoints(Vsize_2, "Month")},
+                {"Name": "违章作业", "Points": getRandPoints(Vsize_2, "Month")},
+                {"Name": "违规吸烟", "Points": getRandPoints(Vsize_2, "Month")},
+                {"Name": "其他", "Points": getRandPoints(Vsize_2, "Month")},
             ],
         },
         "Year": {
             "VSize": 4556,
             "Categories": [
-                {
-                    "Name": "电气故障",
-                    "Points": getRandPoints(Vsize_3, "Year")
-                },
-                {
-                    "Name": "用火不慎",
-                    "Points": getRandPoints(Vsize_3, "Year")
-                },
-                {
-                    "Name": "违章作业",
-                    "Points": getRandPoints(Vsize_3, "Year")
-                },
-                {
-                    "Name": "违规吸烟",
-                    "Points": getRandPoints(Vsize_3, "Year")
-                },
-                {
-                    "Name": "其他",
-                    "Points": getRandPoints(Vsize_3, "Year")
-                },
+                {"Name": "电气故障", "Points": getRandPoints(Vsize_3, "Year")},
+                {"Name": "用火不慎", "Points": getRandPoints(Vsize_3, "Year")},
+                {"Name": "违章作业", "Points": getRandPoints(Vsize_3, "Year")},
+                {"Name": "违规吸烟", "Points": getRandPoints(Vsize_3, "Year")},
+                {"Name": "其他", "Points": getRandPoints(Vsize_3, "Year")},
             ],
         },
     }
     return schema.FireDataStatistics(**data)  # type: ignore
 
 
-def getSafetyScore() -> List[schema.SafetyScore]:
+def getSafetyScore(companyID: str) -> List[schema.SafetyScore]:
     datas = [
         {
             "CompanyName": "上海国际会议中心",
@@ -274,7 +230,7 @@ def getSafetyScore() -> List[schema.SafetyScore]:
     return [schema.SafetyScore(**data) for data in datas]  # type: ignore
 
 
-def getRealTimeAlarm() -> List[schema.RealTimeAlarm]:
+def getRealTimeAlarm(companyID: str) -> List[schema.RealTimeAlarm]:
     datas = [
         {"CompanyName": "上海国际会议中心", "CompanyAddress": "上海市浦东新区滨江大道2727号"},
         {"CompanyName": "复兴馆", "CompanyAddress": "上海市浦东新区金科路1800号"},
@@ -286,7 +242,7 @@ def getRealTimeAlarm() -> List[schema.RealTimeAlarm]:
     return [schema.RealTimeAlarm(**data) for data in datas]
 
 
-def getGiveAlarmRecord() -> List[schema.GiveAlarmRecord]:
+def getGiveAlarmRecord(companyID: str) -> List[schema.GiveAlarmRecord]:
     datas = [
         {
             "Date": "09-18",
@@ -379,7 +335,7 @@ def getGiveAlarmRecord() -> List[schema.GiveAlarmRecord]:
     return [schema.GiveAlarmRecord(**data) for data in datas]  # type: ignore
 
 
-def getBuildingInfo() -> schema.BuildingInfo:
+def getBuildingInfo(companyID: str) -> schema.BuildingInfo:
     data = {
         "CompanyName": "上海国际会议中心",
         "CompanyAddress": "上海市浦东新区滨江大道2727号",
@@ -394,12 +350,12 @@ def getBuildingInfo() -> schema.BuildingInfo:
     return schema.BuildingInfo(**data)  # type: ignore
 
 
-def getAlarmInfo() -> schema.AlarmInfo:
+def getAlarmInfo(companyID: str) -> schema.AlarmInfo:
     data = {"DailyAlarm": 1, "MonthlyAlarm": 20, "PendingTasks": 11}
     return schema.AlarmInfo(**data)
 
 
-def getScoreDetail() -> schema.ScoreDetail:
+def getScoreDetail(companyID: str) -> schema.ScoreDetail:
     data = {
         "RecommendedNames": [
             "火灾探测器完好率",
@@ -455,7 +411,7 @@ def getScoreDetail() -> schema.ScoreDetail:
     return schema.ScoreDetail(**data)  # type: ignore
 
 
-def getDeviceAccess() -> schema.DeviceAccess:
+def getDeviceAccess(companyID: str) -> schema.DeviceAccess:
     data = {
         "CompanyName": "上海国际会议中心",
         "DeviceIntactInfo": [
@@ -466,7 +422,7 @@ def getDeviceAccess() -> schema.DeviceAccess:
     return schema.DeviceAccess(**data)  # type: ignore
 
 
-def getRectification() -> List[schema.Rectification]:
+def getRectification(companyID: str) -> List[schema.Rectification]:
     datas = [
         {
             "CompanyName": "上海国际会议中心",
@@ -499,7 +455,7 @@ def getRectification() -> List[schema.Rectification]:
     return [schema.Rectification(**data) for data in datas]  # type: ignore
 
 
-def getAlarmRecordsDay() -> schema.AlarmRecordsDay:
+def getAlarmRecordsDay(companyID: str) -> schema.AlarmRecordsDay:
     data = {
         "CompanyName": "上海国际会议中心",
         "MaxAlarmsCount": 124,
@@ -511,7 +467,7 @@ def getAlarmRecordsDay() -> schema.AlarmRecordsDay:
     return schema.AlarmRecordsDay(**data)  # type: ignore
 
 
-METHODNAME_2_METHOD: Dict[str, Callable[[], Any]] = {
+METHODNAME_2_METHOD: Dict[str, Callable[[str], Any]] = {
     "fireDataStatistics": getFireDataStatistics,
     "safetyScore": getSafetyScore,
     "realTimeAlarm": getRealTimeAlarm,
@@ -526,10 +482,10 @@ METHODNAME_2_METHOD: Dict[str, Callable[[], Any]] = {
 
 
 # TODO: get REAL data from DB
-def get_data(methodName: str) -> str:
+def getData(groupName: str, methodName: str) -> str:
     if methodName not in METHODNAME_2_METHOD.keys():
         raise ValueError()
-    res = METHODNAME_2_METHOD[methodName]()
+    res = METHODNAME_2_METHOD[methodName](groupName)
     if isinstance(res, BaseModel):
         return res.json(ensure_ascii=False)
     return f"[{','.join([item.json(ensure_ascii=False) for item in res])}]"
@@ -537,6 +493,6 @@ def get_data(methodName: str) -> str:
 
 if __name__ == "__main__":
     for k, v in METHODNAME_2_METHOD.items():
-        res = get_data(k)
+        res = getData("CPY3102300001", k)
         if k == "fireDataStatistics":
             print(res)
