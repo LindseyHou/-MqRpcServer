@@ -12,7 +12,7 @@ logging.basicConfig(
 import pika
 from pika.adapters.blocking_connection import BlockingChannel
 
-from crud import get_data
+from crud import METHODNAME_2_METHOD, getData
 
 connection: pika.BlockingConnection = pika.BlockingConnection(
     pika.ConnectionParameters(host="localhost")
@@ -24,10 +24,11 @@ channel.queue_declare(queue="rpc_queue")
 
 
 def on_request(ch: BlockingChannel, method: Any, props: Any, body: bytes) -> None:
-    methodName = str(body)
-    logging.info(" [.] get_data(%s)" % methodName)
+    message = str(body)
+    groupName, methodName, *_ = message.split("\n")
+    logging.info(f" [.] getData({groupName}, {methodName})")
     try:
-        response = get_data(methodName)
+        response = getData(groupName, methodName)
     except ValueError:
         response = "ValueError"
     logging.info(" [>] response = %s" % response)
