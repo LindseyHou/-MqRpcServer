@@ -2,9 +2,9 @@
 
 ## Requirement
 
-+ Python >= 3.7
-+ MongoDB >= 3.5
-+ RabbitMQ
+- Python >= 3.7
+- MongoDB >= 3.5
+- RabbitMQ
 
 ## Installation
 
@@ -18,6 +18,6 @@ python3 rpc.py
 For developer:
 
 ```bash
-pip3 -r requirements-dev.txt
+pip3 install -r requirements-dev.txt
 pre-commit install
 ```
