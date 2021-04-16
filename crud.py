@@ -243,182 +243,406 @@ def getRealTimeAlarm(companyID: str) -> List[schema.RealTimeAlarm]:
 
 
 def getGiveAlarmRecord(companyID: str) -> List[schema.GiveAlarmRecord]:
-    datas = [
-        {
-            "Date": "09-18",
-            "Details": "3楼中间办公室烟感报警器发生报警",
-            "Types": "火警",
-            "Result": "已归档",
-            "EquipmentList": [
-                {
-                    "Name": "SmokeDetector1",
-                    "Interval": 5.0,
-                    "Hour": 11,
-                    "Minute": 15,
-                    "Second": 0,
-                    "HistoryEvent": "三层1号烟感探测器开始报警",
-                },
-                {
-                    "Name": "SmokeDetector2",
-                    "Interval": 5.0,
-                    "Hour": 11,
-                    "Minute": 15,
-                    "Second": 15,
-                    "HistoryEvent": "三层2号烟感探测器开始报警",
-                },
-                {
-                    "Name": "SmokeDetector3",
-                    "Interval": 10.0,
-                    "Hour": 11,
-                    "Minute": 15,
-                    "Second": 20,
-                    "HistoryEvent": "三层3号烟感探测器开始报警",
-                },
-                {
-                    "Name": "SmokeDetector4",
-                    "Interval": 20.0,
-                    "Hour": 11,
-                    "Minute": 16,
-                    "Second": 0,
-                    "HistoryEvent": "四层4号烟感探测器开始报警",
-                },
-                {
-                    "Name": "SmokeDetector5",
-                    "Interval": 5.0,
-                    "Hour": 11,
-                    "Minute": 17,
-                    "Second": 0,
-                    "HistoryEvent": "七层5号烟感探测器开始报警",
-                },
-                {
-                    "Name": "SmokeDetector6",
-                    "Interval": 0.0,
-                    "Hour": 11,
-                    "Minute": 17,
-                    "Second": 5,
-                    "HistoryEvent": "七层6号烟感探测器开始报警",
-                },
-                {
-                    "Name": "SmokeDetector7",
-                    "Interval": 0.0,
-                    "Hour": 11,
-                    "Minute": 17,
-                    "Second": 5,
-                    "HistoryEvent": "七层7号烟感探测器开始报警",
-                },
-                {
-                    "Name": "SmokeDetector8",
-                    "Interval": 0.0,
-                    "Hour": 11,
-                    "Minute": 17,
-                    "Second": 5,
-                    "HistoryEvent": "七层8号烟感探测器开始报警",
-                },
-                {
-                    "Name": "SmokeDetector9",
-                    "Interval": 0.0,
-                    "Hour": 11,
-                    "Minute": 17,
-                    "Second": 5,
-                    "HistoryEvent": "七层9号烟感探测器开始报警",
-                },
-            ],
-        },
-        {
-            "Date": "09-05",
-            "Details": "1楼华夏厅烟感报警器发生报警",
-            "Types": "故障",
-            "Result": "已归档",
-            "EquipmentList": [],
-        },
-    ]
+    if companyID == "CPY3101120001":
+        datas = [
+            {
+                "Date": "09-18",
+                "Details": "3楼中间办公室烟感报警器发生报警",
+                "Types": "火警",
+                "Result": "已归档",
+                "EquipmentList": [
+                    {
+                        "Name": "SmokeDetector1",
+                        "Interval": 5.0,
+                        "Hour": 11,
+                        "Minute": 15,
+                        "Second": 0,
+                        "HistoryEvent": "三层1号烟感探测器开始报警",
+                    },
+                    {
+                        "Name": "SmokeDetector2",
+                        "Interval": 5.0,
+                        "Hour": 11,
+                        "Minute": 15,
+                        "Second": 15,
+                        "HistoryEvent": "三层2号烟感探测器开始报警",
+                    },
+                    {
+                        "Name": "SmokeDetector3",
+                        "Interval": 10.0,
+                        "Hour": 11,
+                        "Minute": 15,
+                        "Second": 20,
+                        "HistoryEvent": "三层3号烟感探测器开始报警",
+                    },
+                    {
+                        "Name": "SmokeDetector4",
+                        "Interval": 20.0,
+                        "Hour": 11,
+                        "Minute": 16,
+                        "Second": 0,
+                        "HistoryEvent": "四层4号烟感探测器开始报警",
+                    },
+                    {
+                        "Name": "SmokeDetector5",
+                        "Interval": 5.0,
+                        "Hour": 11,
+                        "Minute": 17,
+                        "Second": 0,
+                        "HistoryEvent": "七层5号烟感探测器开始报警",
+                    },
+                    {
+                        "Name": "SmokeDetector6",
+                        "Interval": 0.0,
+                        "Hour": 11,
+                        "Minute": 17,
+                        "Second": 5,
+                        "HistoryEvent": "七层6号烟感探测器开始报警",
+                    },
+                    {
+                        "Name": "SmokeDetector7",
+                        "Interval": 0.0,
+                        "Hour": 11,
+                        "Minute": 17,
+                        "Second": 5,
+                        "HistoryEvent": "七层7号烟感探测器开始报警",
+                    },
+                    {
+                        "Name": "SmokeDetector8",
+                        "Interval": 0.0,
+                        "Hour": 11,
+                        "Minute": 17,
+                        "Second": 5,
+                        "HistoryEvent": "七层8号烟感探测器开始报警",
+                    },
+                    {
+                        "Name": "SmokeDetector9",
+                        "Interval": 0.0,
+                        "Hour": 11,
+                        "Minute": 17,
+                        "Second": 5,
+                        "HistoryEvent": "七层9号烟感探测器开始报警",
+                    },
+                ],
+            },
+            {
+                "Date": "09-05",
+                "Details": "1楼华夏厅烟感报警器发生报警",
+                "Types": "故障",
+                "Result": "已归档",
+                "EquipmentList": [],
+            },
+        ]
+    elif companyID == "CPY3101120002":
+        datas = [
+            {
+                "Date": "05-20",
+                "Details": "5楼中间办公室烟感报警器发生报警",
+                "Types": "火警",
+                "Result": "已归档",
+                "EquipmentList": [
+                    {
+                        "Name": "SmokeDetector1",
+                        "Interval": 5.0,
+                        "Hour": 11,
+                        "Minute": 13,
+                        "Second": 10,
+                        "HistoryEvent": "三层1号烟感探测器开始报警",
+                    },
+                    {
+                        "Name": "SmokeDetector8",
+                        "Interval": 0.0,
+                        "Hour": 11,
+                        "Minute": 13,
+                        "Second": 10,
+                        "HistoryEvent": "七层8号烟感探测器开始报警",
+                    },
+                    {
+                        "Name": "SmokeDetector9",
+                        "Interval": 0.0,
+                        "Hour": 11,
+                        "Minute": 13,
+                        "Second": 10,
+                        "HistoryEvent": "七层9号烟感探测器开始报警",
+                    },
+                ],
+            },
+            {
+                "Date": "09-05",
+                "Details": "2楼华夏厅烟感报警器发生报警",
+                "Types": "故障",
+                "Result": "已归档",
+                "EquipmentList": [],
+            },
+        ]
+    elif companyID == "CPY3101120003":
+        datas = [
+            {
+                "Date": "12-12",
+                "Details": "1楼中间办公室烟感报警器发生报警",
+                "Types": "火警",
+                "Result": "已归档",
+                "EquipmentList": [
+                    {
+                        "Name": "SmokeDetector1",
+                        "Interval": 5.0,
+                        "Hour": 11,
+                        "Minute": 13,
+                        "Second": 10,
+                        "HistoryEvent": "三层1号烟感探测器开始报警",
+                    },
+                ],
+            },
+            {
+                "Date": "08-12",
+                "Details": "2楼华夏厅烟感报警器发生报警",
+                "Types": "故障",
+                "Result": "已归档",
+                "EquipmentList": [],
+            },
+        ]
+    
     return [schema.GiveAlarmRecord(**data) for data in datas]  # type: ignore
 
 
 def getBuildingInfo(companyID: str) -> schema.BuildingInfo:
-    data = {
-        "CompanyName": "上海国际会议中心",
-        "CompanyAddress": "上海市浦东新区滨江大道2727号",
-        "ContactPerson": "刘总:18510550819",
-        "ContactPhone": "1",
-        "FireLevel": "1",
-        "BuildingHeight": "1",
-        "BuildingArea": "1",
-        "FireLift": "1",
-        "SecurityExit": "1",
-    }
+    if companyID == "CPY3101120001":
+        data = {
+            "CompanyName": "复兴馆",
+            "CompanyAddress": "上海市浦东新区滨江大道2727号",
+            "ContactPerson": "刘总:18510550819",
+            "ContactPhone": "1",
+            "FireLevel": "1",
+            "BuildingHeight": "1",
+            "BuildingArea": "1",
+            "FireLift": "1",
+            "SecurityExit": "1",
+        }
+    elif companyID == "CPY3101120002":
+        data = {
+            "CompanyName": "花栖馆",
+            "CompanyAddress": "上海市浦东新区滨江大道2727号",
+            "ContactPerson": "赵总:17813554839",
+            "ContactPhone": "1",
+            "FireLevel": "1",
+            "BuildingHeight": "1",
+            "BuildingArea": "1",
+            "FireLift": "1",
+            "SecurityExit": "1",
+        }
+    elif companyID == "CPY3101120003":
+        data = {
+            "CompanyName": "竹藤馆",
+            "CompanyAddress": "上海市浦东新区滨江大道2727号",
+            "ContactPerson": "王总:13211558321",
+            "ContactPhone": "1",
+            "FireLevel": "1",
+            "BuildingHeight": "1",
+            "BuildingArea": "1",
+            "FireLift": "1",
+            "SecurityExit": "1",
+        }
     return schema.BuildingInfo(**data)  # type: ignore
 
 
 def getAlarmInfo(companyID: str) -> schema.AlarmInfo:
-    data = {"DailyAlarm": 1, "MonthlyAlarm": 20, "PendingTasks": 11}
+    if companyID == "CPY3101120001":
+        data = {"DailyAlarm": 1, "MonthlyAlarm": 20, "PendingTasks": 11}
+    elif companyID == "CPY3101120002":
+        data = {"DailyAlarm": 2, "MonthlyAlarm": 15, "PendingTasks": 8}
+    elif companyID == "CPY3101120003":
+        data = {"DailyAlarm": 5, "MonthlyAlarm": 25, "PendingTasks": 17}
     return schema.AlarmInfo(**data)
 
 
 def getScoreDetail(companyID: str) -> schema.ScoreDetail:
-    data = {
-        "RecommendedNames": [
-            "火灾探测器完好率",
-            "火灾报警次数",
-            "定期进行消防安全教育和培训",
-            "疏散通道、安全出口和消防通道保持畅通",
-        ],
-        "WeiHuBaoYang": {
-            "Headline": "设施维护保养",
-            "SourceItems": [
-                {"Details": "维修时间", "Score": -4.0},
-                {"Details": "维修成功率", "Score": -4.0},
+    if companyID == "CPY310112001":
+        data = {
+            "RecommendedNames": [
+                "火灾探测器完好率",
+                "火灾报警次数",
+                "定期进行消防安全教育和培训",
+                "疏散通道、安全出口和消防通道保持畅通",
             ],
-        },
-        "YunXingZhuangTai": {
-            "Headline": "消防设施运行状态",
-            "SourceItems": [
-                {"Details": "火灾探测器完好率", "Score": -10.0},
-                {"Details": "火灾报警次数", "Score": -8.0},
-                {"Details": "控制器完好率", "Score": -4.0},
-                {"Details": "应急照明备用电源供电时间", "Score": -4.0},
-                {"Details": "机械排烟系统的排烟量", "Score": -4.0},
+            "WeiHuBaoYang": {
+                "Headline": "设施维护保养",
+                "SourceItems": [
+                    {"Details": "维修时间", "Score": -4.0},
+                    {"Details": "维修成功率", "Score": -4.0},
+                ],
+            },
+            "YunXingZhuangTai": {
+                "Headline": "消防设施运行状态",
+                "SourceItems": [
+                    {"Details": "火灾探测器完好率", "Score": -10.0},
+                    {"Details": "火灾报警次数", "Score": -8.0},
+                    {"Details": "控制器完好率", "Score": -4.0},
+                    {"Details": "应急照明备用电源供电时间", "Score": -4.0},
+                    {"Details": "机械排烟系统的排烟量", "Score": -4.0},
+                ],
+            },
+            "JianChanQingKuang": {
+                "Headline": "消防监督检查情况",
+                "SourceItems": [
+                    {"Details": "疏散通道、安全出口和消防通道保持畅通", "Score": -6.0},
+                    {"Details": "电气线路定期检查", "Score": -3.0},
+                    {"Details": "燃气管路定期检测", "Score": -3.0},
+                    {"Details": "消防设施符合技术标准", "Score": -3.0},
+                ],
+            },
+            "JiuYuanNengLi": {
+                "Headline": "灭火救援能力",
+                "SourceItems": [
+                    {"Details": "员工参加初起火灾扑救操作培训", "Score": -5.0},
+                    {"Details": "定期组织疏散演练", "Score": -5.0},
+                    {"Details": "建立应急疏散预案", "Score": -2.0},
+                    {"Details": "对员工进行消防器材使用培训", "Score": -1.0},
+                ],
+            },
+            "XiaoFangGuanLi": {
+                "Headline": "消防管理",
+                "SourceItems": [
+                    {"Details": "定期进行消防安全教育和培训", "Score": -6.0},
+                    {"Details": "建立防火档案", "Score": -5.0},
+                    {"Details": "建立消防设施操作与故障记录", "Score": -4.0},
+                    {"Details": "定期开展防火检查与巡查", "Score": -4.0},
+                ],
+            },
+        }
+    elif companyID == "CPY310112002":
+        data = {
+            "RecommendedNames": [
+                "火灾探测器完好率",
+                "火灾报警次数",
+                "定期进行消防安全教育和培训",
+                "疏散通道、安全出口和消防通道保持畅通",
             ],
-        },
-        "JianChanQingKuang": {
-            "Headline": "消防监督检查情况",
-            "SourceItems": [
-                {"Details": "疏散通道、安全出口和消防通道保持畅通", "Score": -6.0},
-                {"Details": "电气线路定期检查", "Score": -3.0},
-                {"Details": "燃气管路定期检测", "Score": -3.0},
-                {"Details": "消防设施符合技术标准", "Score": -3.0},
+            "WeiHuBaoYang": {
+                "Headline": "设施维护保养",
+                "SourceItems": [
+                    {"Details": "维修时间", "Score": -2.0},
+                    {"Details": "维修成功率", "Score": -2.0},
+                ],
+            },
+            "YunXingZhuangTai": {
+                "Headline": "消防设施运行状态",
+                "SourceItems": [
+                    {"Details": "火灾探测器完好率", "Score": -8.0},
+                    {"Details": "火灾报警次数", "Score": -8.0},
+                    {"Details": "控制器完好率", "Score": -2.0},
+                    {"Details": "应急照明备用电源供电时间", "Score": -1.0},
+                    {"Details": "机械排烟系统的排烟量", "Score": -1.0},
+                ],
+            },
+            "JianChanQingKuang": {
+                "Headline": "消防监督检查情况",
+                "SourceItems": [
+                    {"Details": "疏散通道、安全出口和消防通道保持畅通", "Score": -2.0},
+                    {"Details": "电气线路定期检查", "Score": -5.0},
+                    {"Details": "燃气管路定期检测", "Score": -5.0},
+                    {"Details": "消防设施符合技术标准", "Score": -6.0},
+                ],
+            },
+            "JiuYuanNengLi": {
+                "Headline": "灭火救援能力",
+                "SourceItems": [
+                    {"Details": "员工参加初起火灾扑救操作培训", "Score": -7.0},
+                    {"Details": "定期组织疏散演练", "Score": -8.0},
+                    {"Details": "建立应急疏散预案", "Score": -8.0},
+                    {"Details": "对员工进行消防器材使用培训", "Score": -2.0},
+                ],
+            },
+            "XiaoFangGuanLi": {
+                "Headline": "消防管理",
+                "SourceItems": [
+                    {"Details": "定期进行消防安全教育和培训", "Score": -10.0},
+                    {"Details": "建立防火档案", "Score": -3.0},
+                    {"Details": "建立消防设施操作与故障记录", "Score": -2.0},
+                    {"Details": "定期开展防火检查与巡查", "Score": -2.0},
+                ],
+            },
+        }
+    elif companyID == "CPY310112003":
+        data = {
+            "RecommendedNames": [
+                "火灾探测器完好率",
+                "火灾报警次数",
+                "定期进行消防安全教育和培训",
+                "疏散通道、安全出口和消防通道保持畅通",
             ],
-        },
-        "JiuYuanNengLi": {
-            "Headline": "灭火救援能力",
-            "SourceItems": [
-                {"Details": "员工参加初起火灾扑救操作培训", "Score": -5.0},
-                {"Details": "定期组织疏散演练", "Score": -5.0},
-                {"Details": "建立应急疏散预案", "Score": -2.0},
-                {"Details": "对员工进行消防器材使用培训", "Score": -1.0},
-            ],
-        },
-        "XiaoFangGuanLi": {
-            "Headline": "消防管理",
-            "SourceItems": [
-                {"Details": "定期进行消防安全教育和培训", "Score": -6.0},
-                {"Details": "建立防火档案", "Score": -5.0},
-                {"Details": "建立消防设施操作与故障记录", "Score": -4.0},
-                {"Details": "定期开展防火检查与巡查", "Score": -4.0},
-            ],
-        },
-    }
+            "WeiHuBaoYang": {
+                "Headline": "设施维护保养",
+                "SourceItems": [
+                    {"Details": "维修时间", "Score": -8.0},
+                    {"Details": "维修成功率", "Score": -8.0},
+                ],
+            },
+            "YunXingZhuangTai": {
+                "Headline": "消防设施运行状态",
+                "SourceItems": [
+                    {"Details": "火灾探测器完好率", "Score": -2.0},
+                    {"Details": "火灾报警次数", "Score": -2.0},
+                    {"Details": "控制器完好率", "Score": -5.0},
+                    {"Details": "应急照明备用电源供电时间", "Score": -3.0},
+                    {"Details": "机械排烟系统的排烟量", "Score": -3.0},
+                ],
+            },
+            "JianChanQingKuang": {
+                "Headline": "消防监督检查情况",
+                "SourceItems": [
+                    {"Details": "疏散通道、安全出口和消防通道保持畅通", "Score": -4.0},
+                    {"Details": "电气线路定期检查", "Score": -10.0},
+                    {"Details": "燃气管路定期检测", "Score": -10.0},
+                    {"Details": "消防设施符合技术标准", "Score": -2.0},
+                ],
+            },
+            "JiuYuanNengLi": {
+                "Headline": "灭火救援能力",
+                "SourceItems": [
+                    {"Details": "员工参加初起火灾扑救操作培训", "Score": -2.0},
+                    {"Details": "定期组织疏散演练", "Score": -2.0},
+                    {"Details": "建立应急疏散预案", "Score": -2.0},
+                    {"Details": "对员工进行消防器材使用培训", "Score": -4.0},
+                ],
+            },
+            "XiaoFangGuanLi": {
+                "Headline": "消防管理",
+                "SourceItems": [
+                    {"Details": "定期进行消防安全教育和培训", "Score": -7.0},
+                    {"Details": "建立防火档案", "Score": -6.0},
+                    {"Details": "建立消防设施操作与故障记录", "Score": -3.0},
+                    {"Details": "定期开展防火检查与巡查", "Score": -3.0},
+                ],
+            },
+        }
     return schema.ScoreDetail(**data)  # type: ignore
 
 
 def getDeviceAccess(companyID: str) -> schema.DeviceAccess:
-    data = {
-        "CompanyName": "上海国际会议中心",
-        "DeviceIntactInfo": [
-            {"DeviceType": "消防栓", "IconName": "消防栓", "IntactRate": 0.75},
-            {"DeviceType": "消防水池", "IconName": "消防水池", "IntactRate": 0.85},
-        ],
-    }
+    if companyID == "CPY3101120001":
+        data = {
+            "CompanyName": "复兴馆",
+            "DeviceIntactInfo": [
+                {"DeviceType": "消防栓", "IconName": "消防栓", "IntactRate": 0.75},
+                {"DeviceType": "消防水池", "IconName": "消防水池", "IntactRate": 0.85},
+            ],
+        }
+    elif companyID == "CPY3101120002":
+        data = {
+            "CompanyName": "花栖馆",
+            "DeviceIntactInfo": [
+                {"DeviceType": "消防栓", "IconName": "消防栓", "IntactRate": 0.50},
+                {"DeviceType": "消防水池", "IconName": "消防水池", "IntactRate": 0.35},
+            ],
+        }
+    elif companyID == "CPY3101120003":
+        data = {
+            "CompanyName": "竹藤馆",
+            "DeviceIntactInfo": [
+                {"DeviceType": "消防栓", "IconName": "消防栓", "IntactRate": 0.55},
+                {"DeviceType": "消防水池", "IconName": "消防水池", "IntactRate": 0.65},
+            ],
+        }
     return schema.DeviceAccess(**data)  # type: ignore
 
 
@@ -450,21 +674,67 @@ def getRectification(companyID: str) -> List[schema.Rectification]:
                 {"Categories": "其他", "Amount": 13},
             ],
         },
+        {
+            "CompanyName": "花栖堂",
+            "Numbers": 89,
+            "Rate": 31,
+            "MTTR": 8,
+            "MTBF": 7,
+            "FireSystems": [
+                {"Categories": "室外消火栓", "Amount": 33},
+                {"Categories": "室内消火栓", "Amount": 20},
+                {"Categories": "喷淋系统", "Amount": 11},
+                {"Categories": "其他", "Amount": 20},
+            ],
+        },{
+            "CompanyName": "竹藤馆",
+            "Numbers": 117,
+            "Rate": 44,
+            "MTTR": 6,
+            "MTBF": 5,
+            "FireSystems": [
+                {"Categories": "室外消火栓", "Amount": 35},
+                {"Categories": "室内消火栓", "Amount": 53},
+                {"Categories": "喷淋系统", "Amount": 19},
+                {"Categories": "其他", "Amount": 29},
+            ],
+        },
+        
     ]
 
     return [schema.Rectification(**data) for data in datas]  # type: ignore
 
 
 def getAlarmRecordsDay(companyID: str) -> schema.AlarmRecordsDay:
-    data = {
-        "CompanyName": "上海国际会议中心",
-        "MaxAlarmsCount": 124,
-        "DeviceInfos": [
-            {"DeviceName": "消防栓", "AlarmsCount": 12},
-            {"DeviceName": "消防水池", "AlarmsCount": 124},
-        ],
-    }
+    if companyID == "CPY3101120001":
+        data = {
+            "CompanyName": "复兴馆",
+            "MaxAlarmsCount": 124,
+            "DeviceInfos": [
+                {"DeviceName": "消防栓", "AlarmsCount": 12},
+                {"DeviceName": "消防水池", "AlarmsCount": 124},
+            ],
+        }
+    if companyID == "CPY3101120002":
+        data = {
+            "CompanyName": "花栖堂",
+            "MaxAlarmsCount": 119,
+            "DeviceInfos": [
+                {"DeviceName": "消防栓", "AlarmsCount": 7},
+                {"DeviceName": "消防水池", "AlarmsCount": 119},
+            ],
+        }
+    if companyID == "CPY3101120003":
+        data = {
+            "CompanyName": "竹藤馆",
+            "MaxAlarmsCount": 113,
+            "DeviceInfos": [
+                {"DeviceName": "消防栓", "AlarmsCount": 18},
+                {"DeviceName": "消防水池", "AlarmsCount": 113},
+            ],
+        }
     return schema.AlarmRecordsDay(**data)  # type: ignore
+
 
 
 METHODNAME_2_METHOD: Dict[str, Callable[[str], Any]] = {
