@@ -25,8 +25,8 @@ channel.queue_declare(queue="rpc_queue")
 
 def on_request(ch: BlockingChannel, method: Any, props: Any, body: bytes) -> None:
     message = str(body)
-    groupName, methodName, *_ = message.split("\n")
-    logging.info(f" [.] getData({groupName}, {methodName})")
+    methodName, groupName, *_ = message.split("\n")
+    logging.info(f" [.] getData({methodName}, {groupName})")
     try:
         response = getData(groupName, methodName)
     except ValueError:
