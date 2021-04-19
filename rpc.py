@@ -24,7 +24,7 @@ channel.queue_declare(queue="rpc_queue")
 
 
 def on_request(ch: BlockingChannel, method: Any, props: Any, body: bytes) -> None:
-    message = str(body)
+    message = body.decode()
     methodName, groupName, *_ = message.split("&")
     logging.info(f" [.] getData({methodName}, {groupName})")
     try:
