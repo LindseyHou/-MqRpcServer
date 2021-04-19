@@ -243,6 +243,7 @@ def getRealTimeAlarm(companyID: str) -> List[schema.RealTimeAlarm]:
 
 
 def getGiveAlarmRecord(companyID: str) -> List[schema.GiveAlarmRecord]:
+    datas = []
     if companyID == "CPY3101120001":
         datas = [
             {
@@ -390,7 +391,7 @@ def getGiveAlarmRecord(companyID: str) -> List[schema.GiveAlarmRecord]:
                         "Minute": 13,
                         "Second": 10,
                         "HistoryEvent": "三层1号烟感探测器开始报警",
-                    },
+                    }
                 ],
             },
             {
@@ -401,11 +402,22 @@ def getGiveAlarmRecord(companyID: str) -> List[schema.GiveAlarmRecord]:
                 "EquipmentList": [],
             },
         ]
-    
+
     return [schema.GiveAlarmRecord(**data) for data in datas]  # type: ignore
 
 
 def getBuildingInfo(companyID: str) -> schema.BuildingInfo:
+    data = {
+        "CompanyName": "None",
+        "CompanyAddress": "None",
+        "ContactPerson": "None",
+        "ContactPhone": "0",
+        "FireLevel": "0",
+        "BuildingHeight": "0",
+        "BuildingArea": "0",
+        "FireLift": "0",
+        "SecurityExit": "0",
+    }
     if companyID == "CPY3101120001":
         data = {
             "CompanyName": "复兴馆",
@@ -418,6 +430,7 @@ def getBuildingInfo(companyID: str) -> schema.BuildingInfo:
             "FireLift": "1",
             "SecurityExit": "1",
         }
+
     elif companyID == "CPY3101120002":
         data = {
             "CompanyName": "花栖馆",
@@ -430,6 +443,7 @@ def getBuildingInfo(companyID: str) -> schema.BuildingInfo:
             "FireLift": "1",
             "SecurityExit": "1",
         }
+
     elif companyID == "CPY3101120003":
         data = {
             "CompanyName": "竹藤馆",
@@ -442,10 +456,12 @@ def getBuildingInfo(companyID: str) -> schema.BuildingInfo:
             "FireLift": "1",
             "SecurityExit": "1",
         }
+
     return schema.BuildingInfo(**data)  # type: ignore
 
 
 def getAlarmInfo(companyID: str) -> schema.AlarmInfo:
+    data = {"DailyAlarm": 0, "MonthlyAlarm": 0, "PendingTasks": 0}
     if companyID == "CPY3101120001":
         data = {"DailyAlarm": 1, "MonthlyAlarm": 20, "PendingTasks": 11}
     elif companyID == "CPY3101120002":
@@ -456,6 +472,26 @@ def getAlarmInfo(companyID: str) -> schema.AlarmInfo:
 
 
 def getScoreDetail(companyID: str) -> schema.ScoreDetail:
+    data = {
+        "RecommendedNames": [],
+        "WeiHuBaoYang": {
+            "Headline": "",
+            "SourceItems": [{"Details": "", "Score": 0}, {"Details": "", "Score": 0}],
+        },
+        "YunXingZhuangTai": {
+            "Headline": "",
+            "SourceItems": [{"Details": "", "Score": 0}],
+        },
+        "JianChanQingKuang": {
+            "Headline": "",
+            "SourceItems": [{"Details": "", "Score": 0}],
+        },
+        "JiuYuanNengLi": {"Headline": "", "SourceItems": [{"Details": "", "Score": 0}]},
+        "XiaoFangGuanLi": {
+            "Headline": "",
+            "SourceItems": [{"Details": "", "Score": 0}],
+        },
+    }
     if companyID == "CPY310112001":
         data = {
             "RecommendedNames": [
@@ -619,6 +655,10 @@ def getScoreDetail(companyID: str) -> schema.ScoreDetail:
 
 
 def getDeviceAccess(companyID: str) -> schema.DeviceAccess:
+    data = {
+        "CompanyName": "",
+        "DeviceIntactInfo": [{"DeviceType": "", "IconName": "", "IntactRate": 0}],
+    }
     if companyID == "CPY3101120001":
         data = {
             "CompanyName": "复兴馆",
@@ -686,7 +726,8 @@ def getRectification(companyID: str) -> List[schema.Rectification]:
                 {"Categories": "喷淋系统", "Amount": 11},
                 {"Categories": "其他", "Amount": 20},
             ],
-        },{
+        },
+        {
             "CompanyName": "竹藤馆",
             "Numbers": 117,
             "Rate": 44,
@@ -699,13 +740,17 @@ def getRectification(companyID: str) -> List[schema.Rectification]:
                 {"Categories": "其他", "Amount": 29},
             ],
         },
-        
     ]
 
     return [schema.Rectification(**data) for data in datas]  # type: ignore
 
 
 def getAlarmRecordsDay(companyID: str) -> schema.AlarmRecordsDay:
+    data = {
+        "CompanyName": "",
+        "MaxAlarmsCount": 0,
+        "DeviceInfos": [{"DeviceName": "", "AlarmsCount": 0}],
+    }
     if companyID == "CPY3101120001":
         data = {
             "CompanyName": "复兴馆",
@@ -736,7 +781,6 @@ def getAlarmRecordsDay(companyID: str) -> schema.AlarmRecordsDay:
     return schema.AlarmRecordsDay(**data)  # type: ignore
 
 
-
 METHODNAME_2_METHOD: Dict[str, Callable[[str], Any]] = {
     "fireDataStatistics": getFireDataStatistics,
     "safetyScore": getSafetyScore,
@@ -763,6 +807,6 @@ def getData(groupName: str, methodName: str) -> str:
 
 if __name__ == "__main__":
     for k, v in METHODNAME_2_METHOD.items():
-        res = getData("CPY3102300001", k)
+        res = getData("", k)
         if k == "fireDataStatistics":
             print(res)
