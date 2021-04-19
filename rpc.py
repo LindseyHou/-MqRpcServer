@@ -26,6 +26,8 @@ channel.queue_declare(queue="rpc_queue")
 def on_request(ch: BlockingChannel, method: Any, props: Any, body: bytes) -> None:
     message = str(body)
     methodName, groupName, *_ = message.split("\n")
+    if groupName == "None":
+        groupName = ""
     logging.info(f" [.] getData({methodName}, {groupName})")
     try:
         response = getData(groupName, methodName)
