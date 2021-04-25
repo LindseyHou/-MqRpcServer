@@ -492,7 +492,7 @@ def getScoreDetail(companyID: str) -> schema.ScoreDetail:
             "SourceItems": [{"Details": "", "Score": 0}],
         },
     }
-    if companyID == "CPY310112001":
+    if companyID == "CPY3101120001":
         data = {
             "RecommendedNames": [
                 "火灾探测器完好率",
@@ -545,7 +545,7 @@ def getScoreDetail(companyID: str) -> schema.ScoreDetail:
                 ],
             },
         }
-    elif companyID == "CPY310112002":
+    elif companyID == "CPY3101120002":
         data = {
             "RecommendedNames": [
                 "火灾探测器完好率",
@@ -598,7 +598,7 @@ def getScoreDetail(companyID: str) -> schema.ScoreDetail:
                 ],
             },
         }
-    elif companyID == "CPY310112003":
+    elif companyID == "CPY3101120003":
         data = {
             "RecommendedNames": [
                 "火灾探测器完好率",
