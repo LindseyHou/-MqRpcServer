@@ -689,59 +689,67 @@ def getDeviceAccess(companyID: str) -> schema.DeviceAccess:
 def getRectification(companyID: str) -> List[schema.Rectification]:
     datas = [
         {
-            "CompanyName": "上海国际会议中心",
-            "Numbers": 117,
-            "Rate": 62,
-            "MTTR": 7,
-            "MTBF": 9,
+            "CompanyName": "",
+            "Numbers": 0,
+            "Rate": 0,
+            "MTTR": 0,
+            "MTBF": 0,
             "FireSystems": [
-                {"Categories": "室外消火栓", "Amount": 28},
-                {"Categories": "室内消火栓", "Amount": 32},
-                {"Categories": "喷淋系统", "Amount": 27},
-                {"Categories": "其他", "Amount": 13},
+                {"Categories": "室外消火栓", "Amount": 0},
+                {"Categories": "室内消火栓", "Amount": 0},
+                {"Categories": "喷淋系统", "Amount": 0},
+                {"Categories": "其他", "Amount": 0},
             ],
-        },
-        {
-            "CompanyName": "复兴馆",
-            "Numbers": 117,
-            "Rate": 62,
-            "MTTR": 7,
-            "MTBF": 9,
-            "FireSystems": [
-                {"Categories": "室外消火栓", "Amount": 28},
-                {"Categories": "室内消火栓", "Amount": 32},
-                {"Categories": "喷淋系统", "Amount": 27},
-                {"Categories": "其他", "Amount": 13},
-            ],
-        },
-        {
-            "CompanyName": "花栖堂",
-            "Numbers": 89,
-            "Rate": 31,
-            "MTTR": 8,
-            "MTBF": 7,
-            "FireSystems": [
-                {"Categories": "室外消火栓", "Amount": 33},
-                {"Categories": "室内消火栓", "Amount": 20},
-                {"Categories": "喷淋系统", "Amount": 11},
-                {"Categories": "其他", "Amount": 20},
-            ],
-        },
-        {
-            "CompanyName": "竹藤馆",
-            "Numbers": 117,
-            "Rate": 44,
-            "MTTR": 6,
-            "MTBF": 5,
-            "FireSystems": [
-                {"Categories": "室外消火栓", "Amount": 35},
-                {"Categories": "室内消火栓", "Amount": 53},
-                {"Categories": "喷淋系统", "Amount": 19},
-                {"Categories": "其他", "Amount": 29},
-            ],
-        },
+        }
     ]
-
+    if companyID == "CPY3101120001":
+        datas = [
+            {
+                "CompanyName": "复兴馆",
+                "Numbers": 117,
+                "Rate": 62,
+                "MTTR": 7,
+                "MTBF": 9,
+                "FireSystems": [
+                    {"Categories": "室外消火栓", "Amount": 28},
+                    {"Categories": "室内消火栓", "Amount": 32},
+                    {"Categories": "喷淋系统", "Amount": 27},
+                    {"Categories": "其他", "Amount": 13},
+                ],
+            }
+        ]
+    elif companyID == "CPY3101120002":
+        datas = [
+            {
+                "CompanyName": "花栖堂",
+                "Numbers": 89,
+                "Rate": 31,
+                "MTTR": 8,
+                "MTBF": 7,
+                "FireSystems": [
+                    {"Categories": "室外消火栓", "Amount": 33},
+                    {"Categories": "室内消火栓", "Amount": 20},
+                    {"Categories": "喷淋系统", "Amount": 11},
+                    {"Categories": "其他", "Amount": 20},
+                ],
+            }
+        ]
+    elif companyID == "CPY3101120003":
+        datas = [
+            {
+                "CompanyName": "竹藤馆",
+                "Numbers": 117,
+                "Rate": 44,
+                "MTTR": 6,
+                "MTBF": 5,
+                "FireSystems": [
+                    {"Categories": "室外消火栓", "Amount": 35},
+                    {"Categories": "室内消火栓", "Amount": 53},
+                    {"Categories": "喷淋系统", "Amount": 19},
+                    {"Categories": "其他", "Amount": 29},
+                ],
+            }
+        ]
     return [schema.Rectification(**data) for data in datas]  # type: ignore
 
 
