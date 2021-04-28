@@ -712,6 +712,7 @@ def getRectification(companyID: str) -> schema.Rectification:
                 {"Categories": "室内消火栓", "Amount": 32},
                 {"Categories": "喷淋系统", "Amount": 27},
                 {"Categories": "其他", "Amount": 13},
+                {"Categories": "其他", "Amount": 13},
             ],
         }
     elif companyID == "CPY3101120002":
@@ -726,6 +727,7 @@ def getRectification(companyID: str) -> schema.Rectification:
                 {"Categories": "室内消火栓", "Amount": 20},
                 {"Categories": "喷淋系统", "Amount": 11},
                 {"Categories": "其他", "Amount": 20},
+                {"Categories": "其他", "Amount": 20},
             ],
         }
     elif companyID == "CPY3101120003":
@@ -739,6 +741,7 @@ def getRectification(companyID: str) -> schema.Rectification:
                 {"Categories": "室外消火栓", "Amount": 35},
                 {"Categories": "室内消火栓", "Amount": 53},
                 {"Categories": "喷淋系统", "Amount": 19},
+                {"Categories": "其他", "Amount": 29},
                 {"Categories": "其他", "Amount": 29},
             ],
         }
