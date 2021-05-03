@@ -73,7 +73,7 @@ def getSafetyScore(companyID: str) -> List[schema.SafetyScore]:
         {
             "CompanyName": "上海国际会议中心",
             "PercentageOfIoT": 85,
-            "SafetyRating": 70.86,
+            "SafetyRating": 70.86,  # FIXME: 看一下也不要改成float
             "ImageUrl": "SHICC.png",
             "SceneName": "SHICC",
             "FireStatistics": 6,
