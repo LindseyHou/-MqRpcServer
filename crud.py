@@ -72,7 +72,7 @@ def getSafetyScore(companyID: str) -> List[schema.SafetyScore]:
     datas = [
         {
             "CompanyName": "上海国际会议中心",
-            "PercentageOfIoT": 85,
+            "PercentageOfIoT": anxin_var.wellRateWhole,
             "SafetyRating": anxin_var.safetyScore,  # FIXME: why float???
             "ImageUrl": "SHICC.png",
             "SceneName": "SHICC",
@@ -85,7 +85,7 @@ def getSafetyScore(companyID: str) -> List[schema.SafetyScore]:
         },
         {
             "CompanyName": "浦东美术馆",
-            "PercentageOfIoT": 85,
+            "PercentageOfIoT": anxin_var.wellRateWhole,
             "SafetyRating": anxin_var.safetyScore,
             "ImageUrl": "MeiShuGuan.png",
             "SceneName": "SHICC",
@@ -98,7 +98,7 @@ def getSafetyScore(companyID: str) -> List[schema.SafetyScore]:
         },
         {
             "CompanyName": "港务大厦",
-            "PercentageOfIoT": 85,
+            "PercentageOfIoT": anxin_var.wellRateWhole,
             "SafetyRating": anxin_var.safetyScore,
             "ImageUrl": "GangWuDaSha.png",
             "SceneName": "SHICC",
@@ -111,7 +111,7 @@ def getSafetyScore(companyID: str) -> List[schema.SafetyScore]:
         },
         {
             "CompanyName": "浦东海关大楼",
-            "PercentageOfIoT": 85,
+            "PercentageOfIoT": anxin_var.wellRateWhole,
             "SafetyRating": anxin_var.safetyScore,
             "ImageUrl": "HaiGuanDaLou.png",
             "SceneName": "SHICC",
@@ -124,7 +124,7 @@ def getSafetyScore(companyID: str) -> List[schema.SafetyScore]:
         },
         {
             "CompanyName": "正大广场",
-            "PercentageOfIoT": 85,
+            "PercentageOfIoT": anxin_var.wellRateWhole,
             "SafetyRating": anxin_var.safetyScore,
             "ImageUrl": "ZhengDaGuangChang.png",
             "SceneName": "SHICC",
@@ -137,7 +137,7 @@ def getSafetyScore(companyID: str) -> List[schema.SafetyScore]:
         },
         {
             "CompanyName": "万向大厦",
-            "PercentageOfIoT": 85,
+            "PercentageOfIoT": anxin_var.wellRateWhole,
             "SafetyRating": anxin_var.safetyScore,
             "ImageUrl": "WanXiangDaSha.png",
             "SceneName": "SHICC",
@@ -150,7 +150,7 @@ def getSafetyScore(companyID: str) -> List[schema.SafetyScore]:
         },
         {
             "CompanyName": "复兴馆",
-            "PercentageOfIoT": 85,
+            "PercentageOfIoT": anxin_var.wellRateWhole,
             "SafetyRating": anxin_var.safetyScore,
             "ImageUrl": "FuXingGuan.png",
             "SceneName": "FuXingGuan",
@@ -163,7 +163,7 @@ def getSafetyScore(companyID: str) -> List[schema.SafetyScore]:
         },
         {
             "CompanyName": "花栖堂",
-            "PercentageOfIoT": 85,
+            "PercentageOfIoT": anxin_var.wellRateWhole,
             "SafetyRating": anxin_var.safetyScore,
             "ImageUrl": "HuaQiTang.png",
             "SceneName": "HuaQiTang",
@@ -176,7 +176,7 @@ def getSafetyScore(companyID: str) -> List[schema.SafetyScore]:
         },
         {
             "CompanyName": "世纪馆",
-            "PercentageOfIoT": 85,
+            "PercentageOfIoT": anxin_var.wellRateWhole,
             "SafetyRating": anxin_var.safetyScore,
             "ImageUrl": "ShiJiGuan.png",
             "SceneName": "",
@@ -189,7 +189,7 @@ def getSafetyScore(companyID: str) -> List[schema.SafetyScore]:
         },
         {
             "CompanyName": "花艺馆",
-            "PercentageOfIoT": 85,
+            "PercentageOfIoT": anxin_var.wellRateWhole,
             "SafetyRating": anxin_var.safetyScore,
             "ImageUrl": "HuaYiGuan.png",
             "SceneName": "",
@@ -202,7 +202,7 @@ def getSafetyScore(companyID: str) -> List[schema.SafetyScore]:
         },
         {
             "CompanyName": "竹藤馆",
-            "PercentageOfIoT": 85,
+            "PercentageOfIoT": anxin_var.wellRateWhole,
             "SafetyRating": anxin_var.safetyScore,
             "ImageUrl": "ZhuTengGuan.png",
             "SceneName": "",
@@ -215,7 +215,7 @@ def getSafetyScore(companyID: str) -> List[schema.SafetyScore]:
         },
         {
             "CompanyName": "百花馆",
-            "PercentageOfIoT": 85,
+            "PercentageOfIoT": anxin_var.wellRateWhole,
             "SafetyRating": anxin_var.safetyScore,
             "ImageUrl": "BaiHuaGuan.png",
             "SceneName": "",
