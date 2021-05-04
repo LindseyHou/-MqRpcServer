@@ -679,7 +679,7 @@ def getScoreDetail(companyID: str) -> schema.ScoreDetail:
 
 def partType2DeviceName(type: int) -> str:
     res = ""
-    data = xlrd.open_workbook("assets/设备类型编号.xlsx")
+    data = xlrd.open_workbook("assets/设备类型编号.xls")
     table = data.sheets()[0]
     partTypes = table.col_values(0)
     names = table.col_values(1)
@@ -696,6 +696,7 @@ def getDeviceIntactInfo(wellRateType: List[List[float]]) -> List[Dict[str, objec
     return res
 
 
+# FIXME: front end cannot show the data
 def getDeviceAccess(companyID: str) -> schema.DeviceAccess:
     data = {
         "CompanyName": "",
