@@ -21,19 +21,19 @@ def getPoints(type: int, timeslot: str) -> List[Dict[str, int]]:
     if timeslot == "Day":
         for i in range(11):
             x = i+1
-            y = riskDay[type][i]
+            y = riskDay[type][i-1]
             res += [{"X": x, "Y": y}]
         return res
-    if timeslot == "Week":
+    elif timeslot == "Week":
         for i in range(11):
             x = i
-            y = riskWeek[type][i]
+            y = riskWeek[type][i-1]
             res += [{"X": x, "Y": y}]
         return res
-    if timeslot == "Month":
+    elif timeslot == "Month":
         for i in range(11):
             x = i
-            y = riskMonth[type][i]
+            y = riskMonth[type][i-1]
             res += [{"X": x, "Y": y}]
         return res
     return res
