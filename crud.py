@@ -47,13 +47,13 @@ def getFireDataStatistics(companyID: str) -> schema.FireDataStatistics:
         "Day": {
             "VSize": Vsize_1,
             "Categories": [
-                {"Name": "消防给水与灭火系统", "Points": getPoints(
+                {"Name": "电气故障", "Points": getPoints(
                     fireType.WATER, "Day")},
-                {"Name": "防排烟系统", "Points": getPoints(
+                {"Name": "用火不慎", "Points": getPoints(
                     fireType.SMOKE, "Day")},
-                {"Name": "应急疏散系统", "Points": getPoints(
+                {"Name": "违章作业", "Points": getPoints(
                     fireType.EVACU, "Day")},
-                {"Name": "火灾探测报警系统", "Points": getPoints(
+                {"Name": "违规吸烟", "Points": getPoints(
                     fireType.ALARM, "Day")},
                 {"Name": "其他", "Points": getPoints(
                     fireType.OTHER, "Day")},
@@ -62,13 +62,13 @@ def getFireDataStatistics(companyID: str) -> schema.FireDataStatistics:
         "Month": {
             "VSize": Vsize_2,
             "Categories": [
-                {"Name": "消防给水与灭火系统", "Points": getPoints(
+                {"Name": "电气故障", "Points": getPoints(
                     fireType.WATER, "Week")},
-                {"Name": "防排烟系统", "Points": getPoints(
+                {"Name": "用火不慎", "Points": getPoints(
                     fireType.SMOKE, "Week")},
-                {"Name": "应急疏散系统", "Points": getPoints(
+                {"Name": "违章作业", "Points": getPoints(
                     fireType.EVACU, "Week")},
-                {"Name": "火灾探测报警系统", "Points": getPoints(
+                {"Name": "违规吸烟", "Points": getPoints(
                     fireType.ALARM, "Week")},
                 {"Name": "其他", "Points": getPoints(
                     fireType.OTHER, "Week")},
@@ -77,13 +77,13 @@ def getFireDataStatistics(companyID: str) -> schema.FireDataStatistics:
         "Year": {
             "VSize": Vsize_3,
             "Categories": [
-                {"Name": "消防给水与灭火系统", "Points": getPoints(
+                {"Name": "电气故障", "Points": getPoints(
                     fireType.WATER, "Month")},
-                {"Name": "防排烟系统", "Points": getPoints(
+                {"Name": "用火不慎", "Points": getPoints(
                     fireType.SMOKE, "Month")},
-                {"Name": "应急疏散系统", "Points": getPoints(
+                {"Name": "违章作业", "Points": getPoints(
                     fireType.EVACU, "Month")},
-                {"Name": "火灾探测报警系统", "Points": getPoints(
+                {"Name": "违规吸烟", "Points": getPoints(
                     fireType.ALARM, "Month")},
                 {"Name": "其他", "Points": getPoints(
                     fireType.OTHER, "Month")},
