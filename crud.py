@@ -699,7 +699,7 @@ def getDeviceIntactInfo(wellRateType: List[List[float]]) -> List[Dict[str, objec
 def getDeviceAccess(companyID: str) -> schema.DeviceAccess:
     data = {
         "CompanyName": "",
-        "DeviceIntactInfo": [{"DeviceType": "", "IconName": "", "IntactRate": 0}],
+        "DeviceIntactInfo": getDeviceIntactInfo(wellRateType),
     }
     if companyID == "CPY3101120001":
         data = {
