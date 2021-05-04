@@ -488,11 +488,14 @@ def getBuildingInfo(companyID: str) -> schema.BuildingInfo:
 def getAlarmInfo(companyID: str) -> schema.AlarmInfo:
     data = {"DailyAlarm": 0, "MonthlyAlarm": 0, "PendingTasks": 0}
     if companyID == "CPY3101120001":
-        data = {"DailyAlarm": 1, "MonthlyAlarm": 20, "PendingTasks": 11}
+        data = {"DailyAlarm": fireDay,
+                "MonthlyAlarm": fireMonth, "PendingTasks": riskNum}
     elif companyID == "CPY3101120002":
-        data = {"DailyAlarm": 2, "MonthlyAlarm": 15, "PendingTasks": 8}
+        data = {"DailyAlarm": fireDay,
+                "MonthlyAlarm": fireMonth, "PendingTasks": riskNum}
     elif companyID == "CPY3101120003":
-        data = {"DailyAlarm": 5, "MonthlyAlarm": 25, "PendingTasks": 17}
+        data = {"DailyAlarm": fireDay,
+                "MonthlyAlarm": fireMonth, "PendingTasks": riskNum}
     return schema.AlarmInfo(**data)
 
 
@@ -625,12 +628,7 @@ def getScoreDetail(companyID: str) -> schema.ScoreDetail:
         }
     elif companyID == "CPY3101120003":
         data = {
-            "RecommendedNames": [
-                "火灾探测器完好率",
-                "火灾报警次数",
-                "定期进行消防安全教育和培训",
-                "疏散通道、安全出口和消防通道保持畅通",
-            ],
+            "RecommendedNames": priorRect,
             "WeiHuBaoYang": {
                 "Headline": "设施维护保养",
                 "SourceItems": [
@@ -677,6 +675,11 @@ def getScoreDetail(companyID: str) -> schema.ScoreDetail:
             },
         }
     return schema.ScoreDetail(**data)  # type: ignore
+
+
+def partType2DeviceName(type: int) -> str:
+    res = ""
+    return res
 
 
 def getDeviceAccess(companyID: str) -> schema.DeviceAccess:
