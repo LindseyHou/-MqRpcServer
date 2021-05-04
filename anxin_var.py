@@ -1,4 +1,4 @@
-import random
+from random import randint
 from typing import List
 
 
@@ -9,7 +9,7 @@ def random_list(start: float, stop: float, length: int) -> List[int]:
         int(stop), int(start))
     random_list = []
     for i in range(length):
-        random_list.append(random.randint(start, stop))
+        random_list.append(randint(start, stop))
     return random_list
 
 
