@@ -687,6 +687,15 @@ def partType2DeviceName(type: int) -> str:
     return res
 
 
+def getDeviceIntactInfo(wellRateType: List[List[float]]) -> List[Dict[str, object]]:
+    res = []
+    for info in wellRateType:
+        nm = partType2DeviceName(int(info[0]))
+        temp = {"DeviceType": nm, "IconName": nm, "IntactRate": info[1]}
+        res.append(temp)
+    return res
+
+
 def getDeviceAccess(companyID: str) -> schema.DeviceAccess:
     data = {
         "CompanyName": "",
@@ -695,26 +704,17 @@ def getDeviceAccess(companyID: str) -> schema.DeviceAccess:
     if companyID == "CPY3101120001":
         data = {
             "CompanyName": "复兴馆",
-            "DeviceIntactInfo": [
-                {"DeviceType": "消防栓", "IconName": "消防栓", "IntactRate": 0.75},
-                {"DeviceType": "消防水池", "IconName": "消防水池", "IntactRate": 0.85},
-            ],
+            "DeviceIntactInfo": getDeviceIntactInfo(wellRateType)
         }
     elif companyID == "CPY3101120002":
         data = {
             "CompanyName": "花栖馆",
-            "DeviceIntactInfo": [
-                {"DeviceType": "消防栓", "IconName": "消防栓", "IntactRate": 0.50},
-                {"DeviceType": "消防水池", "IconName": "消防水池", "IntactRate": 0.35},
-            ],
+            "DeviceIntactInfo": getDeviceIntactInfo(wellRateType)
         }
     elif companyID == "CPY3101120003":
         data = {
             "CompanyName": "竹藤馆",
-            "DeviceIntactInfo": [
-                {"DeviceType": "消防栓", "IconName": "消防栓", "IntactRate": 0.55},
-                {"DeviceType": "消防水池", "IconName": "消防水池", "IntactRate": 0.65},
-            ],
+            "DeviceIntactInfo": getDeviceIntactInfo(wellRateType)
         }
     return schema.DeviceAccess(**data)  # type: ignore
 
