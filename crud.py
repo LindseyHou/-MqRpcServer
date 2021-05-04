@@ -691,7 +691,7 @@ def getDeviceIntactInfo(wellRateType: List[List[float]]) -> List[Dict[str, objec
     res = []
     for info in wellRateType:
         nm = partType2DeviceName(int(info[0]))
-        temp = {"DeviceType": nm, "IconName": nm, "IntactRate": info[1]}
+        temp = {"DeviceType": nm, "IconName": nm, "IntactRate": info[1]/100}
         res.append(temp)
     return res
 
