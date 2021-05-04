@@ -1,67 +1,92 @@
 from random import randint
 from typing import Any, Callable, Dict, List, Type, Union
-import anxin_var
+from anxin_var import *
+
 from pydantic.main import BaseModel
+from enum import IntEnum
 
 import schema
 
 
-def getRandPoints(Vsize: int, type: str) -> List[Dict[str, int]]:
+class fireType(IntEnum):
+    WATER = 0
+    SMOKE = 1
+    EVACU = 2
+    ALARM = 3
+    OTHER = 4
+
+
+def getPoints(type: int, timeslot: str) -> List[Dict[str, int]]:
     res: List[Dict[str, int]] = []
-    if type == "Day":
+    if timeslot == "Day":
         for i in range(11):
-            x = 3 * i - 2
-            y = randint(0, Vsize)
+            x = i+1
+            y = riskDay[type][i]
             res += [{"X": x, "Y": y}]
         return res
-    if type == "Month":
-        for i in range(1, 13):
+    if timeslot == "Week":
+        for i in range(11):
             x = i
-            y = randint(0, Vsize)
+            y = riskWeek[type][i]
             res += [{"X": x, "Y": y}]
         return res
-    if type == "Year":
-        for i in range(2011, 2021):
+    if timeslot == "Month":
+        for i in range(11):
             x = i
-            y = randint(0, Vsize)
+            y = riskMonth[type][i]
             res += [{"X": x, "Y": y}]
         return res
     return res
 
 
 def getFireDataStatistics(companyID: str) -> schema.FireDataStatistics:
-    Vsize_1 = 29
-    Vsize_2 = 586
-    Vsize_3 = 4556
+    Vsize_1 = 50
+    Vsize_2 = 200
+    Vsize_3 = 500
     data = {
         "Day": {
             "VSize": Vsize_1,
             "Categories": [
-                {"Name": "电气故障", "Points": getRandPoints(Vsize_1, "Day")},
-                {"Name": "用火不慎", "Points": getRandPoints(Vsize_1, "Day")},
-                {"Name": "违章作业", "Points": getRandPoints(Vsize_1, "Day")},
-                {"Name": "违规吸烟", "Points": getRandPoints(Vsize_1, "Day")},
-                {"Name": "其他", "Points": getRandPoints(Vsize_1, "Day")},
+                {"Name": "消防给水与灭火系统", "Points": getPoints(
+                    fireType.WATER, "Day")},
+                {"Name": "防排烟系统", "Points": getPoints(
+                    fireType.SMOKE, "Day")},
+                {"Name": "应急疏散系统", "Points": getPoints(
+                    fireType.EVACU, "Day")},
+                {"Name": "火灾探测报警系统", "Points": getPoints(
+                    fireType.ALARM, "Day")},
+                {"Name": "其他", "Points": getPoints(
+                    fireType.OTHER, "Day")},
             ],
         },
         "Month": {
             "VSize": Vsize_2,
             "Categories": [
-                {"Name": "电气故障", "Points": getRandPoints(Vsize_2, "Month")},
-                {"Name": "用火不慎", "Points": getRandPoints(Vsize_2, "Month")},
-                {"Name": "违章作业", "Points": getRandPoints(Vsize_2, "Month")},
-                {"Name": "违规吸烟", "Points": getRandPoints(Vsize_2, "Month")},
-                {"Name": "其他", "Points": getRandPoints(Vsize_2, "Month")},
+                {"Name": "消防给水与灭火系统", "Points": getPoints(
+                    fireType.WATER, "Week")},
+                {"Name": "防排烟系统", "Points": getPoints(
+                    fireType.SMOKE, "Week")},
+                {"Name": "应急疏散系统", "Points": getPoints(
+                    fireType.EVACU, "Week")},
+                {"Name": "火灾探测报警系统", "Points": getPoints(
+                    fireType.ALARM, "Week")},
+                {"Name": "其他", "Points": getPoints(
+                    fireType.OTHER, "Week")},
             ],
         },
         "Year": {
-            "VSize": 4556,
+            "VSize": Vsize_3,
             "Categories": [
-                {"Name": "电气故障", "Points": getRandPoints(Vsize_3, "Year")},
-                {"Name": "用火不慎", "Points": getRandPoints(Vsize_3, "Year")},
-                {"Name": "违章作业", "Points": getRandPoints(Vsize_3, "Year")},
-                {"Name": "违规吸烟", "Points": getRandPoints(Vsize_3, "Year")},
-                {"Name": "其他", "Points": getRandPoints(Vsize_3, "Year")},
+                {"Name": "消防给水与灭火系统", "Points": getPoints(
+                    fireType.WATER, "Month")},
+                {"Name": "防排烟系统", "Points": getPoints(
+                    fireType.SMOKE, "Month")},
+                {"Name": "应急疏散系统", "Points": getPoints(
+                    fireType.EVACU, "Month")},
+                {"Name": "火灾探测报警系统", "Points": getPoints(
+                    fireType.ALARM, "Month")},
+                {"Name": "其他", "Points": getPoints(
+                    fireType.OTHER, "Month")},
             ],
         },
     }
@@ -72,8 +97,8 @@ def getSafetyScore(companyID: str) -> List[schema.SafetyScore]:
     datas = [
         {
             "CompanyName": "上海国际会议中心",
-            "PercentageOfIoT": anxin_var.wellRateWhole,
-            "SafetyRating": anxin_var.safetyScore,  # FIXME: why float???
+            "PercentageOfIoT": wellRateWhole,
+            "SafetyRating": safetyScore,  # FIXME: why float???
             "ImageUrl": "SHICC.png",
             "SceneName": "SHICC",
             "FireStatistics": 6,
@@ -85,8 +110,8 @@ def getSafetyScore(companyID: str) -> List[schema.SafetyScore]:
         },
         {
             "CompanyName": "浦东美术馆",
-            "PercentageOfIoT": anxin_var.wellRateWhole,
-            "SafetyRating": anxin_var.safetyScore,
+            "PercentageOfIoT": wellRateWhole,
+            "SafetyRating": safetyScore,
             "ImageUrl": "MeiShuGuan.png",
             "SceneName": "SHICC",
             "FireStatistics": 6,
@@ -98,8 +123,8 @@ def getSafetyScore(companyID: str) -> List[schema.SafetyScore]:
         },
         {
             "CompanyName": "港务大厦",
-            "PercentageOfIoT": anxin_var.wellRateWhole,
-            "SafetyRating": anxin_var.safetyScore,
+            "PercentageOfIoT": wellRateWhole,
+            "SafetyRating": safetyScore,
             "ImageUrl": "GangWuDaSha.png",
             "SceneName": "SHICC",
             "FireStatistics": 6,
@@ -111,8 +136,8 @@ def getSafetyScore(companyID: str) -> List[schema.SafetyScore]:
         },
         {
             "CompanyName": "浦东海关大楼",
-            "PercentageOfIoT": anxin_var.wellRateWhole,
-            "SafetyRating": anxin_var.safetyScore,
+            "PercentageOfIoT": wellRateWhole,
+            "SafetyRating": safetyScore,
             "ImageUrl": "HaiGuanDaLou.png",
             "SceneName": "SHICC",
             "FireStatistics": 6,
@@ -124,8 +149,8 @@ def getSafetyScore(companyID: str) -> List[schema.SafetyScore]:
         },
         {
             "CompanyName": "正大广场",
-            "PercentageOfIoT": anxin_var.wellRateWhole,
-            "SafetyRating": anxin_var.safetyScore,
+            "PercentageOfIoT": wellRateWhole,
+            "SafetyRating": safetyScore,
             "ImageUrl": "ZhengDaGuangChang.png",
             "SceneName": "SHICC",
             "FireStatistics": 6,
@@ -137,8 +162,8 @@ def getSafetyScore(companyID: str) -> List[schema.SafetyScore]:
         },
         {
             "CompanyName": "万向大厦",
-            "PercentageOfIoT": anxin_var.wellRateWhole,
-            "SafetyRating": anxin_var.safetyScore,
+            "PercentageOfIoT": wellRateWhole,
+            "SafetyRating": safetyScore,
             "ImageUrl": "WanXiangDaSha.png",
             "SceneName": "SHICC",
             "FireStatistics": 6,
@@ -150,8 +175,8 @@ def getSafetyScore(companyID: str) -> List[schema.SafetyScore]:
         },
         {
             "CompanyName": "复兴馆",
-            "PercentageOfIoT": anxin_var.wellRateWhole,
-            "SafetyRating": anxin_var.safetyScore,
+            "PercentageOfIoT": wellRateWhole,
+            "SafetyRating": safetyScore,
             "ImageUrl": "FuXingGuan.png",
             "SceneName": "FuXingGuan",
             "FireStatistics": 6,
@@ -163,8 +188,8 @@ def getSafetyScore(companyID: str) -> List[schema.SafetyScore]:
         },
         {
             "CompanyName": "花栖堂",
-            "PercentageOfIoT": anxin_var.wellRateWhole,
-            "SafetyRating": anxin_var.safetyScore,
+            "PercentageOfIoT": wellRateWhole,
+            "SafetyRating": safetyScore,
             "ImageUrl": "HuaQiTang.png",
             "SceneName": "HuaQiTang",
             "FireStatistics": 6,
@@ -176,8 +201,8 @@ def getSafetyScore(companyID: str) -> List[schema.SafetyScore]:
         },
         {
             "CompanyName": "世纪馆",
-            "PercentageOfIoT": anxin_var.wellRateWhole,
-            "SafetyRating": anxin_var.safetyScore,
+            "PercentageOfIoT": wellRateWhole,
+            "SafetyRating": safetyScore,
             "ImageUrl": "ShiJiGuan.png",
             "SceneName": "",
             "FireStatistics": 6,
@@ -189,8 +214,8 @@ def getSafetyScore(companyID: str) -> List[schema.SafetyScore]:
         },
         {
             "CompanyName": "花艺馆",
-            "PercentageOfIoT": anxin_var.wellRateWhole,
-            "SafetyRating": anxin_var.safetyScore,
+            "PercentageOfIoT": wellRateWhole,
+            "SafetyRating": safetyScore,
             "ImageUrl": "HuaYiGuan.png",
             "SceneName": "",
             "FireStatistics": 6,
@@ -202,8 +227,8 @@ def getSafetyScore(companyID: str) -> List[schema.SafetyScore]:
         },
         {
             "CompanyName": "竹藤馆",
-            "PercentageOfIoT": anxin_var.wellRateWhole,
-            "SafetyRating": anxin_var.safetyScore,
+            "PercentageOfIoT": wellRateWhole,
+            "SafetyRating": safetyScore,
             "ImageUrl": "ZhuTengGuan.png",
             "SceneName": "",
             "FireStatistics": 6,
@@ -215,8 +240,8 @@ def getSafetyScore(companyID: str) -> List[schema.SafetyScore]:
         },
         {
             "CompanyName": "百花馆",
-            "PercentageOfIoT": anxin_var.wellRateWhole,
-            "SafetyRating": anxin_var.safetyScore,
+            "PercentageOfIoT": wellRateWhole,
+            "SafetyRating": safetyScore,
             "ImageUrl": "BaiHuaGuan.png",
             "SceneName": "",
             "FireStatistics": 6,
@@ -705,8 +730,8 @@ def getRectification(companyID: str) -> schema.Rectification:
             "CompanyName": "复兴馆",
             "Numbers": 117,
             "Rate": 62,
-            "MTTR": 7,
-            "MTBF": 9,
+            "MTTR": avgRectTime,
+            "MTBF": avgRepeatTime,
             "FireSystems": [
                 {"Categories": "室外消火栓", "Amount": 28},
                 {"Categories": "室内消火栓", "Amount": 32},
@@ -720,8 +745,8 @@ def getRectification(companyID: str) -> schema.Rectification:
             "CompanyName": "花栖堂",
             "Numbers": 89,
             "Rate": 31,
-            "MTTR": 8,
-            "MTBF": 7,
+            "MTTR": avgRectTime,
+            "MTBF": avgRepeatTime,
             "FireSystems": [
                 {"Categories": "室外消火栓", "Amount": 33},
                 {"Categories": "室内消火栓", "Amount": 20},
@@ -735,8 +760,8 @@ def getRectification(companyID: str) -> schema.Rectification:
             "CompanyName": "竹藤馆",
             "Numbers": 117,
             "Rate": 44,
-            "MTTR": 6,
-            "MTBF": 5,
+            "MTTR": avgRectTime,
+            "MTBF": avgRepeatTime,
             "FireSystems": [
                 {"Categories": "室外消火栓", "Amount": 35},
                 {"Categories": "室内消火栓", "Amount": 53},

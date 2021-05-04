@@ -18,21 +18,27 @@ smokeRiskDay = random_list(1, 50, 10)
 evacuRiskDay = random_list(1, 50, 10)
 alarmRiskDay = random_list(1, 50, 10)
 otherRiskDay = random_list(1, 50, 10)
+riskDay = [waterRiskDay, smokeRiskDay,
+           evacuRiskDay, alarmRiskDay, otherRiskDay]
 waterRiskWeek = random_list(1, 200, 10)
 smokeRiskWeek = random_list(1, 200, 10)
 evacuRiskWeek = random_list(1, 200, 10)
 alarmRiskWeek = random_list(1, 200, 10)
 otherRiskWeek = random_list(1, 200, 10)
+riskWeek = [waterRiskWeek, smokeRiskWeek,
+            evacuRiskWeek, alarmRiskWeek, otherRiskWeek]
 waterRiskMonth = random_list(1, 500, 10)
 smokeRiskMonth = random_list(1, 500, 10)
 evacuRiskMonth = random_list(1, 500, 10)
 alarmRiskMonth = random_list(1, 500, 10)
 otherRiskMonth = random_list(1, 500, 10)
+riskMonth = [waterRiskMonth, smokeRiskMonth,
+             evacuRiskMonth, alarmRiskMonth, otherRiskMonth]
 
-wellRateWhole = 70.86
+wellRateWhole = 70.86  # FIXME
 wellRateType = [[23, 100.0], [24, 78.6], [31, 100.0], [42, 100.0], [91, 62.4],
                 [95, 50.0], [102, 100.0], [103, 100.0], [104, 100.0], [16, 92.3]]
-safetyScore = 45.2  # y
+safetyScore = 45.2  # FIXME
 priorRect = ['火灾自动报警系统', '自动喷水灭火系统', '防烟排烟系统', '电气火灾监控系统']
 firePartCode = ['37XF19000020400022', '37XF19000020400030']
 errorPartCode = ['37XF19000020400004', '37XF19000020400026', '37XF19000020400025',
@@ -48,8 +54,8 @@ errorPartCodeMonth = ['37XF19000020400004', '37XF19000020400026', '37XF190000204
 detailScore = [58.5, 95.6, 42.3]
 errorRankType = [23, 24, 31, 42, 91]
 errorRankNum = random_list(1, 60, 5)
-avgRectTime = 15.7
-avgRepeatTime = 3.3
+avgRectTime = 15.7  # FIXME
+avgRepeatTime = 3.3  # FIXME
 fireDay = 23
 fireMonth = 1045
 riskNum = 17
