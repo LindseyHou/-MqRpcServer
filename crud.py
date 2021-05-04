@@ -73,7 +73,7 @@ def getSafetyScore(companyID: str) -> List[schema.SafetyScore]:
         {
             "CompanyName": "上海国际会议中心",
             "PercentageOfIoT": 85,
-            "SafetyRating": 70.86,  # FIXME: 看一下也不要改成float
+            "SafetyRating": 45.2,  # FIXME: 看一下也不要改成float
             "ImageUrl": "SHICC.png",
             "SceneName": "SHICC",
             "FireStatistics": 6,
@@ -86,7 +86,7 @@ def getSafetyScore(companyID: str) -> List[schema.SafetyScore]:
         {
             "CompanyName": "浦东美术馆",
             "PercentageOfIoT": 85,
-            "SafetyRating": 70.86,
+            "SafetyRating": 45.2,
             "ImageUrl": "MeiShuGuan.png",
             "SceneName": "SHICC",
             "FireStatistics": 6,
@@ -99,7 +99,7 @@ def getSafetyScore(companyID: str) -> List[schema.SafetyScore]:
         {
             "CompanyName": "港务大厦",
             "PercentageOfIoT": 85,
-            "SafetyRating": 70.86,
+            "SafetyRating": 45.2,
             "ImageUrl": "GangWuDaSha.png",
             "SceneName": "SHICC",
             "FireStatistics": 6,
@@ -112,7 +112,7 @@ def getSafetyScore(companyID: str) -> List[schema.SafetyScore]:
         {
             "CompanyName": "浦东海关大楼",
             "PercentageOfIoT": 85,
-            "SafetyRating": 70.86,
+            "SafetyRating": 45.2,
             "ImageUrl": "HaiGuanDaLou.png",
             "SceneName": "SHICC",
             "FireStatistics": 6,
@@ -125,7 +125,7 @@ def getSafetyScore(companyID: str) -> List[schema.SafetyScore]:
         {
             "CompanyName": "正大广场",
             "PercentageOfIoT": 85,
-            "SafetyRating": 70.86,
+            "SafetyRating": 45.2,
             "ImageUrl": "ZhengDaGuangChang.png",
             "SceneName": "SHICC",
             "FireStatistics": 6,
@@ -138,7 +138,7 @@ def getSafetyScore(companyID: str) -> List[schema.SafetyScore]:
         {
             "CompanyName": "万向大厦",
             "PercentageOfIoT": 85,
-            "SafetyRating": 70.86,
+            "SafetyRating": 45.2,
             "ImageUrl": "WanXiangDaSha.png",
             "SceneName": "SHICC",
             "FireStatistics": 6,
@@ -151,7 +151,7 @@ def getSafetyScore(companyID: str) -> List[schema.SafetyScore]:
         {
             "CompanyName": "复兴馆",
             "PercentageOfIoT": 85,
-            "SafetyRating": 70.86,
+            "SafetyRating": 45.2,
             "ImageUrl": "FuXingGuan.png",
             "SceneName": "FuXingGuan",
             "FireStatistics": 6,
@@ -164,7 +164,7 @@ def getSafetyScore(companyID: str) -> List[schema.SafetyScore]:
         {
             "CompanyName": "花栖堂",
             "PercentageOfIoT": 85,
-            "SafetyRating": 70.86,
+            "SafetyRating": 45.2,
             "ImageUrl": "HuaQiTang.png",
             "SceneName": "HuaQiTang",
             "FireStatistics": 6,
@@ -177,7 +177,7 @@ def getSafetyScore(companyID: str) -> List[schema.SafetyScore]:
         {
             "CompanyName": "世纪馆",
             "PercentageOfIoT": 85,
-            "SafetyRating": 70.86,
+            "SafetyRating": 45.2,
             "ImageUrl": "ShiJiGuan.png",
             "SceneName": "",
             "FireStatistics": 6,
@@ -190,7 +190,7 @@ def getSafetyScore(companyID: str) -> List[schema.SafetyScore]:
         {
             "CompanyName": "花艺馆",
             "PercentageOfIoT": 85,
-            "SafetyRating": 70.86,
+            "SafetyRating": 45.2,
             "ImageUrl": "HuaYiGuan.png",
             "SceneName": "",
             "FireStatistics": 6,
@@ -203,7 +203,7 @@ def getSafetyScore(companyID: str) -> List[schema.SafetyScore]:
         {
             "CompanyName": "竹藤馆",
             "PercentageOfIoT": 85,
-            "SafetyRating": 70.86,
+            "SafetyRating": 45.2,
             "ImageUrl": "ZhuTengGuan.png",
             "SceneName": "",
             "FireStatistics": 6,
@@ -216,7 +216,7 @@ def getSafetyScore(companyID: str) -> List[schema.SafetyScore]:
         {
             "CompanyName": "百花馆",
             "PercentageOfIoT": 85,
-            "SafetyRating": 70.86,
+            "SafetyRating": 45.2,
             "ImageUrl": "BaiHuaGuan.png",
             "SceneName": "",
             "FireStatistics": 6,
