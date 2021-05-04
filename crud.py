@@ -1,7 +1,7 @@
 from random import randint
 from typing import Any, Callable, Dict, List, Type, Union
 from anxin_var import *
-
+import xlrd
 from pydantic.main import BaseModel
 from enum import IntEnum
 
@@ -679,6 +679,11 @@ def getScoreDetail(companyID: str) -> schema.ScoreDetail:
 
 def partType2DeviceName(type: int) -> str:
     res = ""
+    data = xlrd.open_workbook("assets/设备类型编号.xlsx")
+    table = data.sheets()[0]
+    partTypes = table.col_values(0)
+    names = table.col_values(1)
+    res = names[partTypes.index(type)]
     return res
 
 
