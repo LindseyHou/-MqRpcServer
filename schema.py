@@ -35,7 +35,7 @@ class SheetData(BaseModel):
 class SafetyScore(BaseModel):
     CompanyName: str
     PercentageOfIoT: int
-    SafetyRating: float
+    SafetyRating: int
     ImageUrl: str
     SceneName: str
     FireStatistics: int
