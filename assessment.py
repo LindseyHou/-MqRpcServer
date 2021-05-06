@@ -1,6 +1,7 @@
 #  type: ignore
 import os
 import time
+from typing import List
 
 import numpy as np
 import pandas as pd
@@ -93,7 +94,7 @@ def AssessmentWithIoTData(IotData, IotDataName, B, N):
 
 
 # assessment for maintenance of IoT facilities in one month
-def AssessmentWithIoTMaintenance(IotMaintenanceData, IotMaintenanceDataName):
+def AssessmentWithIoTMaintenance(IotMaintenanceData, IotMaintenanceDataName, B, N):
 
     # IotMaintenance: a matrix or table file that the data obtained from IoT in the last one month
     lengthOfIoTData = IotMaintenanceData.shape[0]
@@ -168,17 +169,19 @@ def AssessmentForRectification(
     IotMaintenanceDataOldName,
     IotMaintenanceData,
     IotMaintenanceDataName,
+    B: np.ndarray,
+    N: np.ndarray,
 ):
     # calculate the rectification score
 
     stillBeRectedNumber = np.zeros(B.shape[0], dtype=int)
 
     _, rectOld, neededRect = AssessmentWithIoTMaintenance(
-        IotMaintenanceDataOld, IotMaintenanceDataOldName
+        IotMaintenanceDataOld, IotMaintenanceDataOldName, B, N
     )
-    print("Last Month errorFacilityNumber of each Type:", neededRect)
+    # print("Last Month errorFacilityNumber of each Type:", neededRect)
     _, rect, _ = AssessmentWithIoTMaintenance(
-        IotMaintenanceData, IotMaintenanceDataName
+        IotMaintenanceData, IotMaintenanceDataName, B, N
     )
 
     # print(len(rectOld))
@@ -209,14 +212,14 @@ def AssessmentForRectification(
             score_rect_memory[i] = 0  # do not need to rectify
             numberNotRect = numberNotRect + 1
 
-    print("Rate of rectification of each type:", score_rect_memory)
+    # print("Rate of rectification of each type:", score_rect_memory)
 
     score_rect = np.sum(score_rect_memory) / (B.shape[0] - numberNotRect)
 
     return stillBeRectedNumber, score_rect
 
 
-def FindIndex(apArray, value):
+def FindIndex(apArray: np.ndarray, value):
     index = -1
     for i in range(0, apArray.shape[0]):
         temp = apArray[i]
@@ -463,15 +466,15 @@ def DefaultScore(newMaintain, newRecti):
 #        IoTMaintenanceDataOld针对上一个月报文
 #        IoTMaintenanceDataOldName针对上一个月报文
 def MainAssessment(
-    B,
-    N,
-    IoTData,
-    IoTDataName,
-    flag,
-    IotMaintenanceData,
-    IotMaintenanceDataName,
-    IotMaintenanceDataOld,
-    IotMaintenanceDataOldName,
+    B: np.ndarray,
+    N: np.ndarray,
+    IoTData: np.ndarray,
+    IoTDataName: List[str],
+    flag: int,
+    IotMaintenanceData: np.ndarray,
+    IotMaintenanceDataName: List[str],
+    IotMaintenanceDataOld: np.ndarray,
+    IotMaintenanceDataOldName: List[str],
 ):
     # t1 = time.process_time()
     (
@@ -486,28 +489,28 @@ def MainAssessment(
     ) = AssessmentWithIoTData(IoTData, IoTDataName, B, N)
     # print("Working status time:",time.process_time()-t1)
 
-    print("5min Fire FacilityNameList:", tempFireFacilityNameList)
-    # 5min内发出火灾报警的设备名称编码
-    print("5min Fire FacilityNumList:", tempFireFacilityNumList)
-    # 5min内发出火灾报警的每个设备，发了多少次报警
-    print("5min Error FacilityNameList:", tempErrorFacilityNameList)
-    # 5min内发出故障报警的设备名称编码
-    print("5min Error FacilityNumList:", tempErrorFacilityNumList)
-    # 5min内发出故障报警的每个设备，发了多少次报警
+    # print("5min Fire FacilityNameList:", tempFireFacilityNameList)
+    # # 5min内发出火灾报警的设备名称编码
+    # print("5min Fire FacilityNumList:", tempFireFacilityNumList)
+    # # 5min内发出火灾报警的每个设备，发了多少次报警
+    # print("5min Error FacilityNameList:", tempErrorFacilityNameList)
+    # # 5min内发出故障报警的设备名称编码
+    # print("5min Error FacilityNumList:", tempErrorFacilityNumList)
+    # # 5min内发出故障报警的每个设备，发了多少次报警
 
-    print("5min fireFacilityNumber of each Type:", fireNumberFacility)
-    # 5min内每一类设备报火警的设备数量，把单个设备归类统计
-    print("5min errorFacilityNumber of each Type:", errorNumberFacility)
-    # 5min内每一类设备报故障的设备数量，把单个设备归类统计
+    # print("5min fireFacilityNumber of each Type:", fireNumberFacility)
+    # # 5min内每一类设备报火警的设备数量，把单个设备归类统计
+    # print("5min errorFacilityNumber of each Type:", errorNumberFacility)
+    # # 5min内每一类设备报故障的设备数量，把单个设备归类统计
 
-    print("working status assessment:", score_IoTData)
-    # 5min内每一类设备的运行状态得分
+    # print("working status assessment:", score_IoTData)
+    # # 5min内每一类设备的运行状态得分
 
-    if LDflag > 1:
-        print("Liandong happens for fire")
-    else:
-        print("Liandong does not happen for fire")
-    print()
+    # if LDflag > 1:
+    #     print("Liandong happens for fire")
+    # else:
+    #     print("Liandong does not happen for fire")
+    # print()
 
     WorkingStatus = score_IoTData
 
@@ -517,34 +520,38 @@ def MainAssessment(
             score_IoTMaintenanceData,
             errorFacilities,
             numberErrorType,
-        ) = AssessmentWithIoTMaintenance(IotMaintenanceData, IotMaintenanceDataName)
-        # print("Maintain time:",time.process_time()-t2)
-        print("maintenance status assessment:", score_IoTMaintenanceData)
-        # 近一个月期间每一类设备的维保得分
-        print("This Month errorFacilitiesNameList:", errorFacilities)
-        # 近一个月期间，报了故障的设备的名称
-        print("This Month errorFacilityNumber of each Type:", numberErrorType)
-        # 近一个月期间每一类设备报故障的设备数量，把单个设备归类统计，如果一个设备报了多次故障，只算一个设备
+        ) = AssessmentWithIoTMaintenance(
+            IotMaintenanceData, IotMaintenanceDataName, B, N
+        )
+        # # print("Maintain time:",time.process_time()-t2)
+        # print("maintenance status assessment:", score_IoTMaintenanceData)
+        # # 近一个月期间每一类设备的维保得分
+        # print("This Month errorFacilitiesNameList:", errorFacilities)
+        # # 近一个月期间，报了故障的设备的名称
+        # print("This Month errorFacilityNumber of each Type:", numberErrorType)
+        # # 近一个月期间每一类设备报故障的设备数量，把单个设备归类统计，如果一个设备报了多次故障，只算一个设备
 
-        print()
+        # print()
         # t3 = time.process_time()
         stillBeRectedNumber, score_rect = AssessmentForRectification(
             IotMaintenanceDataOld,
             IotMaintenanceDataOldName,
             IotMaintenanceData,
             IotMaintenanceDataName,
+            B,
+            N,
         )
-        # print("Rectification time:",time.process_time()-t3)
-        print(
-            "Intersection of This and Last Month - stillBeRectedNumber:",
-            stillBeRectedNumber,
-        )
-        # 没有维修好的每一类设备的故障设备数量，上一个月报了故障，近一个月还在报故障的设备对比
-        print("rectification assessment:", score_rect)
-        # 维保整改率，总分100
+        # # print("Rectification time:",time.process_time()-t3)
+        # print(
+        #     "Intersection of This and Last Month - stillBeRectedNumber:",
+        #     stillBeRectedNumber,
+        # )
+        # # 没有维修好的每一类设备的故障设备数量，上一个月报了故障，近一个月还在报故障的设备对比
+        # print("rectification assessment:", score_rect)
+        # # 维保整改率，总分100
         avgRectTime = 30 * score_rect / 100
-        print("average rectified time:", avgRectTime)
-        # 平均整改时间，30*整改率（天）
+        # print("average rectified time:", avgRectTime)
+        # # 平均整改时间，30*整改率（天）
 
         # data=open("MaintainReport.txt",'w+')
         # print("miantenance status assessment:", score_IoTMaintenanceData,file=data)
@@ -568,9 +575,9 @@ def MainAssessment(
         if os.path.exists("score.txt"):  # score.txt已存入历史计算结果，直接调用
             c = np.loadtxt("score.txt")
             RectiScore = c[score_IoTData.shape[0]]
-            print("rectification assessment:", RectiScore)
+            # print("rectification assessment:", RectiScore)
             MaintainStatus = c[0 : score_IoTData.shape[0]]
-            print("miantenance status assessment:", MaintainStatus)
+            # print("miantenance status assessment:", MaintainStatus)
             numberErrorType = c[score_IoTData.shape[0] + 1 :]
             f = open("info.txt", "r")
             errorFacilities = f.readlines()
@@ -591,20 +598,20 @@ def MainAssessment(
         B, WorkingStatus, MaintainStatus, RectiScore, LDflag
     )
     # print("Coupling time:",time.process_time()-t4)
-    print("System indices of each Type in B:", Bsys)
+    # print("System indices of each Type in B:", Bsys)
     priorRectScore = []
     for i in range(0, len(Sysind)):
-        print("Working Status of", SysNameList[Sysind[i]], ":", s_correct[i])
-        print(
-            "Maintain Status of",
-            SysNameList[Sysind[i]],
-            ":",
-            s_correct[i + len(Sysind)],
-        )
+        # print("Working Status of", SysNameList[Sysind[i]], ":", s_correct[i])
+        # print(
+        #     "Maintain Status of",
+        #     SysNameList[Sysind[i]],
+        #     ":",
+        #     s_correct[i + len(Sysind)],
+        # )
         priorRectScore.append(s_correct[i] + s_correct[i + len(Sysind)])
 
-    print("Weight vector used:", weight)
-    print("Final Safety Score:", safetyScore)
+    # print("Weight vector used:", weight)
+    # print("Final Safety Score:", safetyScore)
 
     # 安信变量合集
     wellRateWhole = sum(score_IoTMaintenanceData) / len(score_IoTMaintenanceData)
@@ -630,7 +637,19 @@ def MainAssessment(
         errorRankType = []
         errorRankNum = []
 
-    outputSum = [
+    # wellRateWhole      	miantenance status assessment均值         	float	建筑单位的整体完好率
+    # wellRateType       	score_IoTMaintenanceData                 	list	建筑单位每类设备的完好率
+    # safetyScore       	safety_score                            	float	消防安全评分
+    # priorRect         	priorRect                                	list	优先整改推荐，评分最低前四系统
+    # firePartCode      	tempFireFacilityNameList                	list	报火警的设备编码列表，长度不定
+    # errorPartCode     	tempErrorFacilityNameList               	list	报故障的设备编码列表，长度不定
+    # errorPartCodeMonth	errorFacilities                         	list	报故障的设备编码列表，长度不定
+    # detailScore       	score_IoTData,score_IoTMaintenanceData均值	list	运行状态+维保+整改三项细分
+    # errorRankType     	errorRankType                           	list	月度报故障前五名的设备类别
+    # errorRankNum      	errorRankNum                            	list	对应的报故障数目
+    # avgRectTime       	avgRectTime                             	float	平均整改时长
+
+    return (
         wellRateWhole,
         wellRateType,
         safetyScore,
@@ -642,9 +661,7 @@ def MainAssessment(
         errorRankType,
         errorRankNum,
         avgRectTime,
-    ]
-
-    return outputSum
+    )
 
 
 if __name__ == "__main__":
@@ -656,7 +673,7 @@ if __name__ == "__main__":
     IotMaintenanceDataTemp = pd.read_excel(tablename, sheet_name=3, header=None)
     IotMaintenanceDataOld = pd.read_excel(tablename, sheet_name=4, header=None)
     IotMaintenanceDataOldTemp = pd.read_excel(tablename, sheet_name=5, header=None)
-    BN = pd.read_excel(tablename, sheet_name=6)
+    excel6 = pd.read_excel(tablename, sheet_name=6)
     IoTData = IoTData.values
     IoTDataTemp = IoTDataTemp.values
     IotMaintenanceData = IotMaintenanceData.values
@@ -676,21 +693,21 @@ if __name__ == "__main__":
     for i in range(0, IotMaintenanceDataOld.shape[0]):
         IotMaintenanceDataOldName.append(IotMaintenanceDataOldTemp[i][0])
 
-    BN = BN.values
-    B = BN[:, 0]  # list vector of the type of the fire facilities
-    N = BN[:, 1]  # list vector of the number of the fire facilities
-    print("Type:", B)
-    print("TypeNumber:", N)
-    print()
+    # B =   # list vector of the type of the fire facilities
+    # N =   # list vector of the number of the fire facilities
+    # print("Type:", B)
+    # print("TypeNumber:", N)
+    # print("IoTData:", IoTData)
+    # print("IoTDataName:", IoTDataName)
+    # print()
 
     flag = 1  # only current status. If flag = 1:status+maintain+rectify
     # IotMaintenanceDataOld = IoTData[0:299,:] # Data for maintain+rectify, can be empty[] if flag = 0
     # IotMaintenanceDataOldName = IoTDataName[0:299]
 
-    t0 = time.process_time()
-    outputSum = MainAssessment(
-        B,
-        N,
+    res = MainAssessment(
+        excel6.values[:, 0],
+        excel6.values[:, 1],
         IoTData,
         IoTDataName,
         flag,
@@ -699,4 +716,27 @@ if __name__ == "__main__":
         IotMaintenanceDataOld,
         IotMaintenanceDataOldName,
     )
-    print("ALL time:", time.process_time() - t0)
+    (
+        wellRateWhole,
+        wellRateType,
+        safetyScore,
+        priorRect,
+        tempFireFacilityNameList,
+        tempErrorFacilityNameList,
+        errorFacilities,
+        detailScore,
+        errorRankType,
+        errorRankNum,
+        avgRectTime,
+    ) = res
+    print("wellRateWhole", wellRateWhole)
+    print("wellRateType", wellRateType)
+    print("safetyScore", safetyScore)
+    print("priorRect", priorRect)
+    print("tempFireFacilityNameList", tempFireFacilityNameList)
+    print("tempErrorFacilityNameList", tempErrorFacilityNameList)
+    print("errorFacilities", errorFacilities)
+    print("detailScore", detailScore)
+    print("errorRankType", errorRankType)
+    print("errorRankNum", errorRankNum)
+    print("avgRectTime", avgRectTime)
