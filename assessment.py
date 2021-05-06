@@ -457,14 +457,6 @@ def DefaultScore(newMaintain, newRecti):
     return MaintainStatus, RectiScore
 
 
-# 总函数：B为建筑单位所有设备的类型编码，N为建筑单位每类设备的数量，
-#        IoTData针对5分钟内报文，从报文中提取的“No.、partType、status、time”
-#        IoTDataName针对5分钟内报文，为每条报文所属设备的具体名称编码
-#        flag为是否要进行每月一次维保整改计算的标识，若flag=1则需计算并更新维保整改结果
-#        IoTMaintenanceData针对本月报文
-#        IoTMaintenanceDataName针对本月报文
-#        IoTMaintenanceDataOld针对上一个月报文
-#        IoTMaintenanceDataOldName针对上一个月报文
 def MainAssessment(
     B: np.ndarray,
     N: np.ndarray,
@@ -476,6 +468,16 @@ def MainAssessment(
     IotMaintenanceDataOld: np.ndarray,
     IotMaintenanceDataOldName: List[str],
 ):
+    """
+    B: 建筑单位所有设备的类型编码
+    N: 建筑单位每类设备的数量，
+    IoTData: 5分钟内报文，从报文中提取的“No.、partType、status、time”
+    IoTDataName: 5分钟内报文，为每条报文所属设备的具体名称编码
+    flag: 是否要进行每月一次维保整改计算的标识，若flag=1则需计算并更新维保整改结果
+    IoTMaintenanceData: 本月报文
+    IoTMaintenanceDataName: 本月报文
+    IoTMaintenanceDataOld: 上一个月报文
+    IoTMaintenanceDataOldName: 上一个月报文"""
     # t1 = time.process_time()
     (
         tempFireFacilityNameList,
@@ -704,10 +706,20 @@ if __name__ == "__main__":
     flag = 1  # only current status. If flag = 1:status+maintain+rectify
     # IotMaintenanceDataOld = IoTData[0:299,:] # Data for maintain+rectify, can be empty[] if flag = 0
     # IotMaintenanceDataOldName = IoTDataName[0:299]
-
+    b = excel6.values[:, 0]
+    n = excel6.values[:, 1]
+    print("b", b)
+    print("n", n)
+    print("IoTData", IoTData)
+    print("IoTDataName", IoTDataName)
+    print("flag", flag)
+    print("IotMaintenanceData", IotMaintenanceData)
+    print("IotMaintenanceDataName", IotMaintenanceDataName)
+    print("IotMaintenanceDataOld", IotMaintenanceDataOld)
+    print("IotMaintenanceDataOldName", IotMaintenanceDataOldName)
     res = MainAssessment(
-        excel6.values[:, 0],
-        excel6.values[:, 1],
+        b,
+        n,
         IoTData,
         IoTDataName,
         flag,
