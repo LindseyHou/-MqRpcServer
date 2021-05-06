@@ -1,11 +1,12 @@
+from enum import IntEnum
 from random import randint
 from typing import Any, Callable, Dict, List, Type, Union
-from anxin_var import *
+
 import xlrd
 from pydantic.main import BaseModel
-from enum import IntEnum
 
 import schema
+from anxin_var import *
 
 
 class fireType(IntEnum):
@@ -20,20 +21,20 @@ def getPoints(type: int, timeslot: str) -> List[Dict[str, int]]:
     res: List[Dict[str, int]] = []
     if timeslot == "Day":
         for i in range(11):
-            x = i+1
-            y = riskDay[type][i-1]
+            x = i + 1
+            y = riskDay[type][i - 1]
             res += [{"X": x, "Y": y}]
         return res
     elif timeslot == "Week":
         for i in range(11):
             x = i
-            y = riskWeek[type][i-1]
+            y = riskWeek[type][i - 1]
             res += [{"X": x, "Y": y}]
         return res
     elif timeslot == "Month":
         for i in range(11):
             x = i
-            y = riskMonth[type][i-1]
+            y = riskMonth[type][i - 1]
             res += [{"X": x, "Y": y}]
         return res
     return res
@@ -47,46 +48,31 @@ def getFireDataStatistics(companyID: str) -> schema.FireDataStatistics:
         "Day": {
             "VSize": Vsize_1,
             "Categories": [
-                {"Name": "电气故障", "Points": getPoints(
-                    fireType.WATER, "Day")},
-                {"Name": "用火不慎", "Points": getPoints(
-                    fireType.SMOKE, "Day")},
-                {"Name": "违章作业", "Points": getPoints(
-                    fireType.EVACU, "Day")},
-                {"Name": "违规吸烟", "Points": getPoints(
-                    fireType.ALARM, "Day")},
-                {"Name": "其他", "Points": getPoints(
-                    fireType.OTHER, "Day")},
+                {"Name": "电气故障", "Points": getPoints(fireType.WATER, "Day")},
+                {"Name": "用火不慎", "Points": getPoints(fireType.SMOKE, "Day")},
+                {"Name": "违章作业", "Points": getPoints(fireType.EVACU, "Day")},
+                {"Name": "违规吸烟", "Points": getPoints(fireType.ALARM, "Day")},
+                {"Name": "其他", "Points": getPoints(fireType.OTHER, "Day")},
             ],
         },
         "Month": {
             "VSize": Vsize_2,
             "Categories": [
-                {"Name": "电气故障", "Points": getPoints(
-                    fireType.WATER, "Week")},
-                {"Name": "用火不慎", "Points": getPoints(
-                    fireType.SMOKE, "Week")},
-                {"Name": "违章作业", "Points": getPoints(
-                    fireType.EVACU, "Week")},
-                {"Name": "违规吸烟", "Points": getPoints(
-                    fireType.ALARM, "Week")},
-                {"Name": "其他", "Points": getPoints(
-                    fireType.OTHER, "Week")},
+                {"Name": "电气故障", "Points": getPoints(fireType.WATER, "Week")},
+                {"Name": "用火不慎", "Points": getPoints(fireType.SMOKE, "Week")},
+                {"Name": "违章作业", "Points": getPoints(fireType.EVACU, "Week")},
+                {"Name": "违规吸烟", "Points": getPoints(fireType.ALARM, "Week")},
+                {"Name": "其他", "Points": getPoints(fireType.OTHER, "Week")},
             ],
         },
         "Year": {
             "VSize": Vsize_3,
             "Categories": [
-                {"Name": "电气故障", "Points": getPoints(
-                    fireType.WATER, "Month")},
-                {"Name": "用火不慎", "Points": getPoints(
-                    fireType.SMOKE, "Month")},
-                {"Name": "违章作业", "Points": getPoints(
-                    fireType.EVACU, "Month")},
-                {"Name": "违规吸烟", "Points": getPoints(
-                    fireType.ALARM, "Month")},
-                {"Name": "其他", "Points": getPoints(
-                    fireType.OTHER, "Month")},
+                {"Name": "电气故障", "Points": getPoints(fireType.WATER, "Month")},
+                {"Name": "用火不慎", "Points": getPoints(fireType.SMOKE, "Month")},
+                {"Name": "违章作业", "Points": getPoints(fireType.EVACU, "Month")},
+                {"Name": "违规吸烟", "Points": getPoints(fireType.ALARM, "Month")},
+                {"Name": "其他", "Points": getPoints(fireType.OTHER, "Month")},
             ],
         },
     }
@@ -488,14 +474,23 @@ def getBuildingInfo(companyID: str) -> schema.BuildingInfo:
 def getAlarmInfo(companyID: str) -> schema.AlarmInfo:
     data = {"DailyAlarm": 0, "MonthlyAlarm": 0, "PendingTasks": 0}
     if companyID == "CPY3101120001":
-        data = {"DailyAlarm": fireDay,
-                "MonthlyAlarm": fireMonth, "PendingTasks": riskNum}
+        data = {
+            "DailyAlarm": fireDay,
+            "MonthlyAlarm": fireMonth,
+            "PendingTasks": riskNum,
+        }
     elif companyID == "CPY3101120002":
-        data = {"DailyAlarm": fireDay,
-                "MonthlyAlarm": fireMonth, "PendingTasks": riskNum}
+        data = {
+            "DailyAlarm": fireDay,
+            "MonthlyAlarm": fireMonth,
+            "PendingTasks": riskNum,
+        }
     elif companyID == "CPY3101120003":
-        data = {"DailyAlarm": fireDay,
-                "MonthlyAlarm": fireMonth, "PendingTasks": riskNum}
+        data = {
+            "DailyAlarm": fireDay,
+            "MonthlyAlarm": fireMonth,
+            "PendingTasks": riskNum,
+        }
     return schema.AlarmInfo(**data)
 
 
@@ -691,31 +686,28 @@ def getDeviceIntactInfo(wellRateType: List[List[float]]) -> List[Dict[str, objec
     res = []
     for info in wellRateType:
         nm = partType2DeviceName(int(info[0]))
-        temp = {"DeviceType": nm, "IconName": nm, "IntactRate": info[1]/100}
+        temp = {"DeviceType": nm, "IconName": nm, "IntactRate": info[1] / 100}
         res.append(temp)
     return res
 
 
 # FIXME: front end cannot show the data
 def getDeviceAccess(companyID: str) -> schema.DeviceAccess:
-    data = {
-        "CompanyName": "",
-        "DeviceIntactInfo": getDeviceIntactInfo(wellRateType),
-    }
+    data = {"CompanyName": "", "DeviceIntactInfo": getDeviceIntactInfo(wellRateType)}
     if companyID == "CPY3101120001":
         data = {
             "CompanyName": "复兴馆",
-            "DeviceIntactInfo": getDeviceIntactInfo(wellRateType)
+            "DeviceIntactInfo": getDeviceIntactInfo(wellRateType),
         }
     elif companyID == "CPY3101120002":
         data = {
             "CompanyName": "花栖馆",
-            "DeviceIntactInfo": getDeviceIntactInfo(wellRateType)
+            "DeviceIntactInfo": getDeviceIntactInfo(wellRateType),
         }
     elif companyID == "CPY3101120003":
         data = {
             "CompanyName": "竹藤馆",
-            "DeviceIntactInfo": getDeviceIntactInfo(wellRateType)
+            "DeviceIntactInfo": getDeviceIntactInfo(wellRateType),
         }
     return schema.DeviceAccess(**data)  # type: ignore
 
