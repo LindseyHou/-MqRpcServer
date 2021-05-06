@@ -666,48 +666,69 @@ def MainAssessment(
     )
 
 
-if __name__ == "__main__":
+# if __name__ == "__main__":
 
-    tablename = "iot-example3.xlsx"
-    IoTData = pd.read_excel(tablename, sheet_name=0, header=None)
-    IoTDataTemp = pd.read_excel(tablename, sheet_name=1, header=None)
-    IotMaintenanceData = pd.read_excel(tablename, sheet_name=2, header=None)
-    IotMaintenanceDataTemp = pd.read_excel(tablename, sheet_name=3, header=None)
-    IotMaintenanceDataOld = pd.read_excel(tablename, sheet_name=4, header=None)
-    IotMaintenanceDataOldTemp = pd.read_excel(tablename, sheet_name=5, header=None)
-    excel6 = pd.read_excel(tablename, sheet_name=6)
-    IoTData = IoTData.values
-    IoTDataTemp = IoTDataTemp.values
-    IotMaintenanceData = IotMaintenanceData.values
-    IotMaintenanceDataTemp = IotMaintenanceDataTemp.values
-    IotMaintenanceDataOld = IotMaintenanceDataOld.values
-    IotMaintenanceDataOldTemp = IotMaintenanceDataOldTemp.values
+#     tablename = "iot-example3.xlsx"
+#     IoTData = pd.read_excel(tablename, sheet_name=0, header=None)
+#     IoTDataTemp = pd.read_excel(tablename, sheet_name=1, header=None)
+#     IotMaintenanceData = pd.read_excel(tablename, sheet_name=2, header=None)
+#     IotMaintenanceDataTemp = pd.read_excel(tablename, sheet_name=3, header=None)
+#     IotMaintenanceDataOld = pd.read_excel(tablename, sheet_name=4, header=None)
+#     IotMaintenanceDataOldTemp = pd.read_excel(tablename, sheet_name=5, header=None)
+#     excel6 = pd.read_excel(tablename, sheet_name=6)
+#     IoTData = IoTData.values
+#     IoTDataTemp = IoTDataTemp.values
+#     IotMaintenanceData = IotMaintenanceData.values
+#     IotMaintenanceDataTemp = IotMaintenanceDataTemp.values
+#     IotMaintenanceDataOld = IotMaintenanceDataOld.values
+#     IotMaintenanceDataOldTemp = IotMaintenanceDataOldTemp.values
 
-    IoTDataName = []
-    for i in range(0, IoTData.shape[0]):
-        IoTDataName.append(IoTDataTemp[i][0])
+#     IoTDataName = []
+#     for i in range(0, IoTData.shape[0]):
+#         IoTDataName.append(IoTDataTemp[i][0])
 
-    IotMaintenanceDataName = []
-    for i in range(0, IotMaintenanceData.shape[0]):
-        IotMaintenanceDataName.append(IotMaintenanceDataTemp[i][0])
+#     IotMaintenanceDataName = []
+#     for i in range(0, IotMaintenanceData.shape[0]):
+#         IotMaintenanceDataName.append(IotMaintenanceDataTemp[i][0])
 
-    IotMaintenanceDataOldName = []
-    for i in range(0, IotMaintenanceDataOld.shape[0]):
-        IotMaintenanceDataOldName.append(IotMaintenanceDataOldTemp[i][0])
+#     IotMaintenanceDataOldName = []
+#     for i in range(0, IotMaintenanceDataOld.shape[0]):
+#         IotMaintenanceDataOldName.append(IotMaintenanceDataOldTemp[i][0])
 
-    # B =   # list vector of the type of the fire facilities
-    # N =   # list vector of the number of the fire facilities
-    # print("Type:", B)
-    # print("TypeNumber:", N)
-    # print("IoTData:", IoTData)
-    # print("IoTDataName:", IoTDataName)
-    # print()
+#     # B =   # list vector of the type of the fire facilities
+#     # N =   # list vector of the number of the fire facilities
+#     # print("Type:", B)
+#     # print("TypeNumber:", N)
+#     # print("IoTData:", IoTData)
+#     # print("IoTDataName:", IoTDataName)
+#     # print()
 
-    flag = 1  # only current status. If flag = 1:status+maintain+rectify
-    # IotMaintenanceDataOld = IoTData[0:299,:] # Data for maintain+rectify, can be empty[] if flag = 0
-    # IotMaintenanceDataOldName = IoTDataName[0:299]
-    b = excel6.values[:, 0]
-    n = excel6.values[:, 1]
+#     flag = 1  # only current status. If flag = 1:status+maintain+rectify
+#     # IotMaintenanceDataOld = IoTData[0:299,:] # Data for maintain+rectify, can be empty[] if flag = 0
+#     # IotMaintenanceDataOldName = IoTDataName[0:299]
+
+
+async def main():
+    from datetime import datetime, timedelta
+
+    from utils import get_bn, get_data
+
+    companyID = 107747
+    b, n = await get_bn(companyID)
+    b = np.array(b)
+    n = np.array(n)
+    IoTData, IoTDataName = await get_data(
+        companyID, datetime.now() - timedelta(minutes=5)
+    )
+    flag = 1
+    IotMaintenanceData, IotMaintenanceDataName = await get_data(
+        companyID, datetime.now() - timedelta(days=30)
+    )
+    IotMaintenanceDataOld, IotMaintenanceDataOldName = await get_data(
+        companyID,
+        datetime.now() - timedelta(days=60),
+        datetime.now() - timedelta(days=30),
+    )
     print("b", b)
     print("n", n)
     print("IoTData", IoTData)
@@ -752,3 +773,9 @@ if __name__ == "__main__":
     print("errorRankType", errorRankType)
     print("errorRankNum", errorRankNum)
     print("avgRectTime", avgRectTime)
+
+
+if __name__ == "__main__":
+    import asyncio
+
+    asyncio.run(main())
