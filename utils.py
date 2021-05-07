@@ -24,6 +24,7 @@ async def get_data(
     index = 1
     find_dict: Dict[str, Any] = {
         "partCode": {"$in": partCodes},
+        "algoType": {"$ne": 0},
         "time": {"$gte": time_gte},
     }
     if time_lte is not None:
@@ -36,7 +37,7 @@ async def get_data(
                 [
                     index,
                     document["partType"],
-                    0,
+                    300 - document["algoType"] * 100,
                     int(datetime.timestamp(document["time"])),
                 ]
             ],
