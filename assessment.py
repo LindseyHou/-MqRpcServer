@@ -173,49 +173,53 @@ def AssessmentForRectification(
     N: np.ndarray,
 ):
     # calculate the rectification score
-
-    stillBeRectedNumber = np.zeros(B.shape[0], dtype=int)
-
-    _, rectOld, neededRect = AssessmentWithIoTMaintenance(
-        IotMaintenanceDataOld, IotMaintenanceDataOldName, B, N
-    )
-    # print("Last Month errorFacilityNumber of each Type:", neededRect)
-    _, rect, _ = AssessmentWithIoTMaintenance(
-        IotMaintenanceData, IotMaintenanceDataName, B, N
-    )
-
-    # print(len(rectOld))
-    # exit()
-    for i in range(0, len(rect)):
-        counter, index = FindAllListElement(IotMaintenanceDataOldName, rect[i])
-        size = np.where(IotMaintenanceDataOld[index, 2] == 200)[0].shape[0]
-        if counter > 0 and size > 0:
-            tempIndex = index[np.where(IotMaintenanceDataOld[index, 2] == 200)[0][0]]
-
-            facilityType = IotMaintenanceDataOld[tempIndex, 1]
-            typeIndex = FindIndex(B, facilityType)
-
-            stillBeRectedNumber[typeIndex] = stillBeRectedNumber[typeIndex] + 1
-
-    #    print("stillBeRectedNumber:",stillBeRectedNumber)#already been rectified
-
-    numberNotRect = 0
-    score_rect_memory = np.zeros(B.shape[0], dtype=int)
-    for i in range(0, B.shape[0]):
-        if neededRect[i] > 0:
-            score_rect_memory[i] = (
-                (neededRect[i] - stillBeRectedNumber[i]) / neededRect[i] * 100
-            )
-            if score_rect_memory[i] < 0:
-                score_rect_memory[i] = 0
-        else:
-            score_rect_memory[i] = 0  # do not need to rectify
-            numberNotRect = numberNotRect + 1
-
-    # print("Rate of rectification of each type:", score_rect_memory)
-
-    score_rect = np.sum(score_rect_memory) / (B.shape[0] - numberNotRect)
-
+    if(len(IotMaintenanceDataOld)==0):
+        score_rect = 100
+        stillBeRectedNumber = []
+        
+    else:        
+        stillBeRectedNumber = np.zeros(B.shape[0], dtype=int)
+    
+        _, rectOld, neededRect = AssessmentWithIoTMaintenance(
+            IotMaintenanceDataOld, IotMaintenanceDataOldName, B, N
+        )
+        # print("Last Month errorFacilityNumber of each Type:", neededRect)
+        _, rect, _ = AssessmentWithIoTMaintenance(
+            IotMaintenanceData, IotMaintenanceDataName, B, N
+        )
+    
+        # print(len(rectOld))
+        # exit()
+        for i in range(0, len(rect)):
+            counter, index = FindAllListElement(IotMaintenanceDataOldName, rect[i])
+            size = np.where(IotMaintenanceDataOld[index, 2] == 200)[0].shape[0]
+            if counter > 0 and size > 0:
+                tempIndex = index[np.where(IotMaintenanceDataOld[index, 2] == 200)[0][0]]
+    
+                facilityType = IotMaintenanceDataOld[tempIndex, 1]
+                typeIndex = FindIndex(B, facilityType)
+    
+                stillBeRectedNumber[typeIndex] = stillBeRectedNumber[typeIndex] + 1
+    
+        #    print("stillBeRectedNumber:",stillBeRectedNumber)#already been rectified
+    
+        numberNotRect = 0
+        score_rect_memory = np.zeros(B.shape[0], dtype=int)
+        for i in range(0, B.shape[0]):
+            if neededRect[i] > 0:
+                score_rect_memory[i] = (
+                    (neededRect[i] - stillBeRectedNumber[i]) / neededRect[i] * 100
+                )
+                if score_rect_memory[i] < 0:
+                    score_rect_memory[i] = 0
+            else:
+                score_rect_memory[i] = 0  # do not need to rectify
+                numberNotRect = numberNotRect + 1
+    
+        # print("Rate of rectification of each type:", score_rect_memory)
+    
+        score_rect = np.sum(score_rect_memory) / (B.shape[0] - numberNotRect)
+                
     return stillBeRectedNumber, score_rect
 
 
@@ -344,22 +348,57 @@ def coupling(B, WorkingStatus, MaintainStatus, RectiScore, LDflag):
             163,
             164,
             165,
+            93,
+            122,
+            172,
+            175,
+            176,
+            177,
+            190,
+            191,
+            192,
+            193,
+            194,
+            195,
+            196,
+            197,
+            198,
+            199,
+            200,
+            232,
+            270,
+            462,
+            473,
+            474,
+            478,
+            480,
+            600,
+            701,
+            807,
+            808            
         ]
     )
-    JiShui = np.array([24, 92, 135, 258, 302, 303, 305, 351, 401, 402])
+    JiShui = np.array([24, 92, 135, 258, 302, 303, 305, 351, 401, 402, 202,
+                       203, 215, 229, 231, 252, 267, 300, 477, 481, 482,
+                       508, 511, 512, 802, 805, 806, 811])
     PenShui = np.array(
-        [91, 95, 96, 97, 98, 99, 106, 145, 148, 167, 256, 257, 301, 304, 352]
+        [91, 95, 96, 97, 98, 99, 106, 145, 148, 167, 256, 257, 301, 304, 352,
+         94, 166, 168, 169, 171, 201, 204, 205, 206, 207, 209, 210, 211, 212,
+         217, 230, 233, 234, 249, 250, 251, 268, 454, 456, 464, 509, 513, 
+         801, 809, 812]
     )
-    PaiYan = np.array([103, 104, 111, 113, 114, 115, 116, 149, 150, 451, 452, 453])
-    FangHuo = np.array([102, 117, 118, 151])
-    QiTi = np.array([81, 101, 129, 131, 146])
-    PaoMo = np.array([105])
-    GanFen = np.array([0])
+    PaiYan = np.array([103, 104, 111, 113, 114, 115, 116, 149, 150, 451, 452, 453,
+                       170, 174, 178, 235, 236, 264, 265, 455, 457, 467, 476, 479])
+    FangHuo = np.array([102, 117, 118, 151, 119, 179, 227, 470, 471, 472, 803])
+    QiTi = np.array([81, 101, 129, 131, 146, 213, 218, 219, 220, 221, 460, 461])
+    PaoMo = np.array([105, 216, 228, 804])
+    GanFen = np.array([143, 222, 223, 224, 225, 226])
     DianTi = np.array([152])
-    GuangBo = np.array([130])
-    ZhaoMing = np.array([128, 153, 154])
-    DianYuan = np.array([133, 157, 158, 159, 160])
-    DianQi = np.array([16, 17, 18])
+    GuangBo = np.array([130, 123, 239, 240, 241])
+    ZhaoMing = np.array([128, 153, 154, 237, 238, 259, 260, 266, 459, 463, 466,
+                         475, 483, 514, 515, 810])
+    DianYuan = np.array([133, 157, 158, 159, 160, 214, 458, 468, 469, 516])
+    DianQi = np.array([16, 17, 18, 510])
     SysList = [
         HuoZai,
         JiShui,
@@ -579,18 +618,17 @@ def MainAssessment(
             RectiScore = c[score_IoTData.shape[0]]
             # print("rectification assessment:", RectiScore)
             MaintainStatus = c[0 : score_IoTData.shape[0]]
+            score_IoTMaintenanceData = MaintainStatus
             # print("miantenance status assessment:", MaintainStatus)
             numberErrorType = c[score_IoTData.shape[0] + 1 :]
             f = open("info.txt", "r")
             errorFacilities = f.readlines()
             f.close()
             avgRectTime = 30 * RectiScore / 100
-        else:  # 初始化ori.txt,errorFacilities,numberErrorType
+        else:  # 初始化errorFacilities,numberErrorType,维保得分,整改得分
             score_IoTMaintenanceData = 100 * np.ones(score_IoTData.shape)
             MaintainStatus = score_IoTMaintenanceData
             RectiScore = 100
-            c = np.append(score_IoTMaintenanceData, RectiScore)
-            np.savetxt("ori.txt", c)
             errorFacilities = []
             numberErrorType = []
             avgRectTime = 0
