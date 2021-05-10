@@ -691,9 +691,9 @@ def getDeviceIntactInfo(wellRateType: List[List[float]]) -> List[Dict[str, objec
     return res
 
 
-# FIXME: front end cannot show the data
 def getDeviceAccess(companyID: str) -> schema.DeviceAccess:
-    data = {"CompanyName": "", "DeviceIntactInfo": getDeviceIntactInfo(wellRateType)}
+    data = {"CompanyName": "",
+            "DeviceIntactInfo": getDeviceIntactInfo(wellRateType)}
     if companyID == "CPY3101120001":
         data = {
             "CompanyName": "复兴馆",
@@ -781,31 +781,37 @@ def getAlarmRecordsDay(companyID: str) -> schema.AlarmRecordsDay:
         "DeviceInfos": [{"DeviceName": "", "AlarmsCount": 0}],
     }
     if companyID == "CPY3101120001":
+        numList = fireRankNum
+        infoList = []
+        for i in range(10):
+            infoList.append(
+                {"DeviceName": partType2DeviceName(fireRankType[i]), "AlarmsCount": numList[i]})
         data = {
             "CompanyName": "复兴馆",
-            "MaxAlarmsCount": 124,
-            "DeviceInfos": [
-                {"DeviceName": "消防栓", "AlarmsCount": 12},
-                {"DeviceName": "消防水池", "AlarmsCount": 124},
-            ],
+            "MaxAlarmsCount": max(numList),
+            "DeviceInfos": infoList
         }
     if companyID == "CPY3101120002":
+        numList = fireRankNum
+        infoList = []
+        for i in range(10):
+            infoList.append(
+                {"DeviceName": partType2DeviceName(fireRankType[i]), "AlarmsCount": numList[i]})
         data = {
-            "CompanyName": "花栖堂",
-            "MaxAlarmsCount": 119,
-            "DeviceInfos": [
-                {"DeviceName": "消防栓", "AlarmsCount": 7},
-                {"DeviceName": "消防水池", "AlarmsCount": 119},
-            ],
+            "CompanyName": "复兴馆",
+            "MaxAlarmsCount": max(numList),
+            "DeviceInfos": infoList
         }
     if companyID == "CPY3101120003":
+        numList = fireRankNum
+        infoList = []
+        for i in range(10):
+            infoList.append(
+                {"DeviceName": partType2DeviceName(fireRankType[i]), "AlarmsCount": numList[i]})
         data = {
-            "CompanyName": "竹藤馆",
-            "MaxAlarmsCount": 113,
-            "DeviceInfos": [
-                {"DeviceName": "消防栓", "AlarmsCount": 18},
-                {"DeviceName": "消防水池", "AlarmsCount": 113},
-            ],
+            "CompanyName": "复兴馆",
+            "MaxAlarmsCount": max(numList),
+            "DeviceInfos": infoList
         }
     return schema.AlarmRecordsDay(**data)  # type: ignore
 
