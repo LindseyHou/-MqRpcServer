@@ -7,72 +7,75 @@ from pydantic.main import BaseModel
 
 import schema
 from anxin_var import *
+from real_var import *
+
+# class fireType(IntEnum):
+#     WATER = 0
+#     SMOKE = 1
+#     EVACU = 2
+#     ALARM = 3
+#     OTHER = 4
 
 
-class fireType(IntEnum):
-    WATER = 0
-    SMOKE = 1
-    EVACU = 2
-    ALARM = 3
-    OTHER = 4
-
-
-def getPoints(type: int, timeslot: str) -> List[Dict[str, int]]:
-    res: List[Dict[str, int]] = []
-    if timeslot == "Day":
-        for i in range(11):
-            x = i + 1
-            y = riskDay[type][i - 1]
-            res += [{"X": x, "Y": y}]
-        return res
-    elif timeslot == "Week":
-        for i in range(11):
-            x = i
-            y = riskWeek[type][i - 1]
-            res += [{"X": x, "Y": y}]
-        return res
-    elif timeslot == "Month":
-        for i in range(11):
-            x = i
-            y = riskMonth[type][i - 1]
-            res += [{"X": x, "Y": y}]
-        return res
-    return res
+# def getPoints(type: int, timeslot: str) -> List[Dict[str, int]]:
+#     res: List[Dict[str, int]] = []
+#     if timeslot == "Day":
+#         for i in range(11):
+#             x = i + 1
+#             y = riskDay[type][i - 1]
+#             res += [{"X": x, "Y": y}]
+#         return res
+#     elif timeslot == "Week":
+#         for i in range(11):
+#             x = i
+#             y = riskWeek[type][i - 1]
+#             res += [{"X": x, "Y": y}]
+#         return res
+#     elif timeslot == "Month":
+#         for i in range(11):
+#             x = i
+#             y = riskMonth[type][i - 1]
+#             res += [{"X": x, "Y": y}]
+#         return res
+#     return res
 
 
 def getFireDataStatistics(companyID: str) -> schema.FireDataStatistics:
     Vsize_1 = 50
     Vsize_2 = 200
     Vsize_3 = 500
+    day_res = get_points("Day")
+    week_res = get_points("Week")
+    month_res = get_points("Month")
     data = {
         "Day": {
             "VSize": Vsize_1,
             "Categories": [
-                {"Name": "电气故障", "Points": getPoints(fireType.WATER, "Day")},
-                {"Name": "用火不慎", "Points": getPoints(fireType.SMOKE, "Day")},
-                {"Name": "违章作业", "Points": getPoints(fireType.EVACU, "Day")},
-                {"Name": "违规吸烟", "Points": getPoints(fireType.ALARM, "Day")},
-                {"Name": "其他", "Points": getPoints(fireType.OTHER, "Day")},
+                {"Name": "电气故障", "Points": day_res[fireType.WATER]},
+                {"Name": "用火不慎", "Points": day_res[fireType.SMOKE]},
+                {"Name": "违章作业", "Points": day_res[fireType.EVACU]},
+                {"Name": "违规吸烟", "Points": day_res[fireType.ALARM]},
+                {"Name": "其他", "Points": day_res[fireType.OTHER]},
+            ],
+        },
+        "Week": {
+            "VSize": Vsize_2,
+            "Categories": [
+                {"Name": "电气故障", "Points": week_res[fireType.WATER]},
+                {"Name": "用火不慎", "Points": week_res[fireType.SMOKE]},
+                {"Name": "违章作业", "Points": week_res[fireType.EVACU]},
+                {"Name": "违规吸烟", "Points": week_res[fireType.ALARM]},
+                {"Name": "其他", "Points": week_res[fireType.OTHER]},
             ],
         },
         "Month": {
-            "VSize": Vsize_2,
-            "Categories": [
-                {"Name": "电气故障", "Points": getPoints(fireType.WATER, "Week")},
-                {"Name": "用火不慎", "Points": getPoints(fireType.SMOKE, "Week")},
-                {"Name": "违章作业", "Points": getPoints(fireType.EVACU, "Week")},
-                {"Name": "违规吸烟", "Points": getPoints(fireType.ALARM, "Week")},
-                {"Name": "其他", "Points": getPoints(fireType.OTHER, "Week")},
-            ],
-        },
-        "Year": {
             "VSize": Vsize_3,
             "Categories": [
-                {"Name": "电气故障", "Points": getPoints(fireType.WATER, "Month")},
-                {"Name": "用火不慎", "Points": getPoints(fireType.SMOKE, "Month")},
-                {"Name": "违章作业", "Points": getPoints(fireType.EVACU, "Month")},
-                {"Name": "违规吸烟", "Points": getPoints(fireType.ALARM, "Month")},
-                {"Name": "其他", "Points": getPoints(fireType.OTHER, "Month")},
+                {"Name": "电气故障", "Points": month_res[fireType.WATER]},
+                {"Name": "用火不慎", "Points": month_res[fireType.SMOKE]},
+                {"Name": "违章作业", "Points": month_res[fireType.EVACU]},
+                {"Name": "违规吸烟", "Points": month_res[fireType.ALARM]},
+                {"Name": "其他", "Points": month_res[fireType.OTHER]},
             ],
         },
     }
@@ -692,8 +695,7 @@ def getDeviceIntactInfo(wellRateType: List[List[float]]) -> List[Dict[str, objec
 
 
 def getDeviceAccess(companyID: str) -> schema.DeviceAccess:
-    data = {"CompanyName": "",
-            "DeviceIntactInfo": getDeviceIntactInfo(wellRateType)}
+    data = {"CompanyName": "", "DeviceIntactInfo": getDeviceIntactInfo(wellRateType)}
     if companyID == "CPY3101120001":
         data = {
             "CompanyName": "复兴馆",
@@ -785,33 +787,45 @@ def getAlarmRecordsDay(companyID: str) -> schema.AlarmRecordsDay:
         infoList = []
         for i in range(10):
             infoList.append(
-                {"DeviceName": partType2DeviceName(fireRankType[i]), "AlarmsCount": numList[i]})
+                {
+                    "DeviceName": partType2DeviceName(fireRankType[i]),
+                    "AlarmsCount": numList[i],
+                }
+            )
         data = {
             "CompanyName": "复兴馆",
             "MaxAlarmsCount": max(numList),
-            "DeviceInfos": infoList
+            "DeviceInfos": infoList,
         }
     if companyID == "CPY3101120002":
         numList = fireRankNum
         infoList = []
         for i in range(10):
             infoList.append(
-                {"DeviceName": partType2DeviceName(fireRankType[i]), "AlarmsCount": numList[i]})
+                {
+                    "DeviceName": partType2DeviceName(fireRankType[i]),
+                    "AlarmsCount": numList[i],
+                }
+            )
         data = {
             "CompanyName": "复兴馆",
             "MaxAlarmsCount": max(numList),
-            "DeviceInfos": infoList
+            "DeviceInfos": infoList,
         }
     if companyID == "CPY3101120003":
         numList = fireRankNum
         infoList = []
         for i in range(10):
             infoList.append(
-                {"DeviceName": partType2DeviceName(fireRankType[i]), "AlarmsCount": numList[i]})
+                {
+                    "DeviceName": partType2DeviceName(fireRankType[i]),
+                    "AlarmsCount": numList[i],
+                }
+            )
         data = {
             "CompanyName": "复兴馆",
             "MaxAlarmsCount": max(numList),
-            "DeviceInfos": infoList
+            "DeviceInfos": infoList,
         }
     return schema.AlarmRecordsDay(**data)  # type: ignore
 
