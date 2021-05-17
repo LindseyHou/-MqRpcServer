@@ -27,7 +27,7 @@ def get_fireType(partType: int) -> fireType:
         return fireType.SMOKE
     elif partType in EVACU_LIST:
         return fireType.EVACU
-    elif partType in EVACU_LIST:
+    elif partType in ALARM_LIST:
         return fireType.ALARM
     else:
         return fireType.OTHER
