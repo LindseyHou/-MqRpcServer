@@ -1,3 +1,4 @@
+import heapq
 import logging
 import sys
 from datetime import datetime
@@ -8,7 +9,14 @@ import pymongo
 from dateutil.relativedelta import relativedelta
 
 from db import get_col
-from partType_classify import ALARM_LIST, EVACU_LIST, OTHER_LIST, SMOKE_LIST, WATER_LIST
+from partType_classify import (
+    ALARM_LIST,
+    EVACU_LIST,
+    OTHER_LIST,
+    PARTTYPE2NAME,
+    SMOKE_LIST,
+    WATER_LIST,
+)
 
 
 class fireType(IntEnum):
@@ -48,6 +56,7 @@ def get_points(timeslot: str) -> List[List[Dict[str, int]]]:
     query_dict: Any = {}
     for i in range(10):
         end_date = start_date + interval
+        query_dict["time"] = {}
         query_dict["time"]["$lte"] = end_date
         query_dict["time"]["$gte"] = start_date
         count: List[
@@ -294,28 +303,185 @@ def get_avgRectTime(companyID: str) -> int:
 
 # from excel 27-33
 def get_avgRepeatTime(companyID: str) -> int:
+    "27"
     pass
 
 
-def get_fireDay() -> Any:
-    pass
+def get_fireDay(companyID: str) -> int:
+    "28"
+    companyID_int: int = int(companyID[7:])
+    datas = get_col("info").find({"projID": companyID_int})["datas"]
+    partCodes = []
+    for data in datas:
+        partCodes.append(data["partCode"])
+    now = datetime.now()
+    start_time = now - relativedelta(days=1)
+    query_dict: Any = {}
+    query_dict["time"] = {}
+    query_dict["time"]["$lte"] = now
+    query_dict["time"]["$gte"] = start_time
+    query_dict["algoType"] = 100
+    query_dict["partType"] = {"$in", partCodes}
+    documents = get_col("data").find(query_dict)
+    res = len(documents)
+    logging.info(
+        "[fireDay]From "
+        + start_time.strftime("%Y-%m-%d")
+        + " to "
+        + now.strftime("%Y-%m-%d")
+        + ": "
+        + str(res)
+    )
+    return res
 
 
-def get_fireMonth() -> Any:
-    pass
+def get_fireMonth(companyID: str) -> int:
+    "29"
+    companyID_int: int = int(companyID[7:])
+    datas = get_col("info").find({"projID": companyID_int})["datas"]
+    partCodes = []
+    for data in datas:
+        partCodes.append(data["partCode"])
+    now = datetime.now()
+    start_time = now - relativedelta(months=1)
+    query_dict: Any = {}
+    query_dict["time"] = {}
+    query_dict["time"]["$lte"] = now
+    query_dict["time"]["$gte"] = start_time
+    query_dict["algoType"] = 100
+    query_dict["partType"] = {"$in", partCodes}
+    documents = get_col("data").find(query_dict)
+    res = len(documents)
+    logging.info(
+        "[fireMonth]From "
+        + start_time.strftime("%Y-%m-%d")
+        + " to "
+        + now.strftime("%Y-%m-%d")
+        + ": "
+        + str(res)
+    )
+    return res
 
 
-def get_riskNum() -> Any:
-    pass
+def get_riskNum(companyID: str) -> int:
+    "30"
+    companyID_int: int = int(companyID[7:])
+    datas = get_col("info").find({"projID": companyID_int})["datas"]
+    partCodes = []
+    for data in datas:
+        partCodes.append(data["partCode"])
+    now = datetime.now()
+    start_time = now - relativedelta(weeks=1)
+    query_dict: Any = {}
+    query_dict["time"] = {}
+    query_dict["time"]["$lte"] = now
+    query_dict["time"]["$gte"] = start_time
+    query_dict["algoType"] = {"$in", [100, 200, 300]}
+    query_dict["partType"] = {"$in", partCodes}
+    documents = get_col("data").find(query_dict)
+    res = len(documents)
+    logging.info(
+        "[riskNum]From "
+        + start_time.strftime("%Y-%m-%d")
+        + " to "
+        + now.strftime("%Y-%m-%d")
+        + ": "
+        + str(res)
+    )
+    return res
 
 
-def get_fireRankType() -> Any:
-    pass
+def get_fireRankType(companyID: str) -> List[int]:
+    "31"
+    companyID_int: int = int(companyID[7:])
+    datas = get_col("info").find({"projID": companyID_int})["datas"]
+    partCodes = []
+    for data in datas:
+        partCodes.append(data["partCode"])
+
+    count: Dict[int, int] = {}
+
+    now = datetime.now()
+    start_time = now - relativedelta(weeks=1)
+    query_dict: Any = {}
+    query_dict["time"] = {}
+    query_dict["time"]["$lte"] = now
+    query_dict["time"]["$gte"] = start_time
+    query_dict["algoType"] = 100
+    query_dict["partType"] = {"$in", partCodes}
+    documents = get_col("data").find(query_dict)
+    for doc in documents:
+        partType = doc["partType"]
+        if partType in count.keys():
+            count[partType] += 1
+        else:
+            count[partType] = 1
+    max_10 = heapq.nlargest(10, count.items(), key=lambda x: x[1])
+    res: List[int] = []
+    for m in max_10:
+        res.append(m[0])
+    return res
 
 
-def get_fireRankNum() -> Any:
-    pass
+def get_fireRankNum(companyID: str) -> List[int]:
+    "32"
+    companyID_int: int = int(companyID[7:])
+    datas = get_col("info").find({"projID": companyID_int})["datas"]
+    partCodes = []
+    for data in datas:
+        partCodes.append(data["partCode"])
+
+    count: Dict[int, int] = {}
+
+    now = datetime.now()
+    start_time = now - relativedelta(weeks=1)
+    query_dict: Any = {}
+    query_dict["time"] = {}
+    query_dict["time"]["$lte"] = now
+    query_dict["time"]["$gte"] = start_time
+    query_dict["algoType"] = 100
+    query_dict["partType"] = {"$in", partCodes}
+    documents = get_col("data").find(query_dict)
+    for doc in documents:
+        partType = doc["partType"]
+        if partType in count.keys():
+            count[partType] += 1
+        else:
+            count[partType] = 1
+    max_10 = heapq.nlargest(10, count.items(), key=lambda x: x[1])
+    res: List[int] = []
+    for m in max_10:
+        res.append(m[1])
+    return res
 
 
-def get_riskList() -> Any:
-    pass
+def get_riskList(companyID: str) -> List[str]:
+    "33"
+    companyID_int: int = int(companyID[7:])
+    datas = get_col("info").find({"projID": companyID_int})["datas"]
+    partCodes = []
+    for data in datas:
+        partCodes.append(data["partCode"])
+    now = datetime.now()
+    start_time = now - relativedelta(weeks=1)
+    query_dict: Any = {}
+    query_dict["time"] = {}
+    query_dict["time"]["$lte"] = now
+    query_dict["time"]["$gte"] = start_time
+    query_dict["algoType"] = {"$in", [100, 200, 300]}
+    query_dict["partType"] = {"$in", partCodes}
+    documents = get_col("data").find(query_dict)
+    res: List[str] = []
+    ALGO2NAME: Dict[int, str] = {0: "正常", 100: "火警", 200: "故障", 300: "预警"}
+    for doc in documents:
+        sentence: str = ""
+        sentence = (
+            PARTTYPE2NAME[doc["partType"]]
+            + ", "
+            + doc["pos"]
+            + ", "
+            + ALGO2NAME[doc["algoType"]]
+        )
+        res.append(sentence)
+
+    return res
