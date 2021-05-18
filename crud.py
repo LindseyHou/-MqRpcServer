@@ -87,7 +87,7 @@ def getSafetyScore(companyID: str) -> List[schema.SafetyScore]:
     datas = [
         {
             "CompanyName": "上海国际会议中心",
-            "PercentageOfIoT": wellRateWhole,
+            "PercentageOfIoT": get_wellRateWhole(companyID),
             "SafetyRating": get_safetyScore(companyID),  # FIXME: why float???
             "ImageUrl": "SHICC.png",
             "SceneName": "SHICC",
@@ -100,8 +100,8 @@ def getSafetyScore(companyID: str) -> List[schema.SafetyScore]:
         },
         {
             "CompanyName": "浦东美术馆",
-            "PercentageOfIoT": wellRateWhole,
-            "SafetyRating": safetyScore,
+            "PercentageOfIoT": get_wellRateWhole(companyID),
+            "SafetyRating": get_safetyScore(companyID),
             "ImageUrl": "MeiShuGuan.png",
             "SceneName": "SHICC",
             "FireStatistics": 6,
@@ -113,8 +113,8 @@ def getSafetyScore(companyID: str) -> List[schema.SafetyScore]:
         },
         {
             "CompanyName": "港务大厦",
-            "PercentageOfIoT": wellRateWhole,
-            "SafetyRating": safetyScore,
+            "PercentageOfIoT": get_wellRateWhole(companyID),
+            "SafetyRating": get_safetyScore(companyID),
             "ImageUrl": "GangWuDaSha.png",
             "SceneName": "SHICC",
             "FireStatistics": 6,
@@ -126,8 +126,8 @@ def getSafetyScore(companyID: str) -> List[schema.SafetyScore]:
         },
         {
             "CompanyName": "浦东海关大楼",
-            "PercentageOfIoT": wellRateWhole,
-            "SafetyRating": safetyScore,
+            "PercentageOfIoT": get_wellRateWhole(companyID),
+            "SafetyRating": get_safetyScore(companyID),
             "ImageUrl": "HaiGuanDaLou.png",
             "SceneName": "SHICC",
             "FireStatistics": 6,
@@ -139,8 +139,8 @@ def getSafetyScore(companyID: str) -> List[schema.SafetyScore]:
         },
         {
             "CompanyName": "正大广场",
-            "PercentageOfIoT": wellRateWhole,
-            "SafetyRating": safetyScore,
+            "PercentageOfIoT": get_wellRateWhole(companyID),
+            "SafetyRating": get_safetyScore(companyID),
             "ImageUrl": "ZhengDaGuangChang.png",
             "SceneName": "SHICC",
             "FireStatistics": 6,
@@ -152,8 +152,8 @@ def getSafetyScore(companyID: str) -> List[schema.SafetyScore]:
         },
         {
             "CompanyName": "万向大厦",
-            "PercentageOfIoT": wellRateWhole,
-            "SafetyRating": safetyScore,
+            "PercentageOfIoT": get_wellRateWhole(companyID),
+            "SafetyRating": get_safetyScore(companyID),
             "ImageUrl": "WanXiangDaSha.png",
             "SceneName": "SHICC",
             "FireStatistics": 6,
@@ -165,8 +165,8 @@ def getSafetyScore(companyID: str) -> List[schema.SafetyScore]:
         },
         {
             "CompanyName": "复兴馆",
-            "PercentageOfIoT": wellRateWhole,
-            "SafetyRating": safetyScore,
+            "PercentageOfIoT": get_wellRateWhole(companyID),
+            "SafetyRating": get_safetyScore(companyID),
             "ImageUrl": "FuXingGuan.png",
             "SceneName": "FuXingGuan",
             "FireStatistics": 6,
@@ -178,8 +178,8 @@ def getSafetyScore(companyID: str) -> List[schema.SafetyScore]:
         },
         {
             "CompanyName": "花栖堂",
-            "PercentageOfIoT": wellRateWhole,
-            "SafetyRating": safetyScore,
+            "PercentageOfIoT": get_wellRateWhole(companyID),
+            "SafetyRating": get_safetyScore(companyID),
             "ImageUrl": "HuaQiTang.png",
             "SceneName": "HuaQiTang",
             "FireStatistics": 6,
@@ -191,8 +191,8 @@ def getSafetyScore(companyID: str) -> List[schema.SafetyScore]:
         },
         {
             "CompanyName": "世纪馆",
-            "PercentageOfIoT": wellRateWhole,
-            "SafetyRating": safetyScore,
+            "PercentageOfIoT": get_wellRateWhole(companyID),
+            "SafetyRating": get_safetyScore(companyID),
             "ImageUrl": "ShiJiGuan.png",
             "SceneName": "",
             "FireStatistics": 6,
@@ -204,8 +204,8 @@ def getSafetyScore(companyID: str) -> List[schema.SafetyScore]:
         },
         {
             "CompanyName": "花艺馆",
-            "PercentageOfIoT": wellRateWhole,
-            "SafetyRating": safetyScore,
+            "PercentageOfIoT": get_wellRateWhole(companyID),
+            "SafetyRating": get_safetyScore(companyID),
             "ImageUrl": "HuaYiGuan.png",
             "SceneName": "",
             "FireStatistics": 6,
@@ -217,8 +217,8 @@ def getSafetyScore(companyID: str) -> List[schema.SafetyScore]:
         },
         {
             "CompanyName": "竹藤馆",
-            "PercentageOfIoT": wellRateWhole,
-            "SafetyRating": safetyScore,
+            "PercentageOfIoT": get_wellRateWhole(companyID),
+            "SafetyRating": get_safetyScore(companyID),
             "ImageUrl": "ZhuTengGuan.png",
             "SceneName": "",
             "FireStatistics": 6,
@@ -230,8 +230,8 @@ def getSafetyScore(companyID: str) -> List[schema.SafetyScore]:
         },
         {
             "CompanyName": "百花馆",
-            "PercentageOfIoT": wellRateWhole,
-            "SafetyRating": safetyScore,
+            "PercentageOfIoT": get_wellRateWhole(companyID),
+            "SafetyRating": get_safetyScore(companyID),
             "ImageUrl": "BaiHuaGuan.png",
             "SceneName": "",
             "FireStatistics": 6,
@@ -521,12 +521,7 @@ def getScoreDetail(companyID: str) -> schema.ScoreDetail:
     }
     if companyID == "CPY3101120001":
         data = {
-            "RecommendedNames": [
-                "火灾探测器完好率",
-                "火灾报警次数",
-                "定期进行消防安全教育和培训",
-                "疏散通道、安全出口和消防通道保持畅通",
-            ],
+            "RecommendedNames": get_priorRect(companyID),
             "WeiHuBaoYang": {
                 "Headline": "设施维护保养",
                 "SourceItems": [
@@ -574,12 +569,7 @@ def getScoreDetail(companyID: str) -> schema.ScoreDetail:
         }
     elif companyID == "CPY3101120002":
         data = {
-            "RecommendedNames": [
-                "火灾探测器完好率",
-                "火灾报警次数",
-                "定期进行消防安全教育和培训",
-                "疏散通道、安全出口和消防通道保持畅通",
-            ],
+            "RecommendedNames": get_priorRect(companyID),
             "WeiHuBaoYang": {
                 "Headline": "设施维护保养",
                 "SourceItems": [
@@ -627,7 +617,7 @@ def getScoreDetail(companyID: str) -> schema.ScoreDetail:
         }
     elif companyID == "CPY3101120003":
         data = {
-            "RecommendedNames": priorRect,
+            "RecommendedNames": get_priorRect(companyID),
             "WeiHuBaoYang": {
                 "Headline": "设施维护保养",
                 "SourceItems": [
@@ -697,21 +687,21 @@ def getDeviceIntactInfo(wellRateType: List[List[float]]) -> List[Dict[str, objec
 
 def getDeviceAccess(companyID: str) -> schema.DeviceAccess:
     data = {"CompanyName": "",
-            "DeviceIntactInfo": getDeviceIntactInfo(wellRateType)}
+            "DeviceIntactInfo": getDeviceIntactInfo(get_wellRateType(companyID))}
     if companyID == "CPY3101120001":
         data = {
             "CompanyName": "复兴馆",
-            "DeviceIntactInfo": getDeviceIntactInfo(wellRateType),
+            "DeviceIntactInfo": getDeviceIntactInfo(get_wellRateType(companyID)),
         }
     elif companyID == "CPY3101120002":
         data = {
             "CompanyName": "花栖馆",
-            "DeviceIntactInfo": getDeviceIntactInfo(wellRateType),
+            "DeviceIntactInfo": getDeviceIntactInfo(get_wellRateType(companyID)),
         }
     elif companyID == "CPY3101120003":
         data = {
             "CompanyName": "竹藤馆",
-            "DeviceIntactInfo": getDeviceIntactInfo(wellRateType),
+            "DeviceIntactInfo": getDeviceIntactInfo(get_wellRateType(companyID)),
         }
     return schema.DeviceAccess(**data)  # type: ignore
 
