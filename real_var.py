@@ -302,9 +302,43 @@ def get_avgRectTime(companyID: str) -> int:
 
 
 # from excel 27-33
-def get_avgRepeatTime(companyID: str) -> int:
+def get_avgRepeatTime(companyID: str) -> float:
     "27"
-    pass
+    companyID_int: int = int(companyID[7:])
+    datas = get_col("info").find({"projID": companyID_int})["datas"]
+    partCodes = []
+    for data in datas:
+        partCodes.append(data["partCode"])
+    now = datetime.now()
+    start_time = now - relativedelta(days=30)
+    query_dict: Any = {}
+    query_dict["time"] = {}
+    query_dict["time"]["$lte"] = now
+    query_dict["time"]["$gte"] = start_time
+    query_dict["algoType"] = {"$in", [100, 200, 300]}
+    query_dict["partType"] = {"$in", partCodes}
+    documents = get_col("data").find(query_dict)
+    count: Dict[int, Dict[str, int]] = {}
+    for doc in documents:
+        partType: int = doc["partType"]
+        partCode: str = doc["partCode"]
+        if partType not in count.keys():
+            count[partType] = {}
+        else:
+            if partCode not in count[partType].keys():
+                count[partType][partCode] = 1
+            else:
+                count[partType][partCode] += 1
+    sum: float = 0
+    for pT in count.keys():
+        codeNum: int = len(count[pT])
+        dataNum: int = 0
+        for n in count[pT].values():
+            dataNum += n
+        repT: float = 30 / (dataNum / codeNum)
+        sum += repT
+    avgRepT: float = sum / len(count.keys())
+    return avgRepT
 
 
 def get_fireDay(companyID: str) -> int:
