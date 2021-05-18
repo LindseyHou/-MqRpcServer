@@ -8,6 +8,7 @@ from pydantic.main import BaseModel
 import schema
 from anxin_var import *
 from real_var import *
+from const import PARTTYPE2NAME
 
 # class fireType(IntEnum):
 #     WATER = 0
@@ -87,7 +88,7 @@ def getSafetyScore(companyID: str) -> List[schema.SafetyScore]:
         {
             "CompanyName": "上海国际会议中心",
             "PercentageOfIoT": wellRateWhole,
-            "SafetyRating": safetyScore,  # FIXME: why float???
+            "SafetyRating": get_safetyScore(companyID),  # FIXME: why float???
             "ImageUrl": "SHICC.png",
             "SceneName": "SHICC",
             "FireStatistics": 6,
@@ -478,21 +479,21 @@ def getAlarmInfo(companyID: str) -> schema.AlarmInfo:
     data = {"DailyAlarm": 0, "MonthlyAlarm": 0, "PendingTasks": 0}
     if companyID == "CPY3101120001":
         data = {
-            "DailyAlarm": fireDay,
-            "MonthlyAlarm": fireMonth,
-            "PendingTasks": riskNum,
+            "DailyAlarm": get_fireDay(companyID),
+            "MonthlyAlarm": get_fireMonth(companyID),
+            "PendingTasks": get_riskNum(companyID),
         }
     elif companyID == "CPY3101120002":
         data = {
-            "DailyAlarm": fireDay,
-            "MonthlyAlarm": fireMonth,
-            "PendingTasks": riskNum,
+            "DailyAlarm": get_fireDay(companyID),
+            "MonthlyAlarm": get_fireMonth(companyID),
+            "PendingTasks": get_riskNum(companyID),
         }
     elif companyID == "CPY3101120003":
         data = {
-            "DailyAlarm": fireDay,
-            "MonthlyAlarm": fireMonth,
-            "PendingTasks": riskNum,
+            "DailyAlarm": get_fireDay(companyID),
+            "MonthlyAlarm": get_fireMonth(companyID),
+            "PendingTasks": get_riskNum(companyID),
         }
     return schema.AlarmInfo(**data)
 
@@ -675,27 +676,28 @@ def getScoreDetail(companyID: str) -> schema.ScoreDetail:
     return schema.ScoreDetail(**data)  # type: ignore
 
 
-def partType2DeviceName(type: int) -> str:
-    res = ""
-    data = xlrd.open_workbook("assets/设备类型编号.xls")
-    table = data.sheets()[0]
-    partTypes = table.col_values(0)
-    names = table.col_values(1)
-    res = names[partTypes.index(type)]
-    return res
+# def partType2DeviceName(type: int) -> str:
+#     res = ""
+#     data = xlrd.open_workbook("assets/设备类型编号.xls")
+#     table = data.sheets()[0]
+#     partTypes = table.col_values(0)
+#     names = table.col_values(1)
+#     res = names[partTypes.index(type)]
+#     return res
 
 
 def getDeviceIntactInfo(wellRateType: List[List[float]]) -> List[Dict[str, object]]:
     res = []
     for info in wellRateType:
-        nm = partType2DeviceName(int(info[0]))
+        nm = PARTTYPE2NAME[int(info[0])]
         temp = {"DeviceType": nm, "IconName": nm, "IntactRate": info[1] / 100}
         res.append(temp)
     return res
 
 
 def getDeviceAccess(companyID: str) -> schema.DeviceAccess:
-    data = {"CompanyName": "", "DeviceIntactInfo": getDeviceIntactInfo(wellRateType)}
+    data = {"CompanyName": "",
+            "DeviceIntactInfo": getDeviceIntactInfo(wellRateType)}
     if companyID == "CPY3101120001":
         data = {
             "CompanyName": "复兴馆",
@@ -733,8 +735,8 @@ def getRectification(companyID: str) -> schema.Rectification:
             "CompanyName": "复兴馆",
             "Numbers": 117,
             "Rate": 62,
-            "MTTR": avgRectTime,
-            "MTBF": avgRepeatTime,
+            "MTTR": get_avgRectTime(companyID),
+            "MTBF": get_avgRepeatTime(companyID),
             "FireSystems": [
                 {"Categories": "室外消火栓", "Amount": 28},
                 {"Categories": "室内消火栓", "Amount": 32},
@@ -748,8 +750,8 @@ def getRectification(companyID: str) -> schema.Rectification:
             "CompanyName": "花栖堂",
             "Numbers": 89,
             "Rate": 31,
-            "MTTR": avgRectTime,
-            "MTBF": avgRepeatTime,
+            "MTTR": get_avgRectTime(companyID),
+            "MTBF": get_avgRepeatTime(companyID),
             "FireSystems": [
                 {"Categories": "室外消火栓", "Amount": 33},
                 {"Categories": "室内消火栓", "Amount": 20},
@@ -763,8 +765,8 @@ def getRectification(companyID: str) -> schema.Rectification:
             "CompanyName": "竹藤馆",
             "Numbers": 117,
             "Rate": 44,
-            "MTTR": avgRectTime,
-            "MTBF": avgRepeatTime,
+            "MTTR": get_avgRectTime(companyID),
+            "MTBF": get_avgRepeatTime(companyID),
             "FireSystems": [
                 {"Categories": "室外消火栓", "Amount": 35},
                 {"Categories": "室内消火栓", "Amount": 53},
@@ -783,12 +785,12 @@ def getAlarmRecordsDay(companyID: str) -> schema.AlarmRecordsDay:
         "DeviceInfos": [{"DeviceName": "", "AlarmsCount": 0}],
     }
     if companyID == "CPY3101120001":
-        numList = fireRankNum
+        numList = get_fireRankNum(companyID)
         infoList = []
         for i in range(10):
             infoList.append(
                 {
-                    "DeviceName": partType2DeviceName(fireRankType[i]),
+                    "DeviceName": PARTTYPE2NAME[get_fireRankType(companyID)[i]],
                     "AlarmsCount": numList[i],
                 }
             )
@@ -798,12 +800,12 @@ def getAlarmRecordsDay(companyID: str) -> schema.AlarmRecordsDay:
             "DeviceInfos": infoList,
         }
     if companyID == "CPY3101120002":
-        numList = fireRankNum
+        numList = get_fireRankNum(companyID)
         infoList = []
         for i in range(10):
             infoList.append(
                 {
-                    "DeviceName": partType2DeviceName(fireRankType[i]),
+                    "DeviceName": PARTTYPE2NAME[get_fireRankType(companyID)[i]],
                     "AlarmsCount": numList[i],
                 }
             )
@@ -813,12 +815,12 @@ def getAlarmRecordsDay(companyID: str) -> schema.AlarmRecordsDay:
             "DeviceInfos": infoList,
         }
     if companyID == "CPY3101120003":
-        numList = fireRankNum
+        numList = get_fireRankNum(companyID)
         infoList = []
         for i in range(10):
             infoList.append(
                 {
-                    "DeviceName": partType2DeviceName(fireRankType[i]),
+                    "DeviceName": PARTTYPE2NAME[get_fireRankType(companyID)[i]],
                     "AlarmsCount": numList[i],
                 }
             )
