@@ -46,7 +46,7 @@ def get_fireType(partType: int) -> fireType:
 
 # from excel 1-15
 async def get_points(timeslot: str) -> List[List[Dict[str, int]]]:
-    res: List[List[Dict[str, int]]] = []
+    res: List[List[Dict[str, int]]] = [[] for i in range(5)]
     now = datetime.now()
     interval: relativedelta = relativedelta(days=0)
     if timeslot == "Day":
