@@ -347,9 +347,11 @@ async def get_avgRectTime(companyID: str) -> int:
 async def get_avgRepeatTime(companyID: str) -> float:
     "27"
     companyID_int: int = int(companyID[7:])
-    datas = get_col("info").find({"projID": companyID_int})["datas"]
+    datas = []
+    async for doc in get_col("info").find({"projID": companyID_int}):
+        datas.append(doc["datas"])
     partCodes = []
-    async for data in datas:
+    for data in datas:
         partCodes.append(data["partCode"])
     now = datetime.now()
     start_time = now - relativedelta(days=30)
@@ -386,9 +388,11 @@ async def get_avgRepeatTime(companyID: str) -> float:
 async def get_fireDay(companyID: str) -> int:
     "28"
     companyID_int: int = int(companyID[7:])
-    datas = get_col("info").find({"projID": companyID_int})["datas"]
+    datas = []
+    async for doc in get_col("info").find({"projID": companyID_int}):
+        datas.append(doc["datas"])
     partCodes = []
-    async for data in datas:
+    for data in datas:
         partCodes.append(data["partCode"])
     now = datetime.now()
     start_time = now - relativedelta(days=1)
@@ -416,9 +420,11 @@ async def get_fireDay(companyID: str) -> int:
 async def get_fireMonth(companyID: str) -> int:
     "29"
     companyID_int: int = int(companyID[7:])
-    datas = get_col("info").find({"projID": companyID_int})["datas"]
+    datas = []
+    async for doc in get_col("info").find({"projID": companyID_int}):
+        datas.append(doc["datas"])
     partCodes = []
-    async for data in datas:
+    for data in datas:
         partCodes.append(data["partCode"])
     now = datetime.now()
     start_time = now - relativedelta(months=1)
@@ -446,9 +452,11 @@ async def get_fireMonth(companyID: str) -> int:
 async def get_riskNum(companyID: str) -> int:
     "30"
     companyID_int: int = int(companyID[7:])
-    datas = get_col("info").find({"projID": companyID_int})["datas"]
+    datas = []
+    async for doc in get_col("info").find({"projID": companyID_int}):
+        datas.append(doc["datas"])
     partCodes = []
-    async for data in datas:
+    for data in datas:
         partCodes.append(data["partCode"])
     now = datetime.now()
     start_time = now - relativedelta(weeks=1)
@@ -476,9 +484,11 @@ async def get_riskNum(companyID: str) -> int:
 async def get_fireRankType(companyID: str) -> List[int]:
     "31"
     companyID_int: int = int(companyID[7:])
-    datas = get_col("info").find({"projID": companyID_int})["datas"]
+    datas = []
+    async for doc in get_col("info").find({"projID": companyID_int}):
+        datas.append(doc["datas"])
     partCodes = []
-    async for data in datas:
+    for data in datas:
         partCodes.append(data["partCode"])
 
     count: Dict[int, int] = {}
@@ -508,9 +518,11 @@ async def get_fireRankType(companyID: str) -> List[int]:
 async def get_fireRankNum(companyID: str) -> List[int]:
     "32"
     companyID_int: int = int(companyID[7:])
-    datas = get_col("info").find({"projID": companyID_int})["datas"]
+    datas = []
+    async for doc in get_col("info").find({"projID": companyID_int}):
+        datas.append(doc["datas"])
     partCodes = []
-    async for data in datas:
+    for data in datas:
         partCodes.append(data["partCode"])
 
     count: Dict[int, int] = {}
@@ -540,9 +552,11 @@ async def get_fireRankNum(companyID: str) -> List[int]:
 async def get_riskList(companyID: str) -> List[str]:
     "33"
     companyID_int: int = int(companyID[7:])
-    datas = get_col("info").find({"projID": companyID_int})["datas"]
+    datas = []
+    async for doc in get_col("info").find({"projID": companyID_int}):
+        datas.append(doc["datas"])
     partCodes = []
-    async for data in datas:
+    for data in datas:
         partCodes.append(data["partCode"])
     now = datetime.now()
     start_time = now - relativedelta(weeks=1)
