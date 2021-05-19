@@ -90,11 +90,17 @@ async def get_points(timeslot: str) -> List[List[Dict[str, int]]]:
 async def get_wellRateWhole(companyID: str) -> int:
     companyID_int: int = int(companyID[7:])
     score_col = get_col("score")
-    doc = (
-        await score_col.find({"companyID": companyID_int})
-        .sort({"time", pymongo.DESCENDING})
+    query_dict: Any = {}
+    query_dict["time"] = {}
+
+    docs = (
+        score_col.find({"companyID": companyID_int})
+        .sort("time", pymongo.DESCENDING)
         .limit(1)
     )
+    doc = {}
+    async for d in docs:
+        doc = d
     var_name = sys._getframe().f_code.co_name[4:]
     logging.debug(
         "Latest "
@@ -110,11 +116,14 @@ async def get_wellRateWhole(companyID: str) -> int:
 async def get_wellRateType(companyID: str) -> List[Any]:
     companyID_int: int = int(companyID[7:])
     score_col = get_col("score")
-    doc = (
-        await score_col.find({"companyID": companyID_int})
-        .sort({"time", pymongo.DESCENDING})
+    docs = (
+        score_col.find({"companyID": companyID_int})
+        .sort("time", pymongo.DESCENDING)
         .limit(1)
     )
+    doc = {}
+    async for d in docs:
+        doc = d
     var_name = sys._getframe().f_code.co_name[4:]
     logging.debug(
         "Latest "
@@ -130,11 +139,14 @@ async def get_wellRateType(companyID: str) -> List[Any]:
 async def get_safetyScore(companyID: str) -> float:
     companyID_int: int = int(companyID[7:])
     score_col = get_col("score")
-    doc = (
-        await score_col.find({"companyID": companyID_int})
-        .sort({"time", pymongo.DESCENDING})
+    docs = (
+        score_col.find({"companyID": companyID_int})
+        .sort("time", pymongo.DESCENDING)
         .limit(1)
     )
+    doc = {}
+    async for d in docs:
+        doc = d
     var_name = sys._getframe().f_code.co_name[4:]
     logging.debug(
         "Latest "
@@ -150,11 +162,14 @@ async def get_safetyScore(companyID: str) -> float:
 async def get_priorRect(companyID: str) -> List[Any]:
     companyID_int: int = int(companyID[7:])
     score_col = get_col("score")
-    doc = (
-        await score_col.find({"companyID": companyID_int})
+    docs = (
+        score_col.find({"companyID": companyID_int})
         .sort({"time", pymongo.DESCENDING})
         .limit(1)
     )
+    doc = {}
+    async for d in docs:
+        doc = d
     var_name = sys._getframe().f_code.co_name[4:]
     logging.debug(
         "Latest "
@@ -170,11 +185,14 @@ async def get_priorRect(companyID: str) -> List[Any]:
 async def get_firePartCode(companyID: str) -> List[Any]:
     companyID_int: int = int(companyID[7:])
     score_col = get_col("score")
-    doc = (
-        await score_col.find({"companyID": companyID_int})
+    docs = (
+        score_col.find({"companyID": companyID_int})
         .sort({"time", pymongo.DESCENDING})
         .limit(1)
     )
+    doc = {}
+    async for d in docs:
+        doc = d
     var_name = sys._getframe().f_code.co_name[4:]
     logging.debug(
         "Latest "
@@ -190,11 +208,14 @@ async def get_firePartCode(companyID: str) -> List[Any]:
 async def get_errorPartCode(companyID: str) -> List[Any]:
     companyID_int: int = int(companyID[7:])
     score_col = get_col("score")
-    doc = (
-        await score_col.find({"companyID": companyID_int})
+    docs = (
+        score_col.find({"companyID": companyID_int})
         .sort({"time", pymongo.DESCENDING})
         .limit(1)
     )
+    doc = {}
+    async for d in docs:
+        doc = d
     var_name = sys._getframe().f_code.co_name[4:]
     logging.debug(
         "Latest "
@@ -210,11 +231,14 @@ async def get_errorPartCode(companyID: str) -> List[Any]:
 async def get_errorPartCodeMonth(companyID: str) -> List[Any]:
     companyID_int: int = int(companyID[7:])
     score_col = get_col("score")
-    doc = (
-        await score_col.find({"companyID": companyID_int})
+    docs = (
+        score_col.find({"companyID": companyID_int})
         .sort({"time", pymongo.DESCENDING})
         .limit(1)
     )
+    doc = {}
+    async for d in docs:
+        doc = d
     var_name = sys._getframe().f_code.co_name[4:]
     logging.debug(
         "Latest "
@@ -230,11 +254,14 @@ async def get_errorPartCodeMonth(companyID: str) -> List[Any]:
 async def get_detailScore(companyID: str) -> List[Any]:
     companyID_int: int = int(companyID[7:])
     score_col = get_col("score")
-    doc = (
-        await score_col.find({"companyID": companyID_int})
+    docs = (
+        score_col.find({"companyID": companyID_int})
         .sort({"time", pymongo.DESCENDING})
         .limit(1)
     )
+    doc = {}
+    async for d in docs:
+        doc = d
     var_name = sys._getframe().f_code.co_name[4:]
     logging.debug(
         "Latest "
@@ -250,11 +277,14 @@ async def get_detailScore(companyID: str) -> List[Any]:
 async def get_errorRankType(companyID: str) -> List[Any]:
     companyID_int: int = int(companyID[7:])
     score_col = get_col("score")
-    doc = (
+    docs = (
         await score_col.find({"companyID": companyID_int})
         .sort({"time", pymongo.DESCENDING})
         .limit(1)
     )
+    doc = {}
+    async for d in docs:
+        doc = d
     var_name = sys._getframe().f_code.co_name[4:]
     logging.debug(
         "Latest "
@@ -270,11 +300,14 @@ async def get_errorRankType(companyID: str) -> List[Any]:
 async def get_errorRankNum(companyID: str) -> List[Any]:
     companyID_int: int = int(companyID[7:])
     score_col = get_col("score")
-    doc = (
+    docs = (
         await score_col.find({"companyID": companyID_int})
         .sort({"time", pymongo.DESCENDING})
         .limit(1)
     )
+    doc = {}
+    async for d in docs:
+        doc = d
     var_name = sys._getframe().f_code.co_name[4:]
     logging.debug(
         "Latest "
@@ -290,11 +323,14 @@ async def get_errorRankNum(companyID: str) -> List[Any]:
 async def get_avgRectTime(companyID: str) -> int:
     companyID_int: int = int(companyID[7:])
     score_col = get_col("score")
-    doc = (
+    docs = (
         await score_col.find({"companyID": companyID_int})
         .sort({"time", pymongo.DESCENDING})
         .limit(1)
     )
+    doc = {}
+    async for d in docs:
+        doc = d
     var_name = sys._getframe().f_code.co_name[4:]
     logging.debug(
         "Latest "
@@ -362,8 +398,10 @@ async def get_fireDay(companyID: str) -> int:
     query_dict["time"]["$gte"] = start_time
     query_dict["algoType"] = 100
     query_dict["partType"] = {"$in", partCodes}
-    documents = await get_col("data").find(query_dict)
-    res = len(documents)
+    documents = get_col("data").find(query_dict)
+    res = 0
+    async for d in documents:
+        res += 1
     logging.debug(
         "[fireDay]From "
         + start_time.strftime("%Y-%m-%d")
@@ -390,8 +428,10 @@ async def get_fireMonth(companyID: str) -> int:
     query_dict["time"]["$gte"] = start_time
     query_dict["algoType"] = 100
     query_dict["partType"] = {"$in", partCodes}
-    documents = await get_col("data").find(query_dict)
-    res = len(documents)
+    documents = get_col("data").find(query_dict)
+    res = 0
+    async for d in documents:
+        res += 1
     logging.debug(
         "[fireMonth]From "
         + start_time.strftime("%Y-%m-%d")
@@ -418,8 +458,10 @@ async def get_riskNum(companyID: str) -> int:
     query_dict["time"]["$gte"] = start_time
     query_dict["algoType"] = {"$in", [100, 200, 300]}
     query_dict["partType"] = {"$in", partCodes}
-    documents = await get_col("data").find(query_dict)
-    res = len(documents)
+    documents = get_col("data").find(query_dict)
+    res = 0
+    async for d in documents:
+        res += 1
     logging.debug(
         "[riskNum]From "
         + start_time.strftime("%Y-%m-%d")
