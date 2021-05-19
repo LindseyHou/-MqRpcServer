@@ -19,6 +19,8 @@ from partType_classify import (
     WATER_LIST,
 )
 
+logging.basicConfig(level=logging.INFO, filename="real_var.log", filemode="w")
+
 
 class fireType(IntEnum):
     "隐患Type"
@@ -91,7 +93,7 @@ def get_wellRateWhole(companyID: str) -> int:
         .limit(1)
     )
     var_name = sys._getframe().f_code.co_name[4:]
-    logging.info(
+    logging.debug(
         "Latest "
         + var_name
         + ", companyID: "
@@ -111,7 +113,7 @@ def get_wellRateType(companyID: str) -> List[Any]:
         .limit(1)
     )
     var_name = sys._getframe().f_code.co_name[4:]
-    logging.info(
+    logging.debug(
         "Latest "
         + var_name
         + ", companyID: "
@@ -131,7 +133,7 @@ def get_safetyScore(companyID: str) -> float:
         .limit(1)
     )
     var_name = sys._getframe().f_code.co_name[4:]
-    logging.info(
+    logging.debug(
         "Latest "
         + var_name
         + ", companyID: "
@@ -151,7 +153,7 @@ def get_priorRect(companyID: str) -> List[Any]:
         .limit(1)
     )
     var_name = sys._getframe().f_code.co_name[4:]
-    logging.info(
+    logging.debug(
         "Latest "
         + var_name
         + ", companyID: "
@@ -171,7 +173,7 @@ def get_firePartCode(companyID: str) -> List[Any]:
         .limit(1)
     )
     var_name = sys._getframe().f_code.co_name[4:]
-    logging.info(
+    logging.debug(
         "Latest "
         + var_name
         + ", companyID: "
@@ -191,7 +193,7 @@ def get_errorPartCode(companyID: str) -> List[Any]:
         .limit(1)
     )
     var_name = sys._getframe().f_code.co_name[4:]
-    logging.info(
+    logging.debug(
         "Latest "
         + var_name
         + ", companyID: "
@@ -211,7 +213,7 @@ def get_errorPartCodeMonth(companyID: str) -> List[Any]:
         .limit(1)
     )
     var_name = sys._getframe().f_code.co_name[4:]
-    logging.info(
+    logging.debug(
         "Latest "
         + var_name
         + ", companyID: "
@@ -231,7 +233,7 @@ def get_detailScore(companyID: str) -> List[Any]:
         .limit(1)
     )
     var_name = sys._getframe().f_code.co_name[4:]
-    logging.info(
+    logging.debug(
         "Latest "
         + var_name
         + ", companyID: "
@@ -251,7 +253,7 @@ def get_errorRankType(companyID: str) -> List[Any]:
         .limit(1)
     )
     var_name = sys._getframe().f_code.co_name[4:]
-    logging.info(
+    logging.debug(
         "Latest "
         + var_name
         + ", companyID: "
@@ -271,7 +273,7 @@ def get_errorRankNum(companyID: str) -> List[Any]:
         .limit(1)
     )
     var_name = sys._getframe().f_code.co_name[4:]
-    logging.info(
+    logging.debug(
         "Latest "
         + var_name
         + ", companyID: "
@@ -291,7 +293,7 @@ def get_avgRectTime(companyID: str) -> int:
         .limit(1)
     )
     var_name = sys._getframe().f_code.co_name[4:]
-    logging.info(
+    logging.debug(
         "Latest "
         + var_name
         + ", companyID: "
@@ -359,7 +361,7 @@ def get_fireDay(companyID: str) -> int:
     query_dict["partType"] = {"$in", partCodes}
     documents = asy.run(get_col("data")).find(query_dict)
     res = len(documents)
-    logging.info(
+    logging.debug(
         "[fireDay]From "
         + start_time.strftime("%Y-%m-%d")
         + " to "
@@ -387,7 +389,7 @@ def get_fireMonth(companyID: str) -> int:
     query_dict["partType"] = {"$in", partCodes}
     documents = asy.run(get_col("data")).find(query_dict)
     res = len(documents)
-    logging.info(
+    logging.debug(
         "[fireMonth]From "
         + start_time.strftime("%Y-%m-%d")
         + " to "
@@ -415,7 +417,7 @@ def get_riskNum(companyID: str) -> int:
     query_dict["partType"] = {"$in", partCodes}
     documents = asy.run(get_col("data")).find(query_dict)
     res = len(documents)
-    logging.info(
+    logging.debug(
         "[riskNum]From "
         + start_time.strftime("%Y-%m-%d")
         + " to "
@@ -520,3 +522,48 @@ def get_riskList(companyID: str) -> List[str]:
         res.append(sentence)
 
     return res
+
+
+if __name__ == "__main__":
+    day_res = get_points("Day")
+    week_res = get_points("Week")
+    month_res = get_points("Month")
+    companyID = "CPYTEMP107744"
+    logging.info("1.waterRiskDay: " + day_res[fireType.WATER].__str__())
+    logging.info("2.smokeRiskDay: " + day_res[fireType.SMOKE].__str__())
+    logging.info("3.evacuRiskDay: " + day_res[fireType.EVACU].__str__())
+    logging.info("4.alarmRiskDay: " + day_res[fireType.ALARM].__str__())
+    logging.info("5.otherRiskDay: " + day_res[fireType.OTHER].__str__())
+
+    logging.info("6.waterRiskWeek: " + week_res[fireType.WATER].__str__())
+    logging.info("7.smokeRiskWeek: " + week_res[fireType.SMOKE].__str__())
+    logging.info("8.evacuRiskWeek: " + week_res[fireType.EVACU].__str__())
+    logging.info("9.alarmRiskWeek: " + week_res[fireType.ALARM].__str__())
+    logging.info("10.otherRiskWeek: " + week_res[fireType.OTHER].__str__())
+
+    logging.info("11.waterRiskMonth: " + month_res[fireType.WATER].__str__())
+    logging.info("12.smokeRiskMonth: " + month_res[fireType.SMOKE].__str__())
+    logging.info("13.evacuRiskMonth: " + month_res[fireType.EVACU].__str__())
+    logging.info("14.alarmRiskMonth: " + month_res[fireType.ALARM].__str__())
+    logging.info("15.otherRiskMonth: " + month_res[fireType.OTHER].__str__())
+
+    logging.info("16.wellRateWhole: " + get_wellRateWhole(companyID).__str__())
+    logging.info("17.wellRateType: " + get_wellRateType(companyID).__str__())
+    logging.info("18.safetyScore: " + get_safetyScore(companyID).__str__())
+    logging.info("19.priorRect: " + get_priorRect(companyID).__str__())
+    logging.info("20.firePartCode: " + get_firePartCode(companyID).__str__())
+    logging.info("21.errorPartCode: " + get_errorPartCode(companyID).__str__())
+    logging.info(
+        "22.errorPartCodeMonth: " + get_errorPartCodeMonth(companyID).__str__()
+    )
+    logging.info("23.detailScore: " + get_detailScore(companyID).__str__())
+    logging.info("24.errorRankType: " + get_errorRankType(companyID).__str__())
+    logging.info("25.errorRankNum: " + get_errorRankNum(companyID).__str__())
+    logging.info("26.avgRectTime: " + get_avgRectTime(companyID).__str__())
+    logging.info("27.avgRepeatTime: " + get_avgRepeatTime(companyID).__str__())
+    logging.info("28.fireDay: " + get_fireDay(companyID).__str__())
+    logging.info("29.fireMonth: " + get_fireMonth(companyID).__str__())
+    logging.info("30.riskNum: " + get_riskNum(companyID).__str__())
+    logging.info("31.fireRankType: " + get_fireRankType(companyID).__str__())
+    logging.info("32.fireRankNum: " + get_fireRankNum(companyID).__str__())
+    logging.info("33.riskList: " + get_riskList(companyID).__str__())
