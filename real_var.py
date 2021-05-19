@@ -91,7 +91,7 @@ async def get_wellRateWhole(companyID: str) -> int:
     companyID_int: int = int(companyID[7:])
     score_col = get_col("score")
     doc = (
-        score_col.find({"companyID": companyID_int})
+        await score_col.find({"companyID": companyID_int})
         .sort({"time", pymongo.DESCENDING})
         .limit(1)
     )
@@ -111,7 +111,7 @@ async def get_wellRateType(companyID: str) -> List[Any]:
     companyID_int: int = int(companyID[7:])
     score_col = get_col("score")
     doc = (
-        score_col.find({"companyID": companyID_int})
+        await score_col.find({"companyID": companyID_int})
         .sort({"time", pymongo.DESCENDING})
         .limit(1)
     )
@@ -131,7 +131,7 @@ async def get_safetyScore(companyID: str) -> float:
     companyID_int: int = int(companyID[7:])
     score_col = get_col("score")
     doc = (
-        score_col.find({"companyID": companyID_int})
+        await score_col.find({"companyID": companyID_int})
         .sort({"time", pymongo.DESCENDING})
         .limit(1)
     )
