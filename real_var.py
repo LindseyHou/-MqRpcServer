@@ -45,7 +45,7 @@ def get_fireType(partType: int) -> fireType:
 
 
 # from excel 1-15
-def get_points(timeslot: str) -> List[List[Dict[str, int]]]:
+async def get_points(timeslot: str) -> List[List[Dict[str, int]]]:
     res: List[List[Dict[str, int]]] = []
     now = datetime.now()
     interval: relativedelta = relativedelta(days=0)
@@ -65,7 +65,7 @@ def get_points(timeslot: str) -> List[List[Dict[str, int]]]:
         count: List[
             int
         ] = []  # count[fireType.WATER] refers to the water隐患 in a single time interval
-        for doc in asy.run(get_col("data")).find(query_dict):
+        async for doc in get_col("data").find(query_dict):
             algo: int = doc["algoType"]
             partType: int = doc["partType"]
             count = [0, 0, 0, 0, 0]
@@ -84,9 +84,9 @@ def get_points(timeslot: str) -> List[List[Dict[str, int]]]:
 
 # from excel 16-26. Basically directly obtained from collection "score"
 # Do not modify these functions' names!
-def get_wellRateWhole(companyID: str) -> int:
+async def get_wellRateWhole(companyID: str) -> int:
     companyID_int: int = int(companyID[7:])
-    score_col = asy.run(get_col("score"))
+    score_col = get_col("score")
     doc = (
         score_col.find({"companyID": companyID_int})
         .sort({"time", pymongo.DESCENDING})
@@ -104,9 +104,9 @@ def get_wellRateWhole(companyID: str) -> int:
     return doc[var_name]
 
 
-def get_wellRateType(companyID: str) -> List[Any]:
+async def get_wellRateType(companyID: str) -> List[Any]:
     companyID_int: int = int(companyID[7:])
-    score_col = asy.run(get_col("score"))
+    score_col = get_col("score")
     doc = (
         score_col.find({"companyID": companyID_int})
         .sort({"time", pymongo.DESCENDING})
@@ -124,9 +124,9 @@ def get_wellRateType(companyID: str) -> List[Any]:
     return doc[var_name]
 
 
-def get_safetyScore(companyID: str) -> float:
+async def get_safetyScore(companyID: str) -> float:
     companyID_int: int = int(companyID[7:])
-    score_col = asy.run(get_col("score"))
+    score_col = get_col("score")
     doc = (
         score_col.find({"companyID": companyID_int})
         .sort({"time", pymongo.DESCENDING})
@@ -144,9 +144,9 @@ def get_safetyScore(companyID: str) -> float:
     return doc[var_name]
 
 
-def get_priorRect(companyID: str) -> List[Any]:
+async def get_priorRect(companyID: str) -> List[Any]:
     companyID_int: int = int(companyID[7:])
-    score_col = asy.run(get_col("score"))
+    score_col = get_col("score")
     doc = (
         score_col.find({"companyID": companyID_int})
         .sort({"time", pymongo.DESCENDING})
@@ -164,9 +164,9 @@ def get_priorRect(companyID: str) -> List[Any]:
     return doc[var_name]
 
 
-def get_firePartCode(companyID: str) -> List[Any]:
+async def get_firePartCode(companyID: str) -> List[Any]:
     companyID_int: int = int(companyID[7:])
-    score_col = asy.run(get_col("score"))
+    score_col = get_col("score")
     doc = (
         score_col.find({"companyID": companyID_int})
         .sort({"time", pymongo.DESCENDING})
@@ -184,9 +184,9 @@ def get_firePartCode(companyID: str) -> List[Any]:
     return doc["tempFireFacilityNameList"]
 
 
-def get_errorPartCode(companyID: str) -> List[Any]:
+async def get_errorPartCode(companyID: str) -> List[Any]:
     companyID_int: int = int(companyID[7:])
-    score_col = asy.run(get_col("score"))
+    score_col = get_col("score")
     doc = (
         score_col.find({"companyID": companyID_int})
         .sort({"time", pymongo.DESCENDING})
@@ -204,9 +204,9 @@ def get_errorPartCode(companyID: str) -> List[Any]:
     return doc["tempErrorFacilityNameList"]
 
 
-def get_errorPartCodeMonth(companyID: str) -> List[Any]:
+async def get_errorPartCodeMonth(companyID: str) -> List[Any]:
     companyID_int: int = int(companyID[7:])
-    score_col = asy.run(get_col("score"))
+    score_col = get_col("score")
     doc = (
         score_col.find({"companyID": companyID_int})
         .sort({"time", pymongo.DESCENDING})
@@ -224,9 +224,9 @@ def get_errorPartCodeMonth(companyID: str) -> List[Any]:
     return doc["errorFacilities"]
 
 
-def get_detailScore(companyID: str) -> List[Any]:
+async def get_detailScore(companyID: str) -> List[Any]:
     companyID_int: int = int(companyID[7:])
-    score_col = asy.run(get_col("score"))
+    score_col = get_col("score")
     doc = (
         score_col.find({"companyID": companyID_int})
         .sort({"time", pymongo.DESCENDING})
@@ -244,9 +244,9 @@ def get_detailScore(companyID: str) -> List[Any]:
     return doc[var_name]
 
 
-def get_errorRankType(companyID: str) -> List[Any]:
+async def get_errorRankType(companyID: str) -> List[Any]:
     companyID_int: int = int(companyID[7:])
-    score_col = asy.run(get_col("score"))
+    score_col = get_col("score")
     doc = (
         score_col.find({"companyID": companyID_int})
         .sort({"time", pymongo.DESCENDING})
@@ -264,9 +264,9 @@ def get_errorRankType(companyID: str) -> List[Any]:
     return doc[var_name]
 
 
-def get_errorRankNum(companyID: str) -> List[Any]:
+async def get_errorRankNum(companyID: str) -> List[Any]:
     companyID_int: int = int(companyID[7:])
-    score_col = asy.run(get_col("score"))
+    score_col = get_col("score")
     doc = (
         score_col.find({"companyID": companyID_int})
         .sort({"time", pymongo.DESCENDING})
@@ -284,9 +284,9 @@ def get_errorRankNum(companyID: str) -> List[Any]:
     return doc[var_name]
 
 
-def get_avgRectTime(companyID: str) -> int:
+async def get_avgRectTime(companyID: str) -> int:
     companyID_int: int = int(companyID[7:])
-    score_col = asy.run(get_col("score"))
+    score_col = get_col("score")
     doc = (
         score_col.find({"companyID": companyID_int})
         .sort({"time", pymongo.DESCENDING})
@@ -305,12 +305,12 @@ def get_avgRectTime(companyID: str) -> int:
 
 
 # from excel 27-33
-def get_avgRepeatTime(companyID: str) -> float:
+async def get_avgRepeatTime(companyID: str) -> float:
     "27"
     companyID_int: int = int(companyID[7:])
-    datas = asy.run(get_col("info")).find({"projID": companyID_int})["datas"]
+    datas = get_col("info").find({"projID": companyID_int})["datas"]
     partCodes = []
-    for data in datas:
+    async for data in datas:
         partCodes.append(data["partCode"])
     now = datetime.now()
     start_time = now - relativedelta(days=30)
@@ -320,9 +320,9 @@ def get_avgRepeatTime(companyID: str) -> float:
     query_dict["time"]["$gte"] = start_time
     query_dict["algoType"] = {"$in", [100, 200, 300]}
     query_dict["partType"] = {"$in", partCodes}
-    documents = asy.run(get_col("data")).find(query_dict)
+    documents = get_col("data").find(query_dict)
     count: Dict[int, Dict[str, int]] = {}
-    for doc in documents:
+    async for doc in documents:
         partType: int = doc["partType"]
         partCode: str = doc["partCode"]
         if partType not in count.keys():
@@ -344,12 +344,12 @@ def get_avgRepeatTime(companyID: str) -> float:
     return avgRepT
 
 
-def get_fireDay(companyID: str) -> int:
+async def get_fireDay(companyID: str) -> int:
     "28"
     companyID_int: int = int(companyID[7:])
-    datas = asy.run(get_col("info")).find({"projID": companyID_int})["datas"]
+    datas = get_col("info").find({"projID": companyID_int})["datas"]
     partCodes = []
-    for data in datas:
+    async for data in datas:
         partCodes.append(data["partCode"])
     now = datetime.now()
     start_time = now - relativedelta(days=1)
@@ -359,7 +359,7 @@ def get_fireDay(companyID: str) -> int:
     query_dict["time"]["$gte"] = start_time
     query_dict["algoType"] = 100
     query_dict["partType"] = {"$in", partCodes}
-    documents = asy.run(get_col("data")).find(query_dict)
+    documents = await get_col("data").find(query_dict)
     res = len(documents)
     logging.debug(
         "[fireDay]From "
@@ -372,12 +372,12 @@ def get_fireDay(companyID: str) -> int:
     return res
 
 
-def get_fireMonth(companyID: str) -> int:
+async def get_fireMonth(companyID: str) -> int:
     "29"
     companyID_int: int = int(companyID[7:])
-    datas = asy.run(get_col("info")).find({"projID": companyID_int})["datas"]
+    datas = get_col("info").find({"projID": companyID_int})["datas"]
     partCodes = []
-    for data in datas:
+    async for data in datas:
         partCodes.append(data["partCode"])
     now = datetime.now()
     start_time = now - relativedelta(months=1)
@@ -387,7 +387,7 @@ def get_fireMonth(companyID: str) -> int:
     query_dict["time"]["$gte"] = start_time
     query_dict["algoType"] = 100
     query_dict["partType"] = {"$in", partCodes}
-    documents = asy.run(get_col("data")).find(query_dict)
+    documents = await get_col("data").find(query_dict)
     res = len(documents)
     logging.debug(
         "[fireMonth]From "
@@ -400,12 +400,12 @@ def get_fireMonth(companyID: str) -> int:
     return res
 
 
-def get_riskNum(companyID: str) -> int:
+async def get_riskNum(companyID: str) -> int:
     "30"
     companyID_int: int = int(companyID[7:])
-    datas = asy.run(get_col("info")).find({"projID": companyID_int})["datas"]
+    datas = get_col("info").find({"projID": companyID_int})["datas"]
     partCodes = []
-    for data in datas:
+    async for data in datas:
         partCodes.append(data["partCode"])
     now = datetime.now()
     start_time = now - relativedelta(weeks=1)
@@ -415,7 +415,7 @@ def get_riskNum(companyID: str) -> int:
     query_dict["time"]["$gte"] = start_time
     query_dict["algoType"] = {"$in", [100, 200, 300]}
     query_dict["partType"] = {"$in", partCodes}
-    documents = asy.run(get_col("data")).find(query_dict)
+    documents = await get_col("data").find(query_dict)
     res = len(documents)
     logging.debug(
         "[riskNum]From "
@@ -428,12 +428,12 @@ def get_riskNum(companyID: str) -> int:
     return res
 
 
-def get_fireRankType(companyID: str) -> List[int]:
+async def get_fireRankType(companyID: str) -> List[int]:
     "31"
     companyID_int: int = int(companyID[7:])
-    datas = asy.run(get_col("info")).find({"projID": companyID_int})["datas"]
+    datas = get_col("info").find({"projID": companyID_int})["datas"]
     partCodes = []
-    for data in datas:
+    async for data in datas:
         partCodes.append(data["partCode"])
 
     count: Dict[int, int] = {}
@@ -446,8 +446,8 @@ def get_fireRankType(companyID: str) -> List[int]:
     query_dict["time"]["$gte"] = start_time
     query_dict["algoType"] = 100
     query_dict["partType"] = {"$in", partCodes}
-    documents = asy.run(get_col("data")).find(query_dict)
-    for doc in documents:
+    documents = get_col("data").find(query_dict)
+    async for doc in documents:
         partType = doc["partType"]
         if partType in count.keys():
             count[partType] += 1
@@ -460,12 +460,12 @@ def get_fireRankType(companyID: str) -> List[int]:
     return res
 
 
-def get_fireRankNum(companyID: str) -> List[int]:
+async def get_fireRankNum(companyID: str) -> List[int]:
     "32"
     companyID_int: int = int(companyID[7:])
-    datas = asy.run(get_col("info")).find({"projID": companyID_int})["datas"]
+    datas = get_col("info").find({"projID": companyID_int})["datas"]
     partCodes = []
-    for data in datas:
+    async for data in datas:
         partCodes.append(data["partCode"])
 
     count: Dict[int, int] = {}
@@ -478,8 +478,8 @@ def get_fireRankNum(companyID: str) -> List[int]:
     query_dict["time"]["$gte"] = start_time
     query_dict["algoType"] = 100
     query_dict["partType"] = {"$in", partCodes}
-    documents = asy.run(get_col("data")).find(query_dict)
-    for doc in documents:
+    documents = get_col("data").find(query_dict)
+    async for doc in documents:
         partType = doc["partType"]
         if partType in count.keys():
             count[partType] += 1
@@ -492,12 +492,12 @@ def get_fireRankNum(companyID: str) -> List[int]:
     return res
 
 
-def get_riskList(companyID: str) -> List[str]:
+async def get_riskList(companyID: str) -> List[str]:
     "33"
     companyID_int: int = int(companyID[7:])
-    datas = asy.run(get_col("info")).find({"projID": companyID_int})["datas"]
+    datas = get_col("info").find({"projID": companyID_int})["datas"]
     partCodes = []
-    for data in datas:
+    async for data in datas:
         partCodes.append(data["partCode"])
     now = datetime.now()
     start_time = now - relativedelta(weeks=1)
@@ -507,10 +507,10 @@ def get_riskList(companyID: str) -> List[str]:
     query_dict["time"]["$gte"] = start_time
     query_dict["algoType"] = {"$in", [100, 200, 300]}
     query_dict["partType"] = {"$in", partCodes}
-    documents = asy.run(get_col("data")).find(query_dict)
+    documents = get_col("data").find(query_dict)
     res: List[str] = []
     ALGO2NAME: Dict[int, str] = {0: "正常", 100: "火警", 200: "故障", 300: "预警"}
-    for doc in documents:
+    async for doc in documents:
         sentence: str = ""
         sentence = (
             PARTTYPE2NAME[doc["partType"]]
@@ -524,11 +524,31 @@ def get_riskList(companyID: str) -> List[str]:
     return res
 
 
-if __name__ == "__main__":
-    day_res = get_points("Day")
-    week_res = get_points("Week")
-    month_res = get_points("Month")
+async def main() -> None:
+    day_res = await get_points("Day")
+    week_res = await get_points("Week")
+    month_res = await get_points("Month")
     companyID = "CPYTEMP107744"
+
+    wellRateWhole = await get_wellRateWhole(companyID)
+    wellRateType = await get_wellRateType(companyID)
+    safetyScore = await get_safetyScore(companyID)
+    priorRect = await get_priorRect(companyID)
+    firePartCode = await get_firePartCode(companyID)
+    errorPartCode = await get_errorPartCode(companyID)
+    errorPartCodeMonth = await get_errorPartCodeMonth(companyID)
+    detailScore = await get_detailScore(companyID)
+    errorRankType = await get_errorRankType(companyID)
+    errorRankNum = await get_errorRankNum(companyID)
+    avgRectTime = await get_avgRectTime(companyID)
+    avgRepeatTime = await get_avgRepeatTime(companyID)
+    fireDay = await get_fireDay(companyID)
+    fireMonth = await get_fireMonth(companyID)
+    riskNum = await get_riskNum(companyID)
+    fireRankType = await get_fireRankType(companyID)
+    fireRankNum = await get_fireRankNum(companyID)
+    riskList = await get_riskList(companyID)
+
     logging.info("1.waterRiskDay: " + day_res[fireType.WATER].__str__())
     logging.info("2.smokeRiskDay: " + day_res[fireType.SMOKE].__str__())
     logging.info("3.evacuRiskDay: " + day_res[fireType.EVACU].__str__())
@@ -547,23 +567,25 @@ if __name__ == "__main__":
     logging.info("14.alarmRiskMonth: " + month_res[fireType.ALARM].__str__())
     logging.info("15.otherRiskMonth: " + month_res[fireType.OTHER].__str__())
 
-    logging.info("16.wellRateWhole: " + get_wellRateWhole(companyID).__str__())
-    logging.info("17.wellRateType: " + get_wellRateType(companyID).__str__())
-    logging.info("18.safetyScore: " + get_safetyScore(companyID).__str__())
-    logging.info("19.priorRect: " + get_priorRect(companyID).__str__())
-    logging.info("20.firePartCode: " + get_firePartCode(companyID).__str__())
-    logging.info("21.errorPartCode: " + get_errorPartCode(companyID).__str__())
-    logging.info(
-        "22.errorPartCodeMonth: " + get_errorPartCodeMonth(companyID).__str__()
-    )
-    logging.info("23.detailScore: " + get_detailScore(companyID).__str__())
-    logging.info("24.errorRankType: " + get_errorRankType(companyID).__str__())
-    logging.info("25.errorRankNum: " + get_errorRankNum(companyID).__str__())
-    logging.info("26.avgRectTime: " + get_avgRectTime(companyID).__str__())
-    logging.info("27.avgRepeatTime: " + get_avgRepeatTime(companyID).__str__())
-    logging.info("28.fireDay: " + get_fireDay(companyID).__str__())
-    logging.info("29.fireMonth: " + get_fireMonth(companyID).__str__())
-    logging.info("30.riskNum: " + get_riskNum(companyID).__str__())
-    logging.info("31.fireRankType: " + get_fireRankType(companyID).__str__())
-    logging.info("32.fireRankNum: " + get_fireRankNum(companyID).__str__())
-    logging.info("33.riskList: " + get_riskList(companyID).__str__())
+    logging.info("16.wellRateWhole: " + wellRateWhole.__str__())
+    logging.info("17.wellRateType: " + wellRateType.__str__())
+    logging.info("18.safetyScore: " + safetyScore.__str__())
+    logging.info("19.priorRect: " + priorRect.__str__())
+    logging.info("20.firePartCode: " + firePartCode.__str__())
+    logging.info("21.errorPartCode: " + errorPartCode.__str__())
+    logging.info("22.errorPartCodeMonth: " + errorPartCodeMonth.__str__())
+    logging.info("23.detailScore: " + detailScore.__str__())
+    logging.info("24.errorRankType: " + errorRankType.__str__())
+    logging.info("25.errorRankNum: " + errorRankNum.__str__())
+    logging.info("26.avgRectTime: " + avgRectTime.__str__())
+    logging.info("27.avgRepeatTime: " + avgRepeatTime.__str__())
+    logging.info("28.fireDay: " + fireDay.__str__())
+    logging.info("29.fireMonth: " + fireMonth.__str__())
+    logging.info("30.riskNum: " + riskNum.__str__())
+    logging.info("31.fireRankType: " + fireRankType.__str__())
+    logging.info("32.fireRankNum: " + fireRankNum.__str__())
+    logging.info("33.riskList: " + riskList.__str__())
+
+
+if __name__ == "__main__":
+    asy.run(main())
