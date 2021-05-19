@@ -62,13 +62,16 @@ async def get_points(timeslot: str) -> List[List[Dict[str, int]]]:
         query_dict["time"] = {}
         query_dict["time"]["$lte"] = end_date
         query_dict["time"]["$gte"] = start_date
-        count: List[
-            int
-        ] = []  # count[fireType.WATER] refers to the water隐患 in a single time interval
+        count: List[int] = [
+            0,
+            0,
+            0,
+            0,
+            0,
+        ]  # count[fireType.WATER] refers to the water隐患 in a single time interval
         async for doc in get_col("data").find(query_dict):
             algo: int = doc["algoType"]
             partType: int = doc["partType"]
-            count = [0, 0, 0, 0, 0]
             if algo == 100 or algo == 200 or algo == 300:
                 _fireType = get_fireType(partType=partType)
                 count[_fireType] += 1
