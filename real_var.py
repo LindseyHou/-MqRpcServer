@@ -19,8 +19,6 @@ from partType_classify import (
     WATER_LIST,
 )
 
-logging.basicConfig(level=logging.INFO, filename="real_var.log", filemode="w")
-
 
 class fireType(IntEnum):
     "隐患Type"
@@ -572,10 +570,11 @@ async def get_riskList(companyID: str) -> List[str]:
 
 
 async def main() -> None:
+    logging.basicConfig(level=logging.INFO, filename="real_var.log", filemode="w")
     day_res = await get_points("Day")
     week_res = await get_points("Week")
     month_res = await get_points("Month")
-    companyID = "CPYTEMP107744"
+    companyID = sys.argv[1]
 
     wellRateWhole = await get_wellRateWhole(companyID)
     wellRateType = await get_wellRateType(companyID)
