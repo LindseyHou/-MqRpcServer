@@ -347,9 +347,7 @@ async def get_avgRectTime(companyID: str) -> int:
 async def get_avgRepeatTime(companyID: str) -> float:
     "27"
     companyID_int: int = int(companyID[7:])
-    datas = []
-    async for doc in get_col("info").find({"projID": companyID_int}):
-        datas.append(doc["datas"])
+    datas = (await get_col("info").find_one({"projID": companyID_int}))["datas"]
     partCodes = []
     for data in datas:
         partCodes.append(data["partCode"])
@@ -359,8 +357,8 @@ async def get_avgRepeatTime(companyID: str) -> float:
     query_dict["time"] = {}
     query_dict["time"]["$lte"] = now
     query_dict["time"]["$gte"] = start_time
-    query_dict["algoType"] = {"$in", [100, 200, 300]}
-    query_dict["partType"] = {"$in", partCodes}
+    query_dict["algoType"] = {"$in": [100, 200, 300]}
+    query_dict["partType"] = {"$in": partCodes}
     documents = get_col("data").find(query_dict)
     count: Dict[int, Dict[str, int]] = {}
     async for doc in documents:
@@ -388,9 +386,7 @@ async def get_avgRepeatTime(companyID: str) -> float:
 async def get_fireDay(companyID: str) -> int:
     "28"
     companyID_int: int = int(companyID[7:])
-    datas = []
-    async for doc in get_col("info").find({"projID": companyID_int}):
-        datas.append(doc["datas"])
+    datas = (await get_col("info").find_one({"projID": companyID_int}))["datas"]
     partCodes = []
     for data in datas:
         partCodes.append(data["partCode"])
@@ -401,7 +397,7 @@ async def get_fireDay(companyID: str) -> int:
     query_dict["time"]["$lte"] = now
     query_dict["time"]["$gte"] = start_time
     query_dict["algoType"] = 100
-    query_dict["partType"] = {"$in", partCodes}
+    query_dict["partType"] = {"$in": partCodes}
     documents = get_col("data").find(query_dict)
     res = 0
     async for d in documents:
@@ -420,9 +416,7 @@ async def get_fireDay(companyID: str) -> int:
 async def get_fireMonth(companyID: str) -> int:
     "29"
     companyID_int: int = int(companyID[7:])
-    datas = []
-    async for doc in get_col("info").find({"projID": companyID_int}):
-        datas.append(doc["datas"])
+    datas = (await get_col("info").find_one({"projID": companyID_int}))["datas"]
     partCodes = []
     for data in datas:
         partCodes.append(data["partCode"])
@@ -433,7 +427,7 @@ async def get_fireMonth(companyID: str) -> int:
     query_dict["time"]["$lte"] = now
     query_dict["time"]["$gte"] = start_time
     query_dict["algoType"] = 100
-    query_dict["partType"] = {"$in", partCodes}
+    query_dict["partType"] = {"$in": partCodes}
     documents = get_col("data").find(query_dict)
     res = 0
     async for d in documents:
@@ -452,9 +446,7 @@ async def get_fireMonth(companyID: str) -> int:
 async def get_riskNum(companyID: str) -> int:
     "30"
     companyID_int: int = int(companyID[7:])
-    datas = []
-    async for doc in get_col("info").find({"projID": companyID_int}):
-        datas.append(doc["datas"])
+    datas = (await get_col("info").find_one({"projID": companyID_int}))["datas"]
     partCodes = []
     for data in datas:
         partCodes.append(data["partCode"])
@@ -464,8 +456,8 @@ async def get_riskNum(companyID: str) -> int:
     query_dict["time"] = {}
     query_dict["time"]["$lte"] = now
     query_dict["time"]["$gte"] = start_time
-    query_dict["algoType"] = {"$in", [100, 200, 300]}
-    query_dict["partType"] = {"$in", partCodes}
+    query_dict["algoType"] = {"$in": [100, 200, 300]}
+    query_dict["partType"] = {"$in": partCodes}
     documents = get_col("data").find(query_dict)
     res = 0
     async for d in documents:
@@ -484,9 +476,7 @@ async def get_riskNum(companyID: str) -> int:
 async def get_fireRankType(companyID: str) -> List[int]:
     "31"
     companyID_int: int = int(companyID[7:])
-    datas = []
-    async for doc in get_col("info").find({"projID": companyID_int}):
-        datas.append(doc["datas"])
+    datas = (await get_col("info").find_one({"projID": companyID_int}))["datas"]
     partCodes = []
     for data in datas:
         partCodes.append(data["partCode"])
@@ -500,7 +490,7 @@ async def get_fireRankType(companyID: str) -> List[int]:
     query_dict["time"]["$lte"] = now
     query_dict["time"]["$gte"] = start_time
     query_dict["algoType"] = 100
-    query_dict["partType"] = {"$in", partCodes}
+    query_dict["partType"] = {"$in": partCodes}
     documents = get_col("data").find(query_dict)
     async for doc in documents:
         partType = doc["partType"]
@@ -518,9 +508,7 @@ async def get_fireRankType(companyID: str) -> List[int]:
 async def get_fireRankNum(companyID: str) -> List[int]:
     "32"
     companyID_int: int = int(companyID[7:])
-    datas = []
-    async for doc in get_col("info").find({"projID": companyID_int}):
-        datas.append(doc["datas"])
+    datas = (await get_col("info").find_one({"projID": companyID_int}))["datas"]
     partCodes = []
     for data in datas:
         partCodes.append(data["partCode"])
@@ -534,7 +522,7 @@ async def get_fireRankNum(companyID: str) -> List[int]:
     query_dict["time"]["$lte"] = now
     query_dict["time"]["$gte"] = start_time
     query_dict["algoType"] = 100
-    query_dict["partType"] = {"$in", partCodes}
+    query_dict["partType"] = {"$in": partCodes}
     documents = get_col("data").find(query_dict)
     async for doc in documents:
         partType = doc["partType"]
@@ -552,9 +540,7 @@ async def get_fireRankNum(companyID: str) -> List[int]:
 async def get_riskList(companyID: str) -> List[str]:
     "33"
     companyID_int: int = int(companyID[7:])
-    datas = []
-    async for doc in get_col("info").find({"projID": companyID_int}):
-        datas.append(doc["datas"])
+    datas = (await get_col("info").find_one({"projID": companyID_int}))["datas"]
     partCodes = []
     for data in datas:
         partCodes.append(data["partCode"])
@@ -564,8 +550,8 @@ async def get_riskList(companyID: str) -> List[str]:
     query_dict["time"] = {}
     query_dict["time"]["$lte"] = now
     query_dict["time"]["$gte"] = start_time
-    query_dict["algoType"] = {"$in", [100, 200, 300]}
-    query_dict["partType"] = {"$in", partCodes}
+    query_dict["algoType"] = {"$in": [100, 200, 300]}
+    query_dict["partType"] = {"$in": partCodes}
     documents = get_col("data").find(query_dict)
     res: List[str] = []
     ALGO2NAME: Dict[int, str] = {0: "正常", 100: "火警", 200: "故障", 300: "预警"}
