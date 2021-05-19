@@ -151,7 +151,7 @@ async def get_priorRect(companyID: str) -> List[Any]:
     companyID_int: int = int(companyID[7:])
     score_col = get_col("score")
     doc = (
-        score_col.find({"companyID": companyID_int})
+        await score_col.find({"companyID": companyID_int})
         .sort({"time", pymongo.DESCENDING})
         .limit(1)
     )
@@ -171,7 +171,7 @@ async def get_firePartCode(companyID: str) -> List[Any]:
     companyID_int: int = int(companyID[7:])
     score_col = get_col("score")
     doc = (
-        score_col.find({"companyID": companyID_int})
+        await score_col.find({"companyID": companyID_int})
         .sort({"time", pymongo.DESCENDING})
         .limit(1)
     )
@@ -191,7 +191,7 @@ async def get_errorPartCode(companyID: str) -> List[Any]:
     companyID_int: int = int(companyID[7:])
     score_col = get_col("score")
     doc = (
-        score_col.find({"companyID": companyID_int})
+        await score_col.find({"companyID": companyID_int})
         .sort({"time", pymongo.DESCENDING})
         .limit(1)
     )
@@ -211,7 +211,7 @@ async def get_errorPartCodeMonth(companyID: str) -> List[Any]:
     companyID_int: int = int(companyID[7:])
     score_col = get_col("score")
     doc = (
-        score_col.find({"companyID": companyID_int})
+        await score_col.find({"companyID": companyID_int})
         .sort({"time", pymongo.DESCENDING})
         .limit(1)
     )
@@ -231,7 +231,7 @@ async def get_detailScore(companyID: str) -> List[Any]:
     companyID_int: int = int(companyID[7:])
     score_col = get_col("score")
     doc = (
-        score_col.find({"companyID": companyID_int})
+        await score_col.find({"companyID": companyID_int})
         .sort({"time", pymongo.DESCENDING})
         .limit(1)
     )
@@ -251,7 +251,7 @@ async def get_errorRankType(companyID: str) -> List[Any]:
     companyID_int: int = int(companyID[7:])
     score_col = get_col("score")
     doc = (
-        score_col.find({"companyID": companyID_int})
+        await score_col.find({"companyID": companyID_int})
         .sort({"time", pymongo.DESCENDING})
         .limit(1)
     )
@@ -271,7 +271,7 @@ async def get_errorRankNum(companyID: str) -> List[Any]:
     companyID_int: int = int(companyID[7:])
     score_col = get_col("score")
     doc = (
-        score_col.find({"companyID": companyID_int})
+        await score_col.find({"companyID": companyID_int})
         .sort({"time", pymongo.DESCENDING})
         .limit(1)
     )
@@ -291,7 +291,7 @@ async def get_avgRectTime(companyID: str) -> int:
     companyID_int: int = int(companyID[7:])
     score_col = get_col("score")
     doc = (
-        score_col.find({"companyID": companyID_int})
+        await score_col.find({"companyID": companyID_int})
         .sort({"time", pymongo.DESCENDING})
         .limit(1)
     )
