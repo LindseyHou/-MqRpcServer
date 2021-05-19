@@ -379,6 +379,8 @@ async def get_avgRepeatTime(companyID: str) -> float:
             dataNum += n
         repT: float = 30 / (dataNum / codeNum)
         sum += repT
+    if len(count.keys()) == 0:
+        return 0
     avgRepT: float = sum / len(count.keys())
     return avgRepT
 
