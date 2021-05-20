@@ -1,3 +1,7 @@
+from asyncio import run
+from crud import METHODNAME_2_METHOD, getData
+from pika.adapters.blocking_connection import BlockingChannel
+import pika
 import logging
 from typing import Any
 
@@ -8,11 +12,6 @@ logging.basicConfig(
     level=logging.INFO,
 )
 
-
-import pika
-from pika.adapters.blocking_connection import BlockingChannel
-
-from crud import METHODNAME_2_METHOD, getData
 
 connection: pika.BlockingConnection = pika.BlockingConnection(
     pika.ConnectionParameters(host="localhost")
@@ -28,7 +27,7 @@ def on_request(ch: BlockingChannel, method: Any, props: Any, body: bytes) -> Non
     methodName, groupName, *_ = message.split("&")
     logging.info(f" [.] getData({methodName}, {groupName})")
     try:
-        response = getData(groupName, methodName)
+        response = run(getData(groupName, methodName))
     except ValueError:
         response = "ValueError"
     logging.info(" [>] response = %s" % response)

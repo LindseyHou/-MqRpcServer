@@ -9,13 +9,13 @@ from const import PARTTYPE2NAME
 from asyncio import run
 
 
-def getFireDataStatistics(companyID: str) -> schema.FireDataStatistics:
+async def getFireDataStatistics(companyID: str) -> schema.FireDataStatistics:
     Vsize_1 = 50
     Vsize_2 = 200
     Vsize_3 = 500
-    day_res = run(get_points("Day"))
-    week_res = run(get_points("Week"))
-    month_res = run(get_points("Month"))
+    day_res = await get_points("Day")
+    week_res = await get_points("Week")
+    month_res = await get_points("Month")
     data = {
         "Day": {
             "VSize": Vsize_1,
@@ -51,12 +51,13 @@ def getFireDataStatistics(companyID: str) -> schema.FireDataStatistics:
     return schema.FireDataStatistics(**data)  # type: ignore
 
 
-def getSafetyScore(companyID: str) -> List[schema.SafetyScore]:
+async def getSafetyScore(companyID: str) -> List[schema.SafetyScore]:
     datas = [
         {
             "CompanyName": "上海国际会议中心",
-            "PercentageOfIoT": get_wellRateWhole(companyID),
-            "SafetyRating": get_safetyScore(companyID),  # FIXME: why float???
+            "PercentageOfIoT": await get_wellRateWhole(companyID),
+            # FIXME: why float???
+            "SafetyRating": await get_safetyScore(companyID),
             "ImageUrl": "SHICC.png",
             "SceneName": "SHICC",
             "FireStatistics": 6,
@@ -68,8 +69,8 @@ def getSafetyScore(companyID: str) -> List[schema.SafetyScore]:
         },
         {
             "CompanyName": "浦东美术馆",
-            "PercentageOfIoT": get_wellRateWhole(companyID),
-            "SafetyRating": get_safetyScore(companyID),
+            "PercentageOfIoT": await get_wellRateWhole(companyID),
+            "SafetyRating": await get_safetyScore(companyID),
             "ImageUrl": "MeiShuGuan.png",
             "SceneName": "SHICC",
             "FireStatistics": 6,
@@ -81,8 +82,8 @@ def getSafetyScore(companyID: str) -> List[schema.SafetyScore]:
         },
         {
             "CompanyName": "港务大厦",
-            "PercentageOfIoT": get_wellRateWhole(companyID),
-            "SafetyRating": get_safetyScore(companyID),
+            "PercentageOfIoT": await get_wellRateWhole(companyID),
+            "SafetyRating": await get_safetyScore(companyID),
             "ImageUrl": "GangWuDaSha.png",
             "SceneName": "SHICC",
             "FireStatistics": 6,
@@ -94,8 +95,8 @@ def getSafetyScore(companyID: str) -> List[schema.SafetyScore]:
         },
         {
             "CompanyName": "浦东海关大楼",
-            "PercentageOfIoT": get_wellRateWhole(companyID),
-            "SafetyRating": get_safetyScore(companyID),
+            "PercentageOfIoT": await get_wellRateWhole(companyID),
+            "SafetyRating": await get_safetyScore(companyID),
             "ImageUrl": "HaiGuanDaLou.png",
             "SceneName": "SHICC",
             "FireStatistics": 6,
@@ -107,8 +108,8 @@ def getSafetyScore(companyID: str) -> List[schema.SafetyScore]:
         },
         {
             "CompanyName": "正大广场",
-            "PercentageOfIoT": get_wellRateWhole(companyID),
-            "SafetyRating": get_safetyScore(companyID),
+            "PercentageOfIoT": await get_wellRateWhole(companyID),
+            "SafetyRating": await get_safetyScore(companyID),
             "ImageUrl": "ZhengDaGuangChang.png",
             "SceneName": "SHICC",
             "FireStatistics": 6,
@@ -120,8 +121,8 @@ def getSafetyScore(companyID: str) -> List[schema.SafetyScore]:
         },
         {
             "CompanyName": "万向大厦",
-            "PercentageOfIoT": get_wellRateWhole(companyID),
-            "SafetyRating": get_safetyScore(companyID),
+            "PercentageOfIoT": await get_wellRateWhole(companyID),
+            "SafetyRating": await get_safetyScore(companyID),
             "ImageUrl": "WanXiangDaSha.png",
             "SceneName": "SHICC",
             "FireStatistics": 6,
@@ -133,8 +134,8 @@ def getSafetyScore(companyID: str) -> List[schema.SafetyScore]:
         },
         {
             "CompanyName": "复兴馆",
-            "PercentageOfIoT": get_wellRateWhole(companyID),
-            "SafetyRating": get_safetyScore(companyID),
+            "PercentageOfIoT": await get_wellRateWhole(companyID),
+            "SafetyRating": await get_safetyScore(companyID),
             "ImageUrl": "FuXingGuan.png",
             "SceneName": "FuXingGuan",
             "FireStatistics": 6,
@@ -146,8 +147,8 @@ def getSafetyScore(companyID: str) -> List[schema.SafetyScore]:
         },
         {
             "CompanyName": "花栖堂",
-            "PercentageOfIoT": get_wellRateWhole(companyID),
-            "SafetyRating": get_safetyScore(companyID),
+            "PercentageOfIoT": await get_wellRateWhole(companyID),
+            "SafetyRating": await get_safetyScore(companyID),
             "ImageUrl": "HuaQiTang.png",
             "SceneName": "HuaQiTang",
             "FireStatistics": 6,
@@ -159,8 +160,8 @@ def getSafetyScore(companyID: str) -> List[schema.SafetyScore]:
         },
         {
             "CompanyName": "世纪馆",
-            "PercentageOfIoT": get_wellRateWhole(companyID),
-            "SafetyRating": get_safetyScore(companyID),
+            "PercentageOfIoT": await get_wellRateWhole(companyID),
+            "SafetyRating": await get_safetyScore(companyID),
             "ImageUrl": "ShiJiGuan.png",
             "SceneName": "",
             "FireStatistics": 6,
@@ -172,8 +173,8 @@ def getSafetyScore(companyID: str) -> List[schema.SafetyScore]:
         },
         {
             "CompanyName": "花艺馆",
-            "PercentageOfIoT": get_wellRateWhole(companyID),
-            "SafetyRating": get_safetyScore(companyID),
+            "PercentageOfIoT": await get_wellRateWhole(companyID),
+            "SafetyRating": await get_safetyScore(companyID),
             "ImageUrl": "HuaYiGuan.png",
             "SceneName": "",
             "FireStatistics": 6,
@@ -185,8 +186,8 @@ def getSafetyScore(companyID: str) -> List[schema.SafetyScore]:
         },
         {
             "CompanyName": "竹藤馆",
-            "PercentageOfIoT": get_wellRateWhole(companyID),
-            "SafetyRating": get_safetyScore(companyID),
+            "PercentageOfIoT": await get_wellRateWhole(companyID),
+            "SafetyRating": await get_safetyScore(companyID),
             "ImageUrl": "ZhuTengGuan.png",
             "SceneName": "",
             "FireStatistics": 6,
@@ -198,8 +199,8 @@ def getSafetyScore(companyID: str) -> List[schema.SafetyScore]:
         },
         {
             "CompanyName": "百花馆",
-            "PercentageOfIoT": get_wellRateWhole(companyID),
-            "SafetyRating": get_safetyScore(companyID),
+            "PercentageOfIoT": await get_wellRateWhole(companyID),
+            "SafetyRating": await get_safetyScore(companyID),
             "ImageUrl": "BaiHuaGuan.png",
             "SceneName": "",
             "FireStatistics": 6,
@@ -213,7 +214,7 @@ def getSafetyScore(companyID: str) -> List[schema.SafetyScore]:
     return [schema.SafetyScore(**data) for data in datas]  # type: ignore
 
 
-def getRealTimeAlarm(companyID: str) -> List[schema.RealTimeAlarm]:
+async def getRealTimeAlarm(companyID: str) -> List[schema.RealTimeAlarm]:
     datas = [
         {"CompanyName": "上海国际会议中心", "CompanyAddress": "上海市浦东新区滨江大道2727号"},
         {"CompanyName": "复兴馆", "CompanyAddress": "上海市浦东新区金科路1800号"},
@@ -225,7 +226,7 @@ def getRealTimeAlarm(companyID: str) -> List[schema.RealTimeAlarm]:
     return [schema.RealTimeAlarm(**data) for data in datas]
 
 
-def getGiveAlarmRecord(companyID: str) -> List[schema.GiveAlarmRecord]:
+async def getGiveAlarmRecord(companyID: str) -> List[schema.GiveAlarmRecord]:
     datas = []
     if companyID == "CPY3101120001":
         datas = [
@@ -389,7 +390,7 @@ def getGiveAlarmRecord(companyID: str) -> List[schema.GiveAlarmRecord]:
     return [schema.GiveAlarmRecord(**data) for data in datas]  # type: ignore
 
 
-def getBuildingInfo(companyID: str) -> schema.BuildingInfo:
+async def getBuildingInfo(companyID: str) -> schema.BuildingInfo:
     data = {
         "CompanyName": "None",
         "CompanyAddress": "None",
@@ -443,30 +444,30 @@ def getBuildingInfo(companyID: str) -> schema.BuildingInfo:
     return schema.BuildingInfo(**data)  # type: ignore
 
 
-def getAlarmInfo(companyID: str) -> schema.AlarmInfo:
+async def getAlarmInfo(companyID: str) -> schema.AlarmInfo:
     data = {"DailyAlarm": 0, "MonthlyAlarm": 0, "PendingTasks": 0}
     if companyID == "CPY3101120001":
         data = {
-            "DailyAlarm": run(get_fireDay(companyID)),
-            "MonthlyAlarm": run(get_fireMonth(companyID)),
-            "PendingTasks": run(get_riskNum(companyID)),
+            "DailyAlarm": await get_fireDay(companyID),
+            "MonthlyAlarm": await get_fireMonth(companyID),
+            "PendingTasks": await get_riskNum(companyID),
         }
     elif companyID == "CPY3101120002":
         data = {
-            "DailyAlarm":   run(get_fireDay(companyID)),
-            "MonthlyAlarm": run(get_fireMonth(companyID)),
-            "PendingTasks": run(get_riskNum(companyID)),
+            "DailyAlarm": await get_fireDay(companyID),
+            "MonthlyAlarm": await get_fireMonth(companyID),
+            "PendingTasks": await get_riskNum(companyID),
         }
     elif companyID == "CPY3101120003":
         data = {
-            "DailyAlarm": run(get_fireDay(companyID)),
-            "MonthlyAlarm": run(get_fireMonth(companyID)),
-            "PendingTasks": run(get_riskNum(companyID)),
+            "DailyAlarm": await get_fireDay(companyID),
+            "MonthlyAlarm": await get_fireMonth(companyID),
+            "PendingTasks": await get_riskNum(companyID),
         }
     return schema.AlarmInfo(**data)
 
 
-def getScoreDetail(companyID: str) -> schema.ScoreDetail:
+async def getScoreDetail(companyID: str) -> schema.ScoreDetail:
     data = {
         "RecommendedNames": [],
         "WeiHuBaoYang": {
@@ -495,154 +496,98 @@ def getScoreDetail(companyID: str) -> schema.ScoreDetail:
             "SourceItems": [{"Details": ""}],
         },
     }
+    ds = await get_detailScore(companyID)
     if companyID == "CPY3101120001":
         data = {
-            "RecommendedNames": run(get_priorRect(companyID)),
+            "RecommendedNames": await get_priorRect(companyID),
             "WeiHuBaoYang": {
                 "Headline": "设施维护保养",
-                "SourceItems": [
-                    {"Details": "维修时间", "Score": -4.0},
-                    {"Details": "维修成功率", "Score": -4.0},
-                ],
+                "HeanlineScore": str(ds[1]),
+                "SourceItems": []
             },
             "YunXingZhuangTai": {
                 "Headline": "消防设施运行状态",
-                "SourceItems": [
-                    {"Details": "火灾探测器完好率", "Score": -10.0},
-                    {"Details": "火灾报警次数", "Score": -8.0},
-                    {"Details": "控制器完好率", "Score": -4.0},
-                    {"Details": "应急照明备用电源供电时间", "Score": -4.0},
-                    {"Details": "机械排烟系统的排烟量", "Score": -4.0},
-                ],
+                "HeanlineScore": str(ds[0]),
+                "SourceItems": []
             },
             "JianChanQingKuang": {
-                "Headline": "消防监督检查情况",
-                "SourceItems": [
-                    {"Details": "疏散通道、安全出口和消防通道保持畅通", "Score": -6.0},
-                    {"Details": "电气线路定期检查", "Score": -3.0},
-                    {"Details": "燃气管路定期检测", "Score": -3.0},
-                    {"Details": "消防设施符合技术标准", "Score": -3.0},
-                ],
+                "Headline": "消防整改情况",
+                "HeanlineScore": str(ds[2]),
+                "SourceItems": [],
             },
             "JiuYuanNengLi": {
                 "Headline": "灭火救援能力",
-                "SourceItems": [
-                    {"Details": "员工参加初起火灾扑救操作培训", "Score": -5.0},
-                    {"Details": "定期组织疏散演练", "Score": -5.0},
-                    {"Details": "建立应急疏散预案", "Score": -2.0},
-                    {"Details": "对员工进行消防器材使用培训", "Score": -1.0},
-                ],
+                "HeanlineScore": "",
+                "SourceItems": []
             },
             "XiaoFangGuanLi": {
                 "Headline": "消防管理",
-                "SourceItems": [
-                    {"Details": "定期进行消防安全教育和培训", "Score": -6.0},
-                    {"Details": "建立防火档案", "Score": -5.0},
-                    {"Details": "建立消防设施操作与故障记录", "Score": -4.0},
-                    {"Details": "定期开展防火检查与巡查", "Score": -4.0},
-                ],
+                "HeanlineScore": "",
+                "SourceItems": []
             },
         }
     elif companyID == "CPY3101120002":
         data = {
-            "RecommendedNames": run(get_priorRect(companyID)),
+            "RecommendedNames": await get_priorRect(companyID),
             "WeiHuBaoYang": {
                 "Headline": "设施维护保养",
-                "SourceItems": [
-                    {"Details": "维修时间", "Score": -2.0},
-                    {"Details": "维修成功率", "Score": -2.0},
-                ],
+                "HeanlineScore": str(ds[1]),
+                "SourceItems": []
             },
             "YunXingZhuangTai": {
                 "Headline": "消防设施运行状态",
-                "SourceItems": [
-                    {"Details": "火灾探测器完好率", "Score": -8.0},
-                    {"Details": "火灾报警次数", "Score": -8.0},
-                    {"Details": "控制器完好率", "Score": -2.0},
-                    {"Details": "应急照明备用电源供电时间", "Score": -1.0},
-                    {"Details": "机械排烟系统的排烟量", "Score": -1.0},
-                ],
+                "HeanlineScore": str(ds[0]),
+                "SourceItems": []
             },
             "JianChanQingKuang": {
-                "Headline": "消防监督检查情况",
-                "SourceItems": [
-                    {"Details": "疏散通道、安全出口和消防通道保持畅通", "Score": -2.0},
-                    {"Details": "电气线路定期检查", "Score": -5.0},
-                    {"Details": "燃气管路定期检测", "Score": -5.0},
-                    {"Details": "消防设施符合技术标准", "Score": -6.0},
-                ],
+                "Headline": "消防整改情况",
+                "HeanlineScore": str(ds[2]),
+                "SourceItems": [],
             },
             "JiuYuanNengLi": {
                 "Headline": "灭火救援能力",
-                "SourceItems": [
-                    {"Details": "员工参加初起火灾扑救操作培训", "Score": -7.0},
-                    {"Details": "定期组织疏散演练", "Score": -8.0},
-                    {"Details": "建立应急疏散预案", "Score": -8.0},
-                    {"Details": "对员工进行消防器材使用培训", "Score": -2.0},
-                ],
+                "HeanlineScore": "",
+                "SourceItems": []
             },
             "XiaoFangGuanLi": {
                 "Headline": "消防管理",
-                "SourceItems": [
-                    {"Details": "定期进行消防安全教育和培训", "Score": -10.0},
-                    {"Details": "建立防火档案", "Score": -3.0},
-                    {"Details": "建立消防设施操作与故障记录", "Score": -2.0},
-                    {"Details": "定期开展防火检查与巡查", "Score": -2.0},
-                ],
+                "HeanlineScore": "",
+                "SourceItems": []
             },
         }
     elif companyID == "CPY3101120003":
         data = {
-            "RecommendedNames": run(get_priorRect(companyID)),
+            "RecommendedNames": await get_priorRect(companyID),
             "WeiHuBaoYang": {
                 "Headline": "设施维护保养",
-                "SourceItems": [
-                    {"Details": "维修时间", "Score": -8.0},
-                    {"Details": "维修成功率", "Score": -8.0},
-                ],
+                "HeanlineScore": str(ds[1]),
+                "SourceItems": []
             },
             "YunXingZhuangTai": {
                 "Headline": "消防设施运行状态",
-                "SourceItems": [
-                    {"Details": "火灾探测器完好率", "Score": -2.0},
-                    {"Details": "火灾报警次数", "Score": -2.0},
-                    {"Details": "控制器完好率", "Score": -5.0},
-                    {"Details": "应急照明备用电源供电时间", "Score": -3.0},
-                    {"Details": "机械排烟系统的排烟量", "Score": -3.0},
-                ],
+                "HeanlineScore": str(ds[0]),
+                "SourceItems": []
             },
             "JianChanQingKuang": {
-                "Headline": "消防监督检查情况",
-                "SourceItems": [
-                    {"Details": "疏散通道、安全出口和消防通道保持畅通", "Score": -4.0},
-                    {"Details": "电气线路定期检查", "Score": -10.0},
-                    {"Details": "燃气管路定期检测", "Score": -10.0},
-                    {"Details": "消防设施符合技术标准", "Score": -2.0},
-                ],
+                "Headline": "消防整改情况",
+                "HeanlineScore": str(ds[2]),
+                "SourceItems": [],
             },
             "JiuYuanNengLi": {
                 "Headline": "灭火救援能力",
-                "SourceItems": [
-                    {"Details": "员工参加初起火灾扑救操作培训", "Score": -2.0},
-                    {"Details": "定期组织疏散演练", "Score": -2.0},
-                    {"Details": "建立应急疏散预案", "Score": -2.0},
-                    {"Details": "对员工进行消防器材使用培训", "Score": -4.0},
-                ],
+                "HeanlineScore": "",
+                "SourceItems": []
             },
             "XiaoFangGuanLi": {
                 "Headline": "消防管理",
-                "SourceItems": [
-                    {"Details": "定期进行消防安全教育和培训", "Score": -7.0},
-                    {"Details": "建立防火档案", "Score": -6.0},
-                    {"Details": "建立消防设施操作与故障记录", "Score": -3.0},
-                    {"Details": "定期开展防火检查与巡查", "Score": -3.0},
-                ],
+                "HeanlineScore": "",
+                "SourceItems": []
             },
         }
     return schema.ScoreDetail(**data)  # type: ignore
 
 
-def getDeviceIntactInfo(wellRateType: List[List[float]]) -> List[Dict[str, object]]:
+async def getDeviceIntactInfo(wellRateType: List[List[float]]) -> List[Dict[str, object]]:
     res = []
     for info in wellRateType:
         nm = PARTTYPE2NAME[int(info[0])]
@@ -651,28 +596,29 @@ def getDeviceIntactInfo(wellRateType: List[List[float]]) -> List[Dict[str, objec
     return res
 
 
-def getDeviceAccess(companyID: str) -> schema.DeviceAccess:
+async def getDeviceAccess(companyID: str) -> schema.DeviceAccess:
     data = {"CompanyName": "",
-            "DeviceIntactInfo": getDeviceIntactInfo(run(get_wellRateType(companyID)))}
+            "DeviceIntactInfo": getDeviceIntactInfo(await get_wellRateType(companyID))
+            }
     if companyID == "CPY3101120001":
         data = {
             "CompanyName": "复兴馆",
-            "DeviceIntactInfo": getDeviceIntactInfo(run(get_wellRateType(companyID))),
+            "DeviceIntactInfo": getDeviceIntactInfo(await get_wellRateType(companyID)),
         }
     elif companyID == "CPY3101120002":
         data = {
             "CompanyName": "花栖馆",
-            "DeviceIntactInfo": getDeviceIntactInfo(run(get_wellRateType(companyID))),
+            "DeviceIntactInfo": getDeviceIntactInfo(await get_wellRateType(companyID)),
         }
     elif companyID == "CPY3101120003":
         data = {
             "CompanyName": "竹藤馆",
-            "DeviceIntactInfo": getDeviceIntactInfo(run(get_wellRateType(companyID))),
+            "DeviceIntactInfo": getDeviceIntactInfo(await get_wellRateType(companyID)),
         }
     return schema.DeviceAccess(**data)  # type: ignore
 
 
-def getRectification(companyID: str) -> schema.Rectification:
+async def getRectification(companyID: str) -> schema.Rectification:
     data = {
         "CompanyName": "",
         "Numbers": 0,
@@ -691,8 +637,8 @@ def getRectification(companyID: str) -> schema.Rectification:
             "CompanyName": "复兴馆",
             "Numbers": 117,
             "Rate": 62,
-            "MTTR": get_avgRectTime(companyID),
-            "MTBF": get_avgRepeatTime(companyID),
+            "MTTR": await get_avgRectTime(companyID),
+            "MTBF": await get_avgRepeatTime(companyID),
             "FireSystems": [
                 {"Categories": "室外消火栓", "Amount": 28},
                 {"Categories": "室内消火栓", "Amount": 32},
@@ -706,8 +652,8 @@ def getRectification(companyID: str) -> schema.Rectification:
             "CompanyName": "花栖堂",
             "Numbers": 89,
             "Rate": 31,
-            "MTTR": get_avgRectTime(companyID),
-            "MTBF": get_avgRepeatTime(companyID),
+            "MTTR": await get_avgRectTime(companyID),
+            "MTBF": await get_avgRepeatTime(companyID),
             "FireSystems": [
                 {"Categories": "室外消火栓", "Amount": 33},
                 {"Categories": "室内消火栓", "Amount": 20},
@@ -721,8 +667,8 @@ def getRectification(companyID: str) -> schema.Rectification:
             "CompanyName": "竹藤馆",
             "Numbers": 117,
             "Rate": 44,
-            "MTTR": get_avgRectTime(companyID),
-            "MTBF": get_avgRepeatTime(companyID),
+            "MTTR": await get_avgRectTime(companyID),
+            "MTBF": await get_avgRepeatTime(companyID),
             "FireSystems": [
                 {"Categories": "室外消火栓", "Amount": 35},
                 {"Categories": "室内消火栓", "Amount": 53},
@@ -734,19 +680,19 @@ def getRectification(companyID: str) -> schema.Rectification:
     return schema.Rectification(**data)  # type: ignore
 
 
-def getAlarmRecordsDay(companyID: str) -> schema.AlarmRecordsDay:
+async def getAlarmRecordsDay(companyID: str) -> schema.AlarmRecordsDay:
     data = {
         "CompanyName": "",
         "MaxAlarmsCount": 0,
         "DeviceInfos": [{"DeviceName": "", "AlarmsCount": 0}],
     }
-    numList = run(get_fireRankNum(companyID))
+    numList = await get_fireRankNum(companyID)
     if companyID == "CPY3101120001":
         infoList = []
         for i in range(10):
             infoList.append(
                 {
-                    "DeviceName": PARTTYPE2NAME[run(get_fireRankType(companyID))[i]],
+                    "DeviceName": PARTTYPE2NAME[(await get_fireRankType(companyID))[i]],
                     "AlarmsCount": numList[i],
                 }
             )
@@ -760,24 +706,24 @@ def getAlarmRecordsDay(companyID: str) -> schema.AlarmRecordsDay:
         for i in range(10):
             infoList.append(
                 {
-                    "DeviceName": PARTTYPE2NAME[run(get_fireRankType(companyID))[i]],
+                    "DeviceName": PARTTYPE2NAME[(await get_fireRankType(companyID))[i]],
                     "AlarmsCount": numList[i],
                 }
             )
-        data = {
-            "CompanyName": "复兴馆",
-            "MaxAlarmsCount": max(numList),
-            "DeviceInfos": infoList,
-        }
-    if companyID == "CPY3101120003":
-        infoList = []
-        for i in range(10):
-            infoList.append(
-                {
-                    "DeviceName": PARTTYPE2NAME[run(get_fireRankType(companyID))[i]],
-                    "AlarmsCount": numList[i],
-                }
-            )
+            data = {
+                "CompanyName": "复兴馆",
+                "MaxAlarmsCount": max(numList),
+                "DeviceInfos": infoList,
+            }
+            if companyID == "CPY3101120003":
+                infoList = []
+            for i in range(10):
+                infoList.append(
+                    {
+                        "DeviceName": PARTTYPE2NAME[(await get_fireRankType(companyID))[i]],
+                        "AlarmsCount": numList[i],
+                    }
+                )
         data = {
             "CompanyName": "复兴馆",
             "MaxAlarmsCount": max(numList),
@@ -797,21 +743,23 @@ METHODNAME_2_METHOD: Dict[str, Callable[[str], Any]] = {
     "deviceAccess": getDeviceAccess,
     "rectification": getRectification,
     "alarmRecordsDay": getAlarmRecordsDay,
+
+
 }
 
 
 # TODO: get REAL data from DB
-def getData(groupName: str, methodName: str) -> str:
+async def getData(groupName: str, methodName: str) -> str:
     if methodName not in METHODNAME_2_METHOD.keys():
         raise ValueError()
-    res = METHODNAME_2_METHOD[methodName](groupName)
+    res = await METHODNAME_2_METHOD[methodName](groupName)
     if isinstance(res, BaseModel):
         return res.json(ensure_ascii=False)
     return f"[{','.join([item.json(ensure_ascii=False) for item in res])}]"
 
 
-if __name__ == "__main__":
-    for k, v in METHODNAME_2_METHOD.items():
-        res = getData("", k)
-        if k == "fireDataStatistics":
-            print(res)
+# if __name__ == "__main__":
+#     for k, v in METHODNAME_2_METHOD.items():
+#         res = getData("", k)
+#         if k == "fireDataStatistics":
+#             print(res)
