@@ -1,53 +1,21 @@
-from enum import IntEnum
-from random import randint
 from typing import Any, Callable, Dict, List, Type, Union
 
-import xlrd
 from pydantic.main import BaseModel
 
 import schema
 from anxin_var import *
 from real_var import *
 from const import PARTTYPE2NAME
-
-# class fireType(IntEnum):
-#     WATER = 0
-#     SMOKE = 1
-#     EVACU = 2
-#     ALARM = 3
-#     OTHER = 4
-
-
-# def getPoints(type: int, timeslot: str) -> List[Dict[str, int]]:
-#     res: List[Dict[str, int]] = []
-#     if timeslot == "Day":
-#         for i in range(11):
-#             x = i + 1
-#             y = riskDay[type][i - 1]
-#             res += [{"X": x, "Y": y}]
-#         return res
-#     elif timeslot == "Week":
-#         for i in range(11):
-#             x = i
-#             y = riskWeek[type][i - 1]
-#             res += [{"X": x, "Y": y}]
-#         return res
-#     elif timeslot == "Month":
-#         for i in range(11):
-#             x = i
-#             y = riskMonth[type][i - 1]
-#             res += [{"X": x, "Y": y}]
-#         return res
-#     return res
+from asyncio import run
 
 
 def getFireDataStatistics(companyID: str) -> schema.FireDataStatistics:
     Vsize_1 = 50
     Vsize_2 = 200
     Vsize_3 = 500
-    day_res = get_points("Day")
-    week_res = get_points("Week")
-    month_res = get_points("Month")
+    day_res = run(get_points("Day"))
+    week_res = run(get_points("Week"))
+    month_res = run(get_points("Month"))
     data = {
         "Day": {
             "VSize": Vsize_1,
@@ -479,21 +447,21 @@ def getAlarmInfo(companyID: str) -> schema.AlarmInfo:
     data = {"DailyAlarm": 0, "MonthlyAlarm": 0, "PendingTasks": 0}
     if companyID == "CPY3101120001":
         data = {
-            "DailyAlarm": get_fireDay(companyID),
-            "MonthlyAlarm": get_fireMonth(companyID),
-            "PendingTasks": get_riskNum(companyID),
+            "DailyAlarm": run(get_fireDay(companyID)),
+            "MonthlyAlarm": run(get_fireMonth(companyID)),
+            "PendingTasks": run(get_riskNum(companyID)),
         }
     elif companyID == "CPY3101120002":
         data = {
-            "DailyAlarm": get_fireDay(companyID),
-            "MonthlyAlarm": get_fireMonth(companyID),
-            "PendingTasks": get_riskNum(companyID),
+            "DailyAlarm":   run(get_fireDay(companyID)),
+            "MonthlyAlarm": run(get_fireMonth(companyID)),
+            "PendingTasks": run(get_riskNum(companyID)),
         }
     elif companyID == "CPY3101120003":
         data = {
-            "DailyAlarm": get_fireDay(companyID),
-            "MonthlyAlarm": get_fireMonth(companyID),
-            "PendingTasks": get_riskNum(companyID),
+            "DailyAlarm": run(get_fireDay(companyID)),
+            "MonthlyAlarm": run(get_fireMonth(companyID)),
+            "PendingTasks": run(get_riskNum(companyID)),
         }
     return schema.AlarmInfo(**data)
 
@@ -503,25 +471,33 @@ def getScoreDetail(companyID: str) -> schema.ScoreDetail:
         "RecommendedNames": [],
         "WeiHuBaoYang": {
             "Headline": "",
-            "SourceItems": [{"Details": "", "Score": 0}, {"Details": "", "Score": 0}],
+            "HeadlineScore": "",
+            "SourceItems": [{"Details": ""}],
         },
         "YunXingZhuangTai": {
             "Headline": "",
-            "SourceItems": [{"Details": "", "Score": 0}],
+            "HeadlineScore": "",
+            "SourceItems": [{"Details": ""}],
         },
         "JianChanQingKuang": {
             "Headline": "",
-            "SourceItems": [{"Details": "", "Score": 0}],
+            "HeadlineScore": "",
+            "SourceItems": [{"Details": ""}],
         },
-        "JiuYuanNengLi": {"Headline": "", "SourceItems": [{"Details": "", "Score": 0}]},
+        "JiuYuanNengLi": {
+            "Headline": "",
+            "HeadlineScore": "",
+            "SourceItems": [{"Details": ""}]
+        },
         "XiaoFangGuanLi": {
             "Headline": "",
-            "SourceItems": [{"Details": "", "Score": 0}],
+            "HeadlineScore": "",
+            "SourceItems": [{"Details": ""}],
         },
     }
     if companyID == "CPY3101120001":
         data = {
-            "RecommendedNames": get_priorRect(companyID),
+            "RecommendedNames": run(get_priorRect(companyID)),
             "WeiHuBaoYang": {
                 "Headline": "设施维护保养",
                 "SourceItems": [
@@ -569,7 +545,7 @@ def getScoreDetail(companyID: str) -> schema.ScoreDetail:
         }
     elif companyID == "CPY3101120002":
         data = {
-            "RecommendedNames": get_priorRect(companyID),
+            "RecommendedNames": run(get_priorRect(companyID)),
             "WeiHuBaoYang": {
                 "Headline": "设施维护保养",
                 "SourceItems": [
@@ -617,7 +593,7 @@ def getScoreDetail(companyID: str) -> schema.ScoreDetail:
         }
     elif companyID == "CPY3101120003":
         data = {
-            "RecommendedNames": get_priorRect(companyID),
+            "RecommendedNames": run(get_priorRect(companyID)),
             "WeiHuBaoYang": {
                 "Headline": "设施维护保养",
                 "SourceItems": [
@@ -666,16 +642,6 @@ def getScoreDetail(companyID: str) -> schema.ScoreDetail:
     return schema.ScoreDetail(**data)  # type: ignore
 
 
-# def partType2DeviceName(type: int) -> str:
-#     res = ""
-#     data = xlrd.open_workbook("assets/设备类型编号.xls")
-#     table = data.sheets()[0]
-#     partTypes = table.col_values(0)
-#     names = table.col_values(1)
-#     res = names[partTypes.index(type)]
-#     return res
-
-
 def getDeviceIntactInfo(wellRateType: List[List[float]]) -> List[Dict[str, object]]:
     res = []
     for info in wellRateType:
@@ -687,21 +653,21 @@ def getDeviceIntactInfo(wellRateType: List[List[float]]) -> List[Dict[str, objec
 
 def getDeviceAccess(companyID: str) -> schema.DeviceAccess:
     data = {"CompanyName": "",
-            "DeviceIntactInfo": getDeviceIntactInfo(get_wellRateType(companyID))}
+            "DeviceIntactInfo": getDeviceIntactInfo(run(get_wellRateType(companyID)))}
     if companyID == "CPY3101120001":
         data = {
             "CompanyName": "复兴馆",
-            "DeviceIntactInfo": getDeviceIntactInfo(get_wellRateType(companyID)),
+            "DeviceIntactInfo": getDeviceIntactInfo(run(get_wellRateType(companyID))),
         }
     elif companyID == "CPY3101120002":
         data = {
             "CompanyName": "花栖馆",
-            "DeviceIntactInfo": getDeviceIntactInfo(get_wellRateType(companyID)),
+            "DeviceIntactInfo": getDeviceIntactInfo(run(get_wellRateType(companyID))),
         }
     elif companyID == "CPY3101120003":
         data = {
             "CompanyName": "竹藤馆",
-            "DeviceIntactInfo": getDeviceIntactInfo(get_wellRateType(companyID)),
+            "DeviceIntactInfo": getDeviceIntactInfo(run(get_wellRateType(companyID))),
         }
     return schema.DeviceAccess(**data)  # type: ignore
 
@@ -774,13 +740,13 @@ def getAlarmRecordsDay(companyID: str) -> schema.AlarmRecordsDay:
         "MaxAlarmsCount": 0,
         "DeviceInfos": [{"DeviceName": "", "AlarmsCount": 0}],
     }
+    numList = run(get_fireRankNum(companyID))
     if companyID == "CPY3101120001":
-        numList = get_fireRankNum(companyID)
         infoList = []
         for i in range(10):
             infoList.append(
                 {
-                    "DeviceName": PARTTYPE2NAME[get_fireRankType(companyID)[i]],
+                    "DeviceName": PARTTYPE2NAME[run(get_fireRankType(companyID))[i]],
                     "AlarmsCount": numList[i],
                 }
             )
@@ -790,12 +756,11 @@ def getAlarmRecordsDay(companyID: str) -> schema.AlarmRecordsDay:
             "DeviceInfos": infoList,
         }
     if companyID == "CPY3101120002":
-        numList = get_fireRankNum(companyID)
         infoList = []
         for i in range(10):
             infoList.append(
                 {
-                    "DeviceName": PARTTYPE2NAME[get_fireRankType(companyID)[i]],
+                    "DeviceName": PARTTYPE2NAME[run(get_fireRankType(companyID))[i]],
                     "AlarmsCount": numList[i],
                 }
             )
@@ -805,12 +770,11 @@ def getAlarmRecordsDay(companyID: str) -> schema.AlarmRecordsDay:
             "DeviceInfos": infoList,
         }
     if companyID == "CPY3101120003":
-        numList = get_fireRankNum(companyID)
         infoList = []
         for i in range(10):
             infoList.append(
                 {
-                    "DeviceName": PARTTYPE2NAME[get_fireRankType(companyID)[i]],
+                    "DeviceName": PARTTYPE2NAME[run(get_fireRankType(companyID))[i]],
                     "AlarmsCount": numList[i],
                 }
             )
