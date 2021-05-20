@@ -9,8 +9,7 @@ from typing import Any, Dict, List
 import pymongo
 from dateutil.relativedelta import relativedelta
 
-from db import get_col
-from partType_classify import (
+from const import (
     ALARM_LIST,
     EVACU_LIST,
     OTHER_LIST,
@@ -18,6 +17,7 @@ from partType_classify import (
     SMOKE_LIST,
     WATER_LIST,
 )
+from db import get_col
 
 
 class fireType(IntEnum):
@@ -356,7 +356,7 @@ async def get_avgRepeatTime(companyID: str) -> float:
     query_dict["time"]["$lte"] = now
     query_dict["time"]["$gte"] = start_time
     query_dict["algoType"] = {"$in": [100, 200, 300]}
-    query_dict["partType"] = {"$in": partCodes}
+    query_dict["partCode"] = {"$in": partCodes}
     documents = get_col("data").find(query_dict)
     count: Dict[int, Dict[str, int]] = {}
     async for doc in documents:
@@ -375,7 +375,7 @@ async def get_avgRepeatTime(companyID: str) -> float:
         dataNum: int = 0
         for n in count[pT].values():
             dataNum += n
-        repT: float = 30 / (dataNum / codeNum)
+        repT: float = 30 * codeNum / dataNum
         sum += repT
     if len(count.keys()) == 0:
         return 0
@@ -397,7 +397,7 @@ async def get_fireDay(companyID: str) -> int:
     query_dict["time"]["$lte"] = now
     query_dict["time"]["$gte"] = start_time
     query_dict["algoType"] = 100
-    query_dict["partType"] = {"$in": partCodes}
+    query_dict["partCode"] = {"$in": partCodes}
     documents = get_col("data").find(query_dict)
     res = 0
     async for d in documents:
@@ -427,7 +427,7 @@ async def get_fireMonth(companyID: str) -> int:
     query_dict["time"]["$lte"] = now
     query_dict["time"]["$gte"] = start_time
     query_dict["algoType"] = 100
-    query_dict["partType"] = {"$in": partCodes}
+    query_dict["partCode"] = {"$in": partCodes}
     documents = get_col("data").find(query_dict)
     res = 0
     async for d in documents:
@@ -457,7 +457,7 @@ async def get_riskNum(companyID: str) -> int:
     query_dict["time"]["$lte"] = now
     query_dict["time"]["$gte"] = start_time
     query_dict["algoType"] = {"$in": [100, 200, 300]}
-    query_dict["partType"] = {"$in": partCodes}
+    query_dict["partCode"] = {"$in": partCodes}
     documents = get_col("data").find(query_dict)
     res = 0
     async for d in documents:
@@ -490,7 +490,7 @@ async def get_fireRankType(companyID: str) -> List[int]:
     query_dict["time"]["$lte"] = now
     query_dict["time"]["$gte"] = start_time
     query_dict["algoType"] = 100
-    query_dict["partType"] = {"$in": partCodes}
+    query_dict["partCode"] = {"$in": partCodes}
     documents = get_col("data").find(query_dict)
     async for doc in documents:
         partType = doc["partType"]
@@ -522,7 +522,7 @@ async def get_fireRankNum(companyID: str) -> List[int]:
     query_dict["time"]["$lte"] = now
     query_dict["time"]["$gte"] = start_time
     query_dict["algoType"] = 100
-    query_dict["partType"] = {"$in": partCodes}
+    query_dict["partCode"] = {"$in": partCodes}
     documents = get_col("data").find(query_dict)
     async for doc in documents:
         partType = doc["partType"]
@@ -551,18 +551,18 @@ async def get_riskList(companyID: str) -> List[str]:
     query_dict["time"]["$lte"] = now
     query_dict["time"]["$gte"] = start_time
     query_dict["algoType"] = {"$in": [100, 200, 300]}
-    query_dict["partType"] = {"$in": partCodes}
+    query_dict["partCode"] = {"$in": partCodes}
     documents = get_col("data").find(query_dict)
     res: List[str] = []
     ALGO2NAME: Dict[int, str] = {0: "正常", 100: "火警", 200: "故障", 300: "预警"}
     async for doc in documents:
         sentence: str = ""
         sentence = (
-            PARTTYPE2NAME[doc["partType"]]
+            str(PARTTYPE2NAME[doc["partType"]])
             + ", "
-            + doc["pos"]
+            + str(doc["pos"])
             + ", "
-            + ALGO2NAME[doc["algoType"]]
+            + str(ALGO2NAME[doc["algoType"]])
         )
         res.append(sentence)
 
@@ -570,7 +570,6 @@ async def get_riskList(companyID: str) -> List[str]:
 
 
 async def main() -> None:
-    logging.basicConfig(level=logging.INFO, filename="real_var.log", filemode="w")
     day_res = await get_points("Day")
     week_res = await get_points("Week")
     month_res = await get_points("Month")
@@ -595,42 +594,42 @@ async def main() -> None:
     fireRankNum = await get_fireRankNum(companyID)
     riskList = await get_riskList(companyID)
 
-    logging.info("1.waterRiskDay: " + day_res[fireType.WATER].__str__())
-    logging.info("2.smokeRiskDay: " + day_res[fireType.SMOKE].__str__())
-    logging.info("3.evacuRiskDay: " + day_res[fireType.EVACU].__str__())
-    logging.info("4.alarmRiskDay: " + day_res[fireType.ALARM].__str__())
-    logging.info("5.otherRiskDay: " + day_res[fireType.OTHER].__str__())
+    print("1.waterRiskDay: " + day_res[fireType.WATER].__str__())
+    print("2.smokeRiskDay: " + day_res[fireType.SMOKE].__str__())
+    print("3.evacuRiskDay: " + day_res[fireType.EVACU].__str__())
+    print("4.alarmRiskDay: " + day_res[fireType.ALARM].__str__())
+    print("5.otherRiskDay: " + day_res[fireType.OTHER].__str__())
 
-    logging.info("6.waterRiskWeek: " + week_res[fireType.WATER].__str__())
-    logging.info("7.smokeRiskWeek: " + week_res[fireType.SMOKE].__str__())
-    logging.info("8.evacuRiskWeek: " + week_res[fireType.EVACU].__str__())
-    logging.info("9.alarmRiskWeek: " + week_res[fireType.ALARM].__str__())
-    logging.info("10.otherRiskWeek: " + week_res[fireType.OTHER].__str__())
+    print("6.waterRiskWeek: " + week_res[fireType.WATER].__str__())
+    print("7.smokeRiskWeek: " + week_res[fireType.SMOKE].__str__())
+    print("8.evacuRiskWeek: " + week_res[fireType.EVACU].__str__())
+    print("9.alarmRiskWeek: " + week_res[fireType.ALARM].__str__())
+    print("10.otherRiskWeek: " + week_res[fireType.OTHER].__str__())
 
-    logging.info("11.waterRiskMonth: " + month_res[fireType.WATER].__str__())
-    logging.info("12.smokeRiskMonth: " + month_res[fireType.SMOKE].__str__())
-    logging.info("13.evacuRiskMonth: " + month_res[fireType.EVACU].__str__())
-    logging.info("14.alarmRiskMonth: " + month_res[fireType.ALARM].__str__())
-    logging.info("15.otherRiskMonth: " + month_res[fireType.OTHER].__str__())
+    print("11.waterRiskMonth: " + month_res[fireType.WATER].__str__())
+    print("12.smokeRiskMonth: " + month_res[fireType.SMOKE].__str__())
+    print("13.evacuRiskMonth: " + month_res[fireType.EVACU].__str__())
+    print("14.alarmRiskMonth: " + month_res[fireType.ALARM].__str__())
+    print("15.otherRiskMonth: " + month_res[fireType.OTHER].__str__())
 
-    logging.info("16.wellRateWhole: " + wellRateWhole.__str__())
-    logging.info("17.wellRateType: " + wellRateType.__str__())
-    logging.info("18.safetyScore: " + safetyScore.__str__())
-    logging.info("19.priorRect: " + priorRect.__str__())
-    logging.info("20.firePartCode: " + firePartCode.__str__())
-    logging.info("21.errorPartCode: " + errorPartCode.__str__())
-    logging.info("22.errorPartCodeMonth: " + errorPartCodeMonth.__str__())
-    logging.info("23.detailScore: " + detailScore.__str__())
-    logging.info("24.errorRankType: " + errorRankType.__str__())
-    logging.info("25.errorRankNum: " + errorRankNum.__str__())
-    logging.info("26.avgRectTime: " + avgRectTime.__str__())
-    logging.info("27.avgRepeatTime: " + avgRepeatTime.__str__())
-    logging.info("28.fireDay: " + fireDay.__str__())
-    logging.info("29.fireMonth: " + fireMonth.__str__())
-    logging.info("30.riskNum: " + riskNum.__str__())
-    logging.info("31.fireRankType: " + fireRankType.__str__())
-    logging.info("32.fireRankNum: " + fireRankNum.__str__())
-    logging.info("33.riskList: " + riskList.__str__())
+    print("16.wellRateWhole: " + wellRateWhole.__str__())
+    print("17.wellRateType: " + wellRateType.__str__())
+    print("18.safetyScore: " + safetyScore.__str__())
+    print("19.priorRect: " + priorRect.__str__())
+    print("20.firePartCode: " + firePartCode.__str__())
+    print("21.errorPartCode: " + errorPartCode.__str__())
+    print("22.errorPartCodeMonth: " + errorPartCodeMonth.__str__())
+    print("23.detailScore: " + detailScore.__str__())
+    print("24.errorRankType: " + errorRankType.__str__())
+    print("25.errorRankNum: " + errorRankNum.__str__())
+    print("26.avgRectTime: " + avgRectTime.__str__())
+    print("27.avgRepeatTime: " + avgRepeatTime.__str__())
+    print("28.fireDay: " + fireDay.__str__())
+    print("29.fireMonth: " + fireMonth.__str__())
+    print("30.riskNum: " + riskNum.__str__())
+    print("31.fireRankType: " + fireRankType.__str__())
+    print("32.fireRankNum: " + fireRankNum.__str__())
+    print("33.riskList: " + riskList.__str__())
 
 
 if __name__ == "__main__":
