@@ -24,3 +24,4 @@ companyID_ints = [
 for id in companyID_ints:
     companyID = "CPYTEMP" + str(id)
     os.system("python3 real_var.py " + companyID + ">" + companyID + ".log")
+    print("Finish writing " + companyID + ".log")
