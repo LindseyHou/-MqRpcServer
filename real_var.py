@@ -371,10 +371,14 @@ async def get_avgRepeatTime(companyID: str) -> float:
                 count[partType][partCode] += 1
     sum: float = 0
     for pT in count.keys():
+        if not count[pT]:
+            continue
         codeNum: int = len(count[pT])
         dataNum: int = 0
         for n in count[pT].values():
             dataNum += n
+        if dataNum == 0:
+            continue
         repT: float = 30 * codeNum / dataNum
         sum += repT
     if len(count.keys()) == 0:
