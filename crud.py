@@ -5,13 +5,12 @@ from pydantic.main import BaseModel
 import schema
 from db import get_col
 
-from anxin_var import *
 from real_var import *
 from const import PARTTYPE2NAME
 from asyncio import run
 
 
-# ok
+# NOTE ok
 async def get_name_by_companyID(companyID: str) -> str:
     info_col = get_col("info")
     doc = await info_col.find_one({"companyID": companyID})
@@ -21,7 +20,7 @@ async def get_name_by_companyID(companyID: str) -> str:
         return doc["projName"]
 
 
-# ok
+# NOTE ok
 async def get_buildinfo_by_companyID(companyID: str) -> Dict[str, Any]:
     nm = await get_name_by_companyID(companyID)
     buildinfo_col = get_col("buildinfo")
@@ -29,7 +28,7 @@ async def get_buildinfo_by_companyID(companyID: str) -> Dict[str, Any]:
     return doc
 
 
-# ok
+# NOTE ok
 async def getFireDataStatistics(companyID: str) -> schema.FireDataStatistics:
     Vsize_1 = 50
     Vsize_2 = 200
@@ -278,7 +277,7 @@ async def getGiveAlarmRecord(companyID: str) -> List[schema.GiveAlarmRecord]:
     return [schema.GiveAlarmRecord(**data) for data in datas]  # type: ignore
 
 
-# ok
+# NOTE ok
 async def getBuildingInfo(companyID: str) -> schema.BuildingInfo:
     buildinfo = await get_buildinfo_by_companyID(companyID)
     data = {
@@ -295,7 +294,7 @@ async def getBuildingInfo(companyID: str) -> schema.BuildingInfo:
     return schema.BuildingInfo(**data)
 
 
-# ok
+# NOTE ok
 async def getAlarmInfo(companyID: str) -> schema.AlarmInfo:
     data = {
         "DailyAlarm": await get_fireDay(companyID),
@@ -326,7 +325,7 @@ async def getScoreDetail(companyID: str) -> schema.ScoreDetail:
             "SourceItems": [],
         },
         "JiuYuanNengLi": {
-            "Headline": "灭火救援能力",
+            "Headline": "",
             "HeanlineScore": "",
             "SourceItems": []
         },
@@ -339,7 +338,7 @@ async def getScoreDetail(companyID: str) -> schema.ScoreDetail:
     return schema.ScoreDetail(**data)  # type: ignore
 
 
-# ok
+# NOTE ok
 async def getDeviceIntactInfo(wellRateType: List[List[float]]) -> List[Dict[str, object]]:
     res = []
     for info in wellRateType:
@@ -349,7 +348,7 @@ async def getDeviceIntactInfo(wellRateType: List[List[float]]) -> List[Dict[str,
     return res
 
 
-# ok
+# NOTE ok
 async def getDeviceAccess(companyID: str) -> schema.DeviceAccess:
     data = {"CompanyName": "",
             "DeviceIntactInfo": getDeviceIntactInfo(await get_wellRateType(companyID))
@@ -357,25 +356,30 @@ async def getDeviceAccess(companyID: str) -> schema.DeviceAccess:
     return schema.DeviceAccess(**data)  # type: ignore
 
 
-# ok
+# NOTE ok
 async def getRectification(companyID: str) -> schema.Rectification:
+    rankList = await get_errorRankType(companyID)
+    numList = await get_errorRankNum(companyID)
+    firesysList = []
+    for i, part in enumerate(rankList):
+        firesysList.append(
+            {
+                "Categories": PARTTYPE2NAME[int(part)],
+                "Amount": numList[i],
+            }
+        )
     data = {
-        "CompanyName": "",
+        "CompanyName": get_name_by_companyID(companyID),
         "Numbers": 0,
         "Rate": 0,
         "MTTR": await get_avgRectTime(companyID),
         "MTBF": await get_avgRepeatTime(companyID),
-        "FireSystems": [
-            {"Categories": "室外消火栓", "Amount": 0},
-            {"Categories": "室内消火栓", "Amount": 0},
-            {"Categories": "喷淋系统", "Amount": 0},
-            {"Categories": "其他", "Amount": 0},
-        ],
+        "FireSystems": firesysList,
     }
     return schema.Rectification(**data)  # type: ignore
 
 
-# ok
+# NOTE ok
 async def getAlarmRecordsDay(companyID: str) -> schema.AlarmRecordsDay:
     data = {
         "CompanyName": "",
@@ -383,11 +387,12 @@ async def getAlarmRecordsDay(companyID: str) -> schema.AlarmRecordsDay:
         "DeviceInfos": [{"DeviceName": "", "AlarmsCount": 0}],
     }
     numList = await get_fireRankNum(companyID)
+    typeList = await get_fireRankType(companyID)
     infoList = []
-    for i in range(10):
+    for i, part in enumerate(typeList):
         infoList.append(
             {
-                "DeviceName": PARTTYPE2NAME[(await get_fireRankType(companyID))[i]],
+                "DeviceName": PARTTYPE2NAME[int(part)],
                 "AlarmsCount": numList[i],
             }
         )
@@ -413,7 +418,7 @@ METHODNAME_2_METHOD: Dict[str, Callable[[str], Any]] = {
 }
 
 
-# ok
+# NOTE ok
 async def getData(groupName: str, methodName: str) -> str:
     if methodName not in METHODNAME_2_METHOD.keys():
         raise ValueError()
