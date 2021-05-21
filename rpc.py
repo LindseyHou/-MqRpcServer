@@ -1,9 +1,11 @@
-from asyncio import run
-from crud import METHODNAME_2_METHOD, getData
-from pika.adapters.blocking_connection import BlockingChannel
-import pika
 import logging
+from asyncio import run
 from typing import Any
+
+import pika
+from pika.adapters.blocking_connection import BlockingChannel
+
+from crud import METHODNAME_2_METHOD, getData
 
 logging.basicConfig(
     handlers=[logging.FileHandler("mq.log"), logging.StreamHandler()],
@@ -22,10 +24,35 @@ channel: BlockingChannel = connection.channel()
 channel.queue_declare(queue="rpc_queue")
 
 
+def is_upper_char(s: str) -> bool:
+    for c in s:
+        if c < "A" or c > "Z":
+            return False
+    return True
+
+
+def is_numbers(s: str) -> bool:
+    for c in s:
+        if c < "0" or c > "9":
+            return False
+    return True
+
+
+def is_valid_id(companyID: str) -> bool:
+    if len(companyID) <= 7:
+        return False
+    prefix = companyID[0:7]
+    leftover = companyID[7:]
+    return is_upper_char(prefix) and is_numbers(leftover)
+
+
 def on_request(ch: BlockingChannel, method: Any, props: Any, body: bytes) -> None:
     message = body.decode()
     methodName, groupName, *_ = message.split("&")
     logging.info(f" [.] getData({methodName}, {groupName})")
+    if not is_valid_id(groupName):
+        logging.warn("companyID not valid: " + groupName)
+        return
     try:
         response = run(getData(groupName, methodName))
     except ValueError:
