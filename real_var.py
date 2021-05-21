@@ -99,6 +99,8 @@ async def get_wellRateWhole(companyID: str) -> int:
     doc = {}
     async for d in docs:
         doc = d
+    if not doc:
+        return -1
     var_name = sys._getframe().f_code.co_name[4:]
     logging.debug(
         "Latest "
@@ -122,6 +124,8 @@ async def get_wellRateType(companyID: str) -> List[Any]:
     doc = {}
     async for d in docs:
         doc = d
+    if not doc:
+        return []
     var_name = sys._getframe().f_code.co_name[4:]
     logging.debug(
         "Latest "
@@ -145,6 +149,8 @@ async def get_safetyScore(companyID: str) -> float:
     doc = {}
     async for d in docs:
         doc = d
+    if not doc:
+        return -1
     var_name = sys._getframe().f_code.co_name[4:]
     logging.debug(
         "Latest "
@@ -168,6 +174,8 @@ async def get_priorRect(companyID: str) -> List[Any]:
     doc = {}
     async for d in docs:
         doc = d
+    if not doc:
+        return []
     var_name = sys._getframe().f_code.co_name[4:]
     logging.debug(
         "Latest "
@@ -191,6 +199,8 @@ async def get_firePartCode(companyID: str) -> List[Any]:
     doc = {}
     async for d in docs:
         doc = d
+    if not doc:
+        return []
     var_name = sys._getframe().f_code.co_name[4:]
     logging.debug(
         "Latest "
@@ -214,6 +224,8 @@ async def get_errorPartCode(companyID: str) -> List[Any]:
     doc = {}
     async for d in docs:
         doc = d
+    if not doc:
+        return []
     var_name = sys._getframe().f_code.co_name[4:]
     logging.debug(
         "Latest "
@@ -237,6 +249,8 @@ async def get_errorPartCodeMonth(companyID: str) -> List[Any]:
     doc = {}
     async for d in docs:
         doc = d
+    if not doc:
+        return []
     var_name = sys._getframe().f_code.co_name[4:]
     logging.debug(
         "Latest "
@@ -260,6 +274,8 @@ async def get_detailScore(companyID: str) -> List[Any]:
     doc = {}
     async for d in docs:
         doc = d
+    if not doc:
+        return []
     var_name = sys._getframe().f_code.co_name[4:]
     logging.debug(
         "Latest "
@@ -283,6 +299,8 @@ async def get_errorRankType(companyID: str) -> List[Any]:
     doc = {}
     async for d in docs:
         doc = d
+    if not doc:
+        return []
     var_name = sys._getframe().f_code.co_name[4:]
     logging.debug(
         "Latest "
@@ -306,6 +324,8 @@ async def get_errorRankNum(companyID: str) -> List[Any]:
     doc = {}
     async for d in docs:
         doc = d
+    if not doc:
+        return []
     var_name = sys._getframe().f_code.co_name[4:]
     logging.debug(
         "Latest "
@@ -329,6 +349,8 @@ async def get_avgRectTime(companyID: str) -> int:
     doc = {}
     async for d in docs:
         doc = d
+    if not doc:
+        return -1
     var_name = sys._getframe().f_code.co_name[4:]
     logging.debug(
         "Latest "
@@ -562,7 +584,9 @@ async def get_riskList(companyID: str) -> List[str]:
     async for doc in documents:
         sentence: str = ""
         sentence = (
-            str(PARTTYPE2NAME[doc["partType"]])
+            str(doc["partCode"])
+            + " "
+            + str(PARTTYPE2NAME[doc["partType"]])
             + ", "
             + str(doc["pos"])
             + ", "
