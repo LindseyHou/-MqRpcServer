@@ -1,6 +1,7 @@
 from typing import Any, Callable, Dict, List, Tuple, Type, Union
 
 from pydantic.main import BaseModel
+from pymongo import DESCENDING, ASCENDING
 
 import schema
 from db import get_col
@@ -71,7 +72,7 @@ async def getFireDataStatistics(companyID: str) -> schema.FireDataStatistics:
     return schema.FireDataStatistics(**data)  # type: ignore
 
 
-# FIXME
+# FIXME 编造毗邻单位；毗邻单位分数怎么调用？
 async def getSafetyScore(companyID: str) -> List[schema.SafetyScore]:
     datas = [
         {
@@ -89,8 +90,8 @@ async def getSafetyScore(companyID: str) -> List[schema.SafetyScore]:
         },
         {
             "CompanyName": "浦东美术馆",
-            "PercentageOfIoT": await get_wellRateWhole(companyID),
-            "SafetyRating": await get_safetyScore(companyID),
+            "PercentageOfIoT": await get_wellRateWhole(companyID),  # fake
+            "SafetyRating": await get_safetyScore(companyID),  # fake
             "ImageUrl": "MeiShuGuan.png",
             "SceneName": "SHICC",
             "FireStatistics": 6,
@@ -234,7 +235,7 @@ async def getSafetyScore(companyID: str) -> List[schema.SafetyScore]:
     return [schema.SafetyScore(**data) for data in datas]  # type: ignore
 
 
-# FIXME
+# FIXME 和安信沟通如何编造这个假数据
 async def getRealTimeAlarm(companyID: str) -> List[schema.RealTimeAlarm]:
     datas = [
         {"CompanyName": "上海国际会议中心", "CompanyAddress": "上海市浦东新区滨江大道2727号"},
@@ -247,7 +248,7 @@ async def getRealTimeAlarm(companyID: str) -> List[schema.RealTimeAlarm]:
     return [schema.RealTimeAlarm(**data) for data in datas]
 
 
-# FIXME
+# FIXME 和安信沟通如何调用这个假数据
 async def getGiveAlarmRecord(companyID: str) -> List[schema.GiveAlarmRecord]:
     datas = [
         {
@@ -304,19 +305,49 @@ async def getAlarmInfo(companyID: str) -> schema.AlarmInfo:
     return schema.AlarmInfo(**data)
 
 
-# FIXME
+async def get_name_and_pos_by_partCode(partCode: str) -> str:
+    data_col = get_col("data")
+    name = ""
+    pos = ""
+    async for doc in data_col.find({"partCode": partCode}).sort("time", DESCENDING).limit(1):
+        name = PARTTYPE2NAME[int(doc["partType"])]
+        pos = doc["pos"]
+    return name + " \t " + pos
+
+
+# NOTE ok! 获取了故障设备的信息
 async def getScoreDetail(companyID: str) -> schema.ScoreDetail:
     ds = await get_detailScore(companyID)
+    fireList = await get_firePartCode(companyID)
+    errorList = await get_errorPartCode(companyID)
+    errormonthList = await get_errorPartCodeMonth(companyID)
+
+    # get all the names and positions for the device
+    fireRes = []
+    errorRes = []
+    errormonthRes = []
+    for part in fireList:
+        temp = await get_name_and_pos_by_partCode(part)
+        fireRes.append({"Details": temp})
+
+    for part in errorList:
+        temp = await get_name_and_pos_by_partCode(part)
+        errorRes.append({"Details": temp})
+
+    for part in errormonthList:
+        temp = await get_name_and_pos_by_partCode(part)
+        errormonthRes.append({"Details": temp})
+
     data = {
         "RecommendedNames": await get_priorRect(companyID),
         "WeiHuBaoYang": {
             "Headline": "设施维护保养",
             "HeanlineScore": str(ds[1]),
-            "SourceItems": []
+            "SourceItems": errormonthRes,
         },
         "YunXingZhuangTai": {
-            "Headline": "消防设施运行状态",
-            "HeanlineScore": str(ds[0]),
+            "Headline": "",
+            "HeanlineScore": "",
             "SourceItems": []
         },
         "JianChanQingKuang": {
@@ -330,9 +361,9 @@ async def getScoreDetail(companyID: str) -> schema.ScoreDetail:
             "SourceItems": []
         },
         "XiaoFangGuanLi": {
-            "Headline": "消防管理",
-            "HeanlineScore": "",
-            "SourceItems": []
+            "Headline": "消防设施运行状态",
+            "HeanlineScore": str(ds[0]),
+            "SourceItems": fireRes + errorRes
         },
     }
     return schema.ScoreDetail(**data)  # type: ignore
