@@ -510,7 +510,7 @@ async def get_fireRankType(companyID: str) -> List[int]:
     count: Dict[int, int] = {}
 
     now = datetime.now()
-    start_time = now - relativedelta(weeks=1)
+    start_time = now - relativedelta(months=1)
     query_dict: Any = {}
     query_dict["time"] = {}
     query_dict["time"]["$lte"] = now
@@ -542,7 +542,7 @@ async def get_fireRankNum(companyID: str) -> List[int]:
     count: Dict[int, int] = {}
 
     now = datetime.now()
-    start_time = now - relativedelta(weeks=1)
+    start_time = now - relativedelta(months=1)
     query_dict: Any = {}
     query_dict["time"] = {}
     query_dict["time"]["$lte"] = now
