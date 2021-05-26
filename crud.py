@@ -326,7 +326,7 @@ async def get_name_and_pos_by_partCode(partCode: str) -> str:
     ).limit(1):
         name = PARTTYPE2NAME[int(doc["partType"])]
         pos = doc["pos"]
-    return name + " \t " + pos
+    return str(name) + " \t " + str(pos)
 
 
 # NOTE ok! 获取了故障设备的信息
