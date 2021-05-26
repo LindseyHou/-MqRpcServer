@@ -80,9 +80,13 @@ def on_request(ch: BlockingChannel, method: Any, props: Any, body: bytes) -> Non
     ch.basic_ack(delivery_tag=method.delivery_tag)
 
 
-if __name__ == "__main__":
+async def main() -> Any:
     channel.basic_qos(prefetch_count=1)
     channel.basic_consume(queue="rpc_queue", on_message_callback=on_request)
 
     logging.info(" [x] Awaiting RPC requests")
     channel.start_consuming()
+
+
+if __name__ == "__main__":
+    run(main())

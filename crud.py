@@ -460,20 +460,15 @@ async def getData(groupName: str, methodName: str) -> str:
     return f"[{','.join([item.json(ensure_ascii=False) for item in res])}]"
 
 
-# def run(coroutine: Any) -> Any:
-#     try:
-#         coroutine.send(None)
-#     except StopIteration as e:
-#         return e.value
-# async def fun() -> None:
-#     for k, v in METHODNAME_2_METHOD.items():
-#         try:
-#             res = await getData("CPYTEMP107747", k)
-#         except ValueError:
-#             res = "ValueError"
-#             # if k == "fireDataStatistics":
-#             print(k + ": " + res)
+async def test_crud() -> None:
+    for k, v in METHODNAME_2_METHOD.items():
+        try:
+            res = await getData("CPYTEMP107747", k)
+        except ValueError:
+            res = "ValueError"
+            # if k == "fireDataStatistics":
+            print(k + ": " + res)
 
 
-# if __name__ == "__main__":
-#     run(fun())
+if __name__ == "__main__":
+    run(test_crud())
