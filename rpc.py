@@ -1,7 +1,6 @@
 import asyncio
 import logging
-
-# from asyncio import run
+from asyncio import run
 from typing import Any, Coroutine
 
 import pika
@@ -9,12 +8,11 @@ from pika.adapters.blocking_connection import BlockingChannel
 
 from crud import METHODNAME_2_METHOD, getData
 
-
-def run(coroutine: Any) -> Any:
-    try:
-        coroutine.send(None)
-    except StopIteration as e:
-        return e.value
+# def run(coroutine: Any) -> Any:
+#     try:
+#         coroutine.send(None)
+#     except StopIteration as e:
+#         return e.value
 
 
 logging.basicConfig(
