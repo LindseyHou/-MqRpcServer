@@ -20,8 +20,8 @@ class ChartData(BaseModel):
 
 
 class FireDataStatistics(BaseModel):
-    Year: ChartData
     Month: ChartData
+    Week: ChartData
     Day: ChartData
 
 
@@ -97,6 +97,7 @@ class SourceItem(BaseModel):
 
 class ProjectSource(BaseModel):
     Headline: str
+    HeadlineScore: str
     SourceItems: List[SourceItem]
 
 
