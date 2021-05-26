@@ -356,19 +356,19 @@ async def getScoreDetail(companyID: str) -> schema.ScoreDetail:
         "RecommendedNames": await get_priorRect(companyID),
         "WeiHuBaoYang": {
             "Headline": "设施维护保养",
-            "HeanlineScore": str(ds[1]),
+            "HeadlineScore": str(ds[1]),
             "SourceItems": errormonthRes,
         },
         "YunXingZhuangTai": {"Headline": "", "HeanlineScore": "", "SourceItems": []},
         "JianChanQingKuang": {
             "Headline": "消防整改情况",
-            "HeanlineScore": str(ds[2]),
+            "HeadlineScore": str(ds[2]),
             "SourceItems": [],
         },
         "JiuYuanNengLi": {"Headline": "", "HeanlineScore": "", "SourceItems": []},
         "XiaoFangGuanLi": {
             "Headline": "消防设施运行状态",
-            "HeanlineScore": str(ds[0]),
+            "HeadlineScore": str(ds[0]),
             "SourceItems": fireRes + errorRes,
         },
     }
