@@ -66,12 +66,11 @@ def on_request(ch: BlockingChannel, method: Any, props: Any, body: bytes) -> Non
         logging.warning("companyID not valid: " + groupName)
         response = "InValidID"
     else:
-
         try:
             # response = await getData(groupName, methodName)
             loop = asyncio.get_event_loop()
             response = loop.run_until_complete(getData(groupName, methodName))
-            loop.close()
+            # loop.close()
         except ValueError:
             response = "ValueError"
     logging.info(" [>] response = %s" % response)
