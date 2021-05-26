@@ -1,14 +1,13 @@
+from asyncio import run
 from typing import Any, Callable, Dict, List, Tuple, Type, Union
 
 from pydantic.main import BaseModel
-from pymongo import DESCENDING, ASCENDING
+from pymongo import ASCENDING, DESCENDING
 
 import schema
-from db import get_col
-
-from real_var import *
 from const import PARTTYPE2NAME
-from asyncio import run
+from db import get_col
+from real_var import *
 
 
 # NOTE ok
@@ -290,7 +289,7 @@ async def getBuildingInfo(companyID: str) -> schema.BuildingInfo:
         "BuildingHeight": buildinfo["BuildingHeight"],
         "BuildingArea": buildinfo["BuildingArea"],
         "FireLift": buildinfo["FireLift"],
-        "SecurityExit": buildinfo["SecurityExit"]
+        "SecurityExit": buildinfo["SecurityExit"],
     }
     return schema.BuildingInfo(**data)
 
@@ -309,7 +308,9 @@ async def get_name_and_pos_by_partCode(partCode: str) -> str:
     data_col = get_col("data")
     name = ""
     pos = ""
-    async for doc in data_col.find({"partCode": partCode}).sort("time", DESCENDING).limit(1):
+    async for doc in data_col.find({"partCode": partCode}).sort(
+        "time", DESCENDING
+    ).limit(1):
         name = PARTTYPE2NAME[int(doc["partType"])]
         pos = doc["pos"]
     return name + " \t " + pos
@@ -345,32 +346,26 @@ async def getScoreDetail(companyID: str) -> schema.ScoreDetail:
             "HeanlineScore": str(ds[1]),
             "SourceItems": errormonthRes,
         },
-        "YunXingZhuangTai": {
-            "Headline": "",
-            "HeanlineScore": "",
-            "SourceItems": []
-        },
+        "YunXingZhuangTai": {"Headline": "", "HeanlineScore": "", "SourceItems": []},
         "JianChanQingKuang": {
             "Headline": "消防整改情况",
             "HeanlineScore": str(ds[2]),
             "SourceItems": [],
         },
-        "JiuYuanNengLi": {
-            "Headline": "",
-            "HeanlineScore": "",
-            "SourceItems": []
-        },
+        "JiuYuanNengLi": {"Headline": "", "HeanlineScore": "", "SourceItems": []},
         "XiaoFangGuanLi": {
             "Headline": "消防设施运行状态",
             "HeanlineScore": str(ds[0]),
-            "SourceItems": fireRes + errorRes
+            "SourceItems": fireRes + errorRes,
         },
     }
     return schema.ScoreDetail(**data)  # type: ignore
 
 
 # NOTE ok
-async def getDeviceIntactInfo(wellRateType: List[List[float]]) -> List[Dict[str, object]]:
+async def getDeviceIntactInfo(
+    wellRateType: List[List[float]]
+) -> List[Dict[str, object]]:
     res = []
     for info in wellRateType:
         nm = PARTTYPE2NAME[int(info[0])]
@@ -381,9 +376,10 @@ async def getDeviceIntactInfo(wellRateType: List[List[float]]) -> List[Dict[str,
 
 # NOTE ok
 async def getDeviceAccess(companyID: str) -> schema.DeviceAccess:
-    data = {"CompanyName": "",
-            "DeviceIntactInfo": getDeviceIntactInfo(await get_wellRateType(companyID))
-            }
+    data = {
+        "CompanyName": "",
+        "DeviceIntactInfo": getDeviceIntactInfo(await get_wellRateType(companyID)),
+    }
     return schema.DeviceAccess(**data)  # type: ignore
 
 
@@ -394,10 +390,7 @@ async def getRectification(companyID: str) -> schema.Rectification:
     firesysList = []
     for i, part in enumerate(rankList):
         firesysList.append(
-            {
-                "Categories": PARTTYPE2NAME[int(part)],
-                "Amount": numList[i],
-            }
+            {"Categories": PARTTYPE2NAME[int(part)], "Amount": numList[i]}
         )
     data = {
         "CompanyName": get_name_by_companyID(companyID),
@@ -422,10 +415,7 @@ async def getAlarmRecordsDay(companyID: str) -> schema.AlarmRecordsDay:
     infoList = []
     for i, part in enumerate(typeList):
         infoList.append(
-            {
-                "DeviceName": PARTTYPE2NAME[int(part)],
-                "AlarmsCount": numList[i],
-            }
+            {"DeviceName": PARTTYPE2NAME[int(part)], "AlarmsCount": numList[i]}
         )
     data = {
         "CompanyName": get_name_by_companyID(companyID),
@@ -461,6 +451,6 @@ async def getData(groupName: str, methodName: str) -> str:
 
 if __name__ == "__main__":
     for k, v in METHODNAME_2_METHOD.items():
-        res = getData("", k)
+        res = run(getData("", k))
         if k == "fireDataStatistics":
             print(res)
