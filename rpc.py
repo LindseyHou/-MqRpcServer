@@ -39,6 +39,8 @@ def is_numbers(s: str) -> bool:
 
 
 def is_valid_id(companyID: str) -> bool:
+    if companyID == "":
+        return True
     if len(companyID) <= 7:
         return False
     prefix = companyID[0:7]
@@ -50,13 +52,15 @@ def on_request(ch: BlockingChannel, method: Any, props: Any, body: bytes) -> Non
     message = body.decode()
     methodName, groupName, *_ = message.split("&")
     logging.info(f" [.] getData({methodName}, {groupName})")
+    response: str = ""
     if not is_valid_id(groupName):
-        logging.warn("companyID not valid: " + groupName)
-        return
-    try:
-        response = run(getData(groupName, methodName))
-    except ValueError:
-        response = "ValueError"
+        logging.warning("companyID not valid: " + groupName)
+        response = "InValidID"
+    else:
+        try:
+            response = run(getData(groupName, methodName))
+        except ValueError:
+            response = "ValueError"
     logging.info(" [>] response = %s" % response)
     ch.basic_publish(
         exchange="",
