@@ -457,7 +457,7 @@ async def getData(groupName: str, methodName: str) -> str:
 async def fun() -> None:
     for k, v in METHODNAME_2_METHOD.items():
         try:
-            res = await getData("", k)
+            res = await getData("CPYTEMP107747", k)
         except ValueError:
             res = "ValueError"
         if k == "fireDataStatistics":
