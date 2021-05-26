@@ -66,8 +66,12 @@ async def on_request(ch: BlockingChannel, method: Any, props: Any, body: bytes) 
         logging.warning("companyID not valid: " + groupName)
         response = "InValidID"
     else:
+
         try:
-            response = await getData(groupName, methodName)
+            # response = await getData(groupName, methodName)
+            loop = asyncio.get_event_loop()
+            response = loop.run_until_complete(getData(groupName, methodName))
+            loop.close()
         except ValueError:
             response = "ValueError"
     logging.info(" [>] response = %s" % response)
@@ -80,13 +84,9 @@ async def on_request(ch: BlockingChannel, method: Any, props: Any, body: bytes) 
     ch.basic_ack(delivery_tag=method.delivery_tag)
 
 
-async def main() -> Any:
+if __name__ == "__main__":
     channel.basic_qos(prefetch_count=1)
     channel.basic_consume(queue="rpc_queue", on_message_callback=on_request)
 
     logging.info(" [x] Awaiting RPC requests")
     channel.start_consuming()
-
-
-if __name__ == "__main__":
-    run(main())
