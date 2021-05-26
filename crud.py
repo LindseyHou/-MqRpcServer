@@ -36,7 +36,6 @@ async def getFireDataStatistics(companyID: str) -> schema.FireDataStatistics:
     day_res = await get_points("Day")
     week_res = await get_points("Week")
     month_res = await get_points("Month")
-    print(day_res)
     data = {
         "Day": {
             "VSize": Vsize_1,
@@ -472,8 +471,8 @@ async def fun() -> None:
             res = await getData("CPYTEMP107747", k)
         except ValueError:
             res = "ValueError"
-        if k == "fireDataStatistics":
-            print(res)
+            # if k == "fireDataStatistics":
+            print("k: " + res)
 
 
 if __name__ == "__main__":
