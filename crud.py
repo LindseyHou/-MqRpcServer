@@ -280,18 +280,31 @@ async def getGiveAlarmRecord(companyID: str) -> List[schema.GiveAlarmRecord]:
 # NOTE ok
 async def getBuildingInfo(companyID: str) -> schema.BuildingInfo:
     buildinfo = await get_buildinfo_by_companyID(companyID)
-    data = {
-        "CompanyName": buildinfo["CompanyName"],
-        "CompanyAddress": buildinfo["CompanyAddress"],
-        "ContactPerson": buildinfo["ContactPerson"],
-        "ContactPhone": buildinfo["ContactPhone"],
-        "FireLevel": buildinfo["FireLevel"],
-        "BuildingHeight": buildinfo["BuildingHeight"],
-        "BuildingArea": buildinfo["BuildingArea"],
-        "FireLift": buildinfo["FireLift"],
-        "SecurityExit": buildinfo["SecurityExit"],
-    }
-    return schema.BuildingInfo(**data)
+    if not buildinfo:
+        data = {
+            "CompanyName": "",
+            "CompanyAddress": "",
+            "ContactPerson": "",
+            "ContactPhone": "",
+            "FireLevel": 0,
+            "BuildingHeight": 0,
+            "BuildingArea": 0,
+            "FireLift": 0,
+            "SecurityExit": 0,
+        }
+    else:
+        data = {
+            "CompanyName": buildinfo["CompanyName"],
+            "CompanyAddress": buildinfo["CompanyAddress"],
+            "ContactPerson": buildinfo["ContactPerson"],
+            "ContactPhone": buildinfo["ContactPhone"],
+            "FireLevel": buildinfo["FireLevel"],
+            "BuildingHeight": buildinfo["BuildingHeight"],
+            "BuildingArea": buildinfo["BuildingArea"],
+            "FireLift": buildinfo["FireLift"],
+            "SecurityExit": buildinfo["SecurityExit"],
+        }
+    return schema.BuildingInfo(**data)  # type: ignore
 
 
 # NOTE ok
