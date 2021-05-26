@@ -372,6 +372,7 @@ async def getScoreDetail(companyID: str) -> schema.ScoreDetail:
             "SourceItems": fireRes + errorRes,
         },
     }
+    print(data)
     return schema.ScoreDetail(**data)  # type: ignore
 
 
@@ -472,7 +473,7 @@ async def fun() -> None:
         except ValueError:
             res = "ValueError"
             # if k == "fireDataStatistics":
-        print(k + ": " + res)
+            print(k + ": " + res)
 
 
 if __name__ == "__main__":
