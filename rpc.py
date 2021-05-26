@@ -1,12 +1,21 @@
 import asyncio
 import logging
-from asyncio import run
-from typing import Any
+
+# from asyncio import run
+from typing import Any, Coroutine
 
 import pika
 from pika.adapters.blocking_connection import BlockingChannel
 
 from crud import METHODNAME_2_METHOD, getData
+
+
+def run(coroutine: Any) -> Any:
+    try:
+        coroutine.send(None)
+    except StopIteration as e:
+        return e.value
+
 
 logging.basicConfig(
     handlers=[logging.FileHandler("mq.log"), logging.StreamHandler()],
@@ -49,7 +58,7 @@ def is_valid_id(companyID: str) -> bool:
     return is_upper_char(prefix) and is_numbers(leftover)
 
 
-async def on_request(ch: BlockingChannel, method: Any, props: Any, body: bytes) -> None:
+def on_request(ch: BlockingChannel, method: Any, props: Any, body: bytes) -> None:
     message = body.decode()
     methodName, groupName, *_ = message.split("&")
     logging.info(f" [.] getData({methodName}, {groupName})")
@@ -60,7 +69,7 @@ async def on_request(ch: BlockingChannel, method: Any, props: Any, body: bytes) 
         response = "InValidID"
     else:
         try:
-            response = await getData(groupName, methodName)
+            response = run(getData(groupName, methodName))
         except ValueError:
             response = "ValueError"
     logging.info(" [>] response = %s" % response)
