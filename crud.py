@@ -404,7 +404,7 @@ async def getRectification(companyID: str) -> schema.Rectification:
             {"Categories": PARTTYPE2NAME[int(part)], "Amount": numList[i]}
         )
     data = {
-        "CompanyName": get_name_by_companyID(companyID),
+        "CompanyName": await get_name_by_companyID(companyID),
         "Numbers": 0,
         "Rate": 0,
         "MTTR": await get_avgRectTime(companyID),
@@ -429,7 +429,7 @@ async def getAlarmRecordsDay(companyID: str) -> schema.AlarmRecordsDay:
             {"DeviceName": PARTTYPE2NAME[int(part)], "AlarmsCount": numList[i]}
         )
     data = {
-        "CompanyName": get_name_by_companyID(companyID),
+        "CompanyName": await get_name_by_companyID(companyID),
         "MaxAlarmsCount": max(numList),
         "DeviceInfos": infoList,
     }
