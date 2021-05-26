@@ -359,13 +359,13 @@ async def getScoreDetail(companyID: str) -> schema.ScoreDetail:
             "HeadlineScore": str(ds[1]),
             "SourceItems": errormonthRes,
         },
-        "YunXingZhuangTai": {"Headline": "", "HeanlineScore": "", "SourceItems": []},
+        "YunXingZhuangTai": {"Headline": "", "HeadlineScore": "", "SourceItems": []},
         "JianChanQingKuang": {
             "Headline": "消防整改情况",
             "HeadlineScore": str(ds[2]),
             "SourceItems": [],
         },
-        "JiuYuanNengLi": {"Headline": "", "HeanlineScore": "", "SourceItems": []},
+        "JiuYuanNengLi": {"Headline": "", "HeadlineScore": "", "SourceItems": []},
         "XiaoFangGuanLi": {
             "Headline": "消防设施运行状态",
             "HeadlineScore": str(ds[0]),
@@ -472,7 +472,7 @@ async def fun() -> None:
         except ValueError:
             res = "ValueError"
             # if k == "fireDataStatistics":
-            print("k: " + res)
+        print(k + ": " + res)
 
 
 if __name__ == "__main__":
