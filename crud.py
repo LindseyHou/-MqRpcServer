@@ -376,9 +376,7 @@ async def getScoreDetail(companyID: str) -> schema.ScoreDetail:
 
 
 # NOTE ok
-async def getDeviceIntactInfo(
-    wellRateType: List[List[float]]
-) -> List[Dict[str, object]]:
+def getDeviceIntactInfo(wellRateType: List[List[float]]) -> List[Dict[str, object]]:
     res = []
     for info in wellRateType:
         nm = PARTTYPE2NAME[int(info[0])]
