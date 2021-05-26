@@ -1,4 +1,4 @@
-from asyncio import run
+# from asyncio import run
 from typing import Any, Callable, Dict, List, Tuple, Type, Union
 
 from pydantic.main import BaseModel
@@ -447,6 +447,13 @@ async def getData(groupName: str, methodName: str) -> str:
     if isinstance(res, BaseModel):
         return res.json(ensure_ascii=False)
     return f"[{','.join([item.json(ensure_ascii=False) for item in res])}]"
+
+
+def run(coroutine: Any) -> Any:
+    try:
+        coroutine.send(None)
+    except StopIteration as e:
+        return e.value
 
 
 if __name__ == "__main__":
