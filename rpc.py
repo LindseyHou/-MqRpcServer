@@ -56,7 +56,7 @@ def is_valid_id(companyID: str) -> bool:
     return is_upper_char(prefix) and is_numbers(leftover)
 
 
-def on_request(ch: BlockingChannel, method: Any, props: Any, body: bytes) -> None:
+async def on_request(ch: BlockingChannel, method: Any, props: Any, body: bytes) -> None:
     message = body.decode()
     methodName, groupName, *_ = message.split("&")
     logging.info(f" [.] getData({methodName}, {groupName})")
@@ -67,7 +67,7 @@ def on_request(ch: BlockingChannel, method: Any, props: Any, body: bytes) -> Non
         response = "InValidID"
     else:
         try:
-            response = run(getData(groupName, methodName))
+            response = await getData(groupName, methodName)
         except ValueError:
             response = "ValueError"
     logging.info(" [>] response = %s" % response)
