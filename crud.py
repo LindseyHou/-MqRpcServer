@@ -465,15 +465,15 @@ async def getData(groupName: str, methodName: str) -> str:
 #         coroutine.send(None)
 #     except StopIteration as e:
 #         return e.value
-async def fun() -> None:
-    for k, v in METHODNAME_2_METHOD.items():
-        try:
-            res = await getData("CPYTEMP107747", k)
-        except ValueError:
-            res = "ValueError"
-            # if k == "fireDataStatistics":
-            print(k + ": " + res)
+# async def fun() -> None:
+#     for k, v in METHODNAME_2_METHOD.items():
+#         try:
+#             res = await getData("CPYTEMP107747", k)
+#         except ValueError:
+#             res = "ValueError"
+#             # if k == "fireDataStatistics":
+#             print(k + ": " + res)
 
 
-if __name__ == "__main__":
-    run(fun())
+# if __name__ == "__main__":
+#     run(fun())
