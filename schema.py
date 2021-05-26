@@ -92,12 +92,12 @@ class AlarmInfo(BaseModel):
 # scoreDetail评分详情
 class SourceItem(BaseModel):
     Details: str
-    # Score: float
+    # Score: float #NOTE:实际函数中并没有传score,先注释掉
 
 
 class ProjectSource(BaseModel):
     Headline: str
-    HeadlineScore: str
+    HeadlineScore: str  # NOTE:从HeanlineScore改为HeadlineScore,因为我怀疑前者是拼写错误
     SourceItems: List[SourceItem]
 
 

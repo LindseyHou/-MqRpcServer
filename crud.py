@@ -372,7 +372,6 @@ async def getScoreDetail(companyID: str) -> schema.ScoreDetail:
             "SourceItems": fireRes + errorRes,
         },
     }
-    print(data)
     return schema.ScoreDetail(**data)  # type: ignore
 
 
