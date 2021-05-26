@@ -36,6 +36,7 @@ async def getFireDataStatistics(companyID: str) -> schema.FireDataStatistics:
     day_res = await get_points("Day")
     week_res = await get_points("Week")
     month_res = await get_points("Month")
+    print(day_res)
     data = {
         "Day": {
             "VSize": Vsize_1,
