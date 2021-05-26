@@ -1,3 +1,4 @@
+import asyncio
 import logging
 from asyncio import run
 from typing import Any
@@ -48,17 +49,18 @@ def is_valid_id(companyID: str) -> bool:
     return is_upper_char(prefix) and is_numbers(leftover)
 
 
-def on_request(ch: BlockingChannel, method: Any, props: Any, body: bytes) -> None:
+async def on_request(ch: BlockingChannel, method: Any, props: Any, body: bytes) -> None:
     message = body.decode()
     methodName, groupName, *_ = message.split("&")
     logging.info(f" [.] getData({methodName}, {groupName})")
     response: str = ""
+
     if not is_valid_id(groupName):
         logging.warning("companyID not valid: " + groupName)
         response = "InValidID"
     else:
         try:
-            response = run(getData(groupName, methodName))
+            response = await getData(groupName, methodName)
         except ValueError:
             response = "ValueError"
     logging.info(" [>] response = %s" % response)
