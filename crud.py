@@ -451,6 +451,9 @@ async def getData(groupName: str, methodName: str) -> str:
 
 if __name__ == "__main__":
     for k, v in METHODNAME_2_METHOD.items():
-        res = run(getData("", k))
+        try:
+            res = run(getData("", k))
+        except ValueError:
+            res = "ValueError"
         if k == "fireDataStatistics":
             print(res)
