@@ -1,4 +1,4 @@
-# from asyncio import run
+from asyncio import run
 from typing import Any, Callable, Dict, List, Tuple, Type, Union
 
 from pydantic.main import BaseModel
@@ -449,18 +449,20 @@ async def getData(groupName: str, methodName: str) -> str:
     return f"[{','.join([item.json(ensure_ascii=False) for item in res])}]"
 
 
-def run(coroutine: Any) -> Any:
-    try:
-        coroutine.send(None)
-    except StopIteration as e:
-        return e.value
-
-
-if __name__ == "__main__":
+# def run(coroutine: Any) -> Any:
+#     try:
+#         coroutine.send(None)
+#     except StopIteration as e:
+#         return e.value
+async def fun() -> None:
     for k, v in METHODNAME_2_METHOD.items():
         try:
-            res = run(getData("", k))
+            res = await getData("", k)
         except ValueError:
             res = "ValueError"
         if k == "fireDataStatistics":
             print(res)
+
+
+if __name__ == "__main__":
+    run(fun())
