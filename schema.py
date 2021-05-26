@@ -92,7 +92,7 @@ class AlarmInfo(BaseModel):
 # scoreDetail评分详情
 class SourceItem(BaseModel):
     Details: str
-    Score: float
+    # Score: float
 
 
 class ProjectSource(BaseModel):
