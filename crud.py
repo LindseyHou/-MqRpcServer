@@ -37,7 +37,9 @@ async def getFireDataStatistics(companyIDs: List[str]) -> schema.FireDataStatist
     query_dict["companyID"]["$in"] = companyIDs
     partCodes: List[str] = []
     async for doc in get_col("info").find(query_dict):
-        partCodes.append(doc["partCode"])
+        datas = doc["datas"]
+        for d in datas:
+            partCodes.append(d["partCode"])
 
     day_res = await get_points("Day", partCodes)
     week_res = await get_points("Week", partCodes)
