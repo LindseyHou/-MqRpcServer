@@ -1,5 +1,7 @@
 from asyncio import run
+from logging import info
 from typing import Any, Callable, Dict, List, Tuple, Type, Union
+from random import randint
 
 from pydantic.main import BaseModel
 from pymongo import ASCENDING, DESCENDING
@@ -30,15 +32,11 @@ async def get_buildinfo_by_companyID(companyID: str) -> Dict[str, Any]:
 
 # NOTE ok
 async def getFireDataStatistics(companyID: str) -> schema.FireDataStatistics:
-    Vsize_1 = 50
-    Vsize_2 = 200
-    Vsize_3 = 500
     day_res = await get_points("Day")
     week_res = await get_points("Week")
     month_res = await get_points("Month")
     data = {
         "Day": {
-            "VSize": Vsize_1,
             "Categories": [
                 {"Name": "消防给水与灭火系统", "Points": day_res[fireType.WATER]},
                 {"Name": "防排烟系统", "Points": day_res[fireType.SMOKE]},
@@ -48,7 +46,6 @@ async def getFireDataStatistics(companyID: str) -> schema.FireDataStatistics:
             ],
         },
         "Week": {
-            "VSize": Vsize_2,
             "Categories": [
                 {"Name": "消防给水与灭火系统", "Points": week_res[fireType.WATER]},
                 {"Name": "防排烟系统", "Points": week_res[fireType.SMOKE]},
@@ -58,7 +55,6 @@ async def getFireDataStatistics(companyID: str) -> schema.FireDataStatistics:
             ],
         },
         "Month": {
-            "VSize": Vsize_3,
             "Categories": [
                 {"Name": "消防给水与灭火系统", "Points": month_res[fireType.WATER]},
                 {"Name": "防排烟系统", "Points": month_res[fireType.SMOKE]},
@@ -71,164 +67,54 @@ async def getFireDataStatistics(companyID: str) -> schema.FireDataStatistics:
     return schema.FireDataStatistics(**data)  # type: ignore
 
 
-# FIXME 编造毗邻单位；毗邻单位分数怎么调用？
+async def get_number_by_algoType(companyID: str, algoType: int) -> int:
+    res = 0
+    info_col = get_col("info")
+    part_list = info_col.find_one({"companyID": companyID})["datas"]
+    data_col = get_col("data")
+
+    return res
+
+
+# FIXME 去除输入的ID；异常 和 隐患 的统计???
 async def getSafetyScore(companyID: str) -> List[schema.SafetyScore]:
+    id_list = ["CPYTEMP107747", "CPYTEMP107748", "CPYTEMP116584"]
     datas = [
         {
-            "CompanyName": "上海国际会议中心",
-            "PercentageOfIoT": await get_wellRateWhole(companyID),
-            "SafetyRating": await get_safetyScore(companyID),
+            "CompanyName": id_list[0],
+            "PercentageOfIoT": await get_wellRateWhole(id_list[0]),
+            "SafetyRating": await get_safetyScore(id_list[0]),
             "ImageUrl": "SHICC.png",
             "SceneName": "SHICC",
             "FireStatistics": 6,
             "WarningStatistics": 8,
             "FailureStatistics": 3,
-            "AbnormalStatistics": 7,
-            "HiddenDangerStatistics": 10,
-            "AdjacentUnits": ["港务大厦", "浦东美术馆", "浦东海关大楼", "万向大厦"],
+            "AbnormalStatistics": randint(1, 10),
+            "HiddenDangerStatistics": randint(1, 10),
         },
         {
-            "CompanyName": "浦东美术馆",
-            "PercentageOfIoT": await get_wellRateWhole(companyID),  # fake
-            "SafetyRating": await get_safetyScore(companyID),  # fake
+            "CompanyName": id_list[1],
+            "PercentageOfIoT": await get_wellRateWhole(id_list[1]),
+            "SafetyRating": await get_safetyScore(id_list[1]),
             "ImageUrl": "MeiShuGuan.png",
             "SceneName": "SHICC",
             "FireStatistics": 6,
             "WarningStatistics": 8,
             "FailureStatistics": 3,
-            "AbnormalStatistics": 7,
-            "HiddenDangerStatistics": 10,
-            "AdjacentUnits": ["港务大厦", "上海国际会议中心", "浦东海关大楼", "万向大厦"],
+            "AbnormalStatistics": randint(1, 10),
+            "HiddenDangerStatistics": randint(1, 10),
         },
         {
-            "CompanyName": "港务大厦",
-            "PercentageOfIoT": await get_wellRateWhole(companyID),
-            "SafetyRating": await get_safetyScore(companyID),
+            "CompanyName": id_list[2],
+            "PercentageOfIoT": await get_wellRateWhole(id_list[2]),
+            "SafetyRating": await get_safetyScore(id_list[2]),
             "ImageUrl": "GangWuDaSha.png",
             "SceneName": "SHICC",
             "FireStatistics": 6,
             "WarningStatistics": 8,
             "FailureStatistics": 3,
-            "AbnormalStatistics": 7,
-            "HiddenDangerStatistics": 10,
-            "AdjacentUnits": ["上海国际会议中心", "浦东美术馆", "浦东海关大楼", "港务大厦"],
-        },
-        {
-            "CompanyName": "浦东海关大楼",
-            "PercentageOfIoT": await get_wellRateWhole(companyID),
-            "SafetyRating": await get_safetyScore(companyID),
-            "ImageUrl": "HaiGuanDaLou.png",
-            "SceneName": "SHICC",
-            "FireStatistics": 6,
-            "WarningStatistics": 8,
-            "FailureStatistics": 3,
-            "AbnormalStatistics": 7,
-            "HiddenDangerStatistics": 10,
-            "AdjacentUnits": ["港务大厦", "上海国际会议中心", "浦东美术馆", "万向大厦"],
-        },
-        {
-            "CompanyName": "正大广场",
-            "PercentageOfIoT": await get_wellRateWhole(companyID),
-            "SafetyRating": await get_safetyScore(companyID),
-            "ImageUrl": "ZhengDaGuangChang.png",
-            "SceneName": "SHICC",
-            "FireStatistics": 6,
-            "WarningStatistics": 8,
-            "FailureStatistics": 3,
-            "AbnormalStatistics": 7,
-            "HiddenDangerStatistics": 10,
-            "AdjacentUnits": ["港务大厦", "上海国际会议中心", "浦东海关大楼", "万向大厦"],
-        },
-        {
-            "CompanyName": "万向大厦",
-            "PercentageOfIoT": await get_wellRateWhole(companyID),
-            "SafetyRating": await get_safetyScore(companyID),
-            "ImageUrl": "WanXiangDaSha.png",
-            "SceneName": "SHICC",
-            "FireStatistics": 6,
-            "WarningStatistics": 8,
-            "FailureStatistics": 3,
-            "AbnormalStatistics": 7,
-            "HiddenDangerStatistics": 10,
-            "AdjacentUnits": ["港务大厦", "上海国际会议中心", "浦东海关大楼", "正大广场"],
-        },
-        {
-            "CompanyName": "复兴馆",
-            "PercentageOfIoT": await get_wellRateWhole(companyID),
-            "SafetyRating": await get_safetyScore(companyID),
-            "ImageUrl": "FuXingGuan.png",
-            "SceneName": "FuXingGuan",
-            "FireStatistics": 6,
-            "WarningStatistics": 8,
-            "FailureStatistics": 3,
-            "AbnormalStatistics": 7,
-            "HiddenDangerStatistics": 10,
-            "AdjacentUnits": ["花栖堂", "世纪馆", "花艺馆", "竹藤馆"],
-        },
-        {
-            "CompanyName": "花栖堂",
-            "PercentageOfIoT": await get_wellRateWhole(companyID),
-            "SafetyRating": await get_safetyScore(companyID),
-            "ImageUrl": "HuaQiTang.png",
-            "SceneName": "HuaQiTang",
-            "FireStatistics": 6,
-            "WarningStatistics": 8,
-            "FailureStatistics": 3,
-            "AbnormalStatistics": 7,
-            "HiddenDangerStatistics": 10,
-            "AdjacentUnits": ["复兴馆", "世纪馆", "花艺馆", "竹藤馆"],
-        },
-        {
-            "CompanyName": "世纪馆",
-            "PercentageOfIoT": await get_wellRateWhole(companyID),
-            "SafetyRating": await get_safetyScore(companyID),
-            "ImageUrl": "ShiJiGuan.png",
-            "SceneName": "",
-            "FireStatistics": 6,
-            "WarningStatistics": 8,
-            "FailureStatistics": 3,
-            "AbnormalStatistics": 7,
-            "HiddenDangerStatistics": 10,
-            "AdjacentUnits": ["复兴馆", "花栖堂", "花艺馆", "竹藤馆"],
-        },
-        {
-            "CompanyName": "花艺馆",
-            "PercentageOfIoT": await get_wellRateWhole(companyID),
-            "SafetyRating": await get_safetyScore(companyID),
-            "ImageUrl": "HuaYiGuan.png",
-            "SceneName": "",
-            "FireStatistics": 6,
-            "WarningStatistics": 8,
-            "FailureStatistics": 3,
-            "AbnormalStatistics": 7,
-            "HiddenDangerStatistics": 10,
-            "AdjacentUnits": ["港务大厦", "上海国际会议中心", "浦东美术馆", "万向大厦"],
-        },
-        {
-            "CompanyName": "竹藤馆",
-            "PercentageOfIoT": await get_wellRateWhole(companyID),
-            "SafetyRating": await get_safetyScore(companyID),
-            "ImageUrl": "ZhuTengGuan.png",
-            "SceneName": "",
-            "FireStatistics": 6,
-            "WarningStatistics": 8,
-            "FailureStatistics": 3,
-            "AbnormalStatistics": 7,
-            "HiddenDangerStatistics": 10,
-            "AdjacentUnits": ["百花馆", "花艺馆", "世纪馆", "花栖堂"],
-        },
-        {
-            "CompanyName": "百花馆",
-            "PercentageOfIoT": await get_wellRateWhole(companyID),
-            "SafetyRating": await get_safetyScore(companyID),
-            "ImageUrl": "BaiHuaGuan.png",
-            "SceneName": "",
-            "FireStatistics": 6,
-            "WarningStatistics": 8,
-            "FailureStatistics": 3,
-            "AbnormalStatistics": 7,
-            "HiddenDangerStatistics": 10,
-            "AdjacentUnits": ["竹藤馆", "花艺馆", "世纪馆", "花栖堂"],
+            "AbnormalStatistics": randint(1, 10),
+            "HiddenDangerStatistics": randint(1, 10),
         },
     ]
     return [schema.SafetyScore(**data) for data in datas]  # type: ignore

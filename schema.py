@@ -15,7 +15,6 @@ class Category(BaseModel):
 
 
 class ChartData(BaseModel):
-    VSize: float
     Categories: List[Category]
 
 
@@ -43,7 +42,6 @@ class SafetyScore(BaseModel):
     FailureStatistics: int
     AbnormalStatistics: int
     HiddenDangerStatistics: int
-    AdjacentUnits: List[str]
 
 
 # realTimeAlarm实时警情
