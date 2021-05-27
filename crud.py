@@ -81,7 +81,7 @@ async def getSafetyScore(companyID: str) -> List[schema.SafetyScore]:
     id_list = ["CPYTEMP107747", "CPYTEMP107748", "CPYTEMP116584"]
     datas = [
         {
-            "CompanyName": id_list[0],
+            "CompanyName": await get_name_by_companyID(id_list[0]),
             "PercentageOfIoT": await get_wellRateWhole(id_list[0]),
             "SafetyRating": await get_safetyScore(id_list[0]),
             "ImageUrl": "SHICC.png",
@@ -93,7 +93,7 @@ async def getSafetyScore(companyID: str) -> List[schema.SafetyScore]:
             "HiddenDangerStatistics": randint(1, 10),
         },
         {
-            "CompanyName": id_list[1],
+            "CompanyName": await get_name_by_companyID(id_list[1]),
             "PercentageOfIoT": await get_wellRateWhole(id_list[1]),
             "SafetyRating": await get_safetyScore(id_list[1]),
             "ImageUrl": "MeiShuGuan.png",
@@ -105,7 +105,7 @@ async def getSafetyScore(companyID: str) -> List[schema.SafetyScore]:
             "HiddenDangerStatistics": randint(1, 10),
         },
         {
-            "CompanyName": id_list[2],
+            "CompanyName": await get_name_by_companyID(id_list[2]),
             "PercentageOfIoT": await get_wellRateWhole(id_list[2]),
             "SafetyRating": await get_safetyScore(id_list[2]),
             "ImageUrl": "GangWuDaSha.png",
