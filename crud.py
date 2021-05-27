@@ -41,7 +41,7 @@ async def getFireDataStatistics(companyID: str) -> schema.FireDataStatistics:
             "VSize": Vsize_1,
             "Categories": [
                 {"Name": "消防给水与灭火系统", "Points": day_res[fireType.WATER]},
-                {"Name": "防、排烟系统", "Points": day_res[fireType.SMOKE]},
+                {"Name": "防排烟系统", "Points": day_res[fireType.SMOKE]},
                 {"Name": "应急疏散系统", "Points": day_res[fireType.EVACU]},
                 {"Name": "火灾探测报警系统", "Points": day_res[fireType.ALARM]},
                 {"Name": "其他", "Points": day_res[fireType.OTHER]},
@@ -51,7 +51,7 @@ async def getFireDataStatistics(companyID: str) -> schema.FireDataStatistics:
             "VSize": Vsize_2,
             "Categories": [
                 {"Name": "消防给水与灭火系统", "Points": week_res[fireType.WATER]},
-                {"Name": "防、排烟系统", "Points": week_res[fireType.SMOKE]},
+                {"Name": "防排烟系统", "Points": week_res[fireType.SMOKE]},
                 {"Name": "应急疏散系统", "Points": week_res[fireType.EVACU]},
                 {"Name": "火灾探测报警系统", "Points": week_res[fireType.ALARM]},
                 {"Name": "其他", "Points": week_res[fireType.OTHER]},
@@ -61,7 +61,7 @@ async def getFireDataStatistics(companyID: str) -> schema.FireDataStatistics:
             "VSize": Vsize_3,
             "Categories": [
                 {"Name": "消防给水与灭火系统", "Points": month_res[fireType.WATER]},
-                {"Name": "防、排烟系统", "Points": month_res[fireType.SMOKE]},
+                {"Name": "防排烟系统", "Points": month_res[fireType.SMOKE]},
                 {"Name": "应急疏散系统", "Points": month_res[fireType.EVACU]},
                 {"Name": "火灾探测报警系统", "Points": month_res[fireType.ALARM]},
                 {"Name": "其他", "Points": month_res[fireType.OTHER]},
