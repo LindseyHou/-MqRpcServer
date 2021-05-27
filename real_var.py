@@ -60,6 +60,8 @@ async def get_points(timeslot: str) -> List[List[Dict[str, int]]]:
         query_dict["time"] = {}
         query_dict["time"]["$lte"] = end_date
         query_dict["time"]["$gte"] = start_date
+        query_dict["algoType"] = {}
+        query_dict["algoType"]["$in"] = [100, 300]  # NOTE:火警和预警
         count: List[int] = [
             0,
             0,
@@ -68,11 +70,19 @@ async def get_points(timeslot: str) -> List[List[Dict[str, int]]]:
             0,
         ]  # count[fireType.WATER] refers to the water隐患 in a single time interval
         async for doc in get_col("data").find(query_dict):
-            algo: int = doc["algoType"]
             partType: int = doc["partType"]
-            if algo == 100 or algo == 200 or algo == 300:
-                _fireType = get_fireType(partType=partType)
+            # if algo == 100 or algo == 200 or algo == 300:
+            _fireType = get_fireType(partType=partType)
+            count[_fireType] += 1
+        query_dict["algoType"] = 200  # NOTE:故障，需要去重
+        partCodes = []
+        async for doc in get_col("data").find(query_dict):
+            partCode: str = doc["partCode"]
+            if partCode not in partCodes:
+                partCodes.append(partCode)
+                _fireType = get_fireType(partType=doc["partType"])
                 count[_fireType] += 1
+
         res[fireType.WATER].append({"X": i + 1, "Y": count[fireType.WATER]})
         res[fireType.SMOKE].append({"X": i + 1, "Y": count[fireType.SMOKE]})
         res[fireType.EVACU].append({"X": i + 1, "Y": count[fireType.EVACU]})
@@ -598,9 +608,18 @@ async def get_riskList(companyID: str) -> List[str]:
 
 
 async def test_real_val() -> None:
+    import time
+
+    start = time.time()
     day_res = await get_points("Day")
+    end_day = time.time()
     week_res = await get_points("Week")
+    end_week = time.time()
     month_res = await get_points("Month")
+    end_month = time.time()
+    print("day: " + str(end_day - start))
+    print("week: " + str(end_week - start))
+    print("month: " + str(end_month - start))
     companyID = sys.argv[1]
 
     wellRateWhole = await get_wellRateWhole(companyID)
