@@ -6,7 +6,7 @@ from typing import Any, Coroutine
 import pika
 from pika.adapters.blocking_connection import BlockingChannel
 
-from crud import METHODNAME_2_METHOD, getData
+from crud import METHODNAME_2_METHOD, getData, getDatas
 
 # def run(coroutine: Any) -> Any:
 #     try:
@@ -58,21 +58,44 @@ def is_valid_id(companyID: str) -> bool:
 
 def on_request(ch: BlockingChannel, method: Any, props: Any, body: bytes) -> None:
     message = body.decode()
-    methodName, groupName, *_ = message.split("&")
-    logging.info(f" [.] getData({methodName}, {groupName})")
+    split_array = message.split("&")
     response: str = ""
+    if split_array[0] == "GetData":
+        methodName = split_array[1]
+        groupName = split_array[2]
+        logging.info(f" [.] getData({methodName}, {groupName})")
 
-    if not is_valid_id(groupName):
-        logging.warning("companyID not valid: " + groupName)
-        response = "InValidID"
-    else:
+        if not is_valid_id(groupName):
+            logging.warning("companyID not valid: " + groupName)
+            response = "InValidID"
+        else:
+            try:
+                # response = await getData(groupName, methodName)
+                loop = asyncio.get_event_loop()
+                response = loop.run_until_complete(getData(groupName, methodName))
+                # loop.close()
+            except ValueError:
+                response = "ValueError"
+
+    elif split_array[0] == "GetDatas":
+        methodName = split_array[1]
+        groupNames = split_array[2:]
+
         try:
-            # response = await getData(groupName, methodName)
+            for groupName in groupNames:
+                if not is_valid_id(groupName):
+                    logging.warning("companyID not valid: " + groupName)
+                    raise ValueError()
+        except ValueError:
+            response = "InValidID"
+
+        try:
+
             loop = asyncio.get_event_loop()
-            response = loop.run_until_complete(getData(groupName, methodName))
-            # loop.close()
+            response = loop.run_until_complete(getDatas(groupNames, methodName))
         except ValueError:
             response = "ValueError"
+
     logging.info(" [>] response = %s" % response)
     ch.basic_publish(
         exchange="",

@@ -1,7 +1,7 @@
 from asyncio import run
 from logging import info
-from typing import Any, Callable, Dict, List, Tuple, Type, Union
 from random import randint
+from typing import Any, Callable, Dict, List, Tuple, Type, Union
 
 from pydantic.main import BaseModel
 from pymongo import ASCENDING, DESCENDING
@@ -31,10 +31,17 @@ async def get_buildinfo_by_companyID(companyID: str) -> Dict[str, Any]:
 
 
 # NOTE ok
-async def getFireDataStatistics(companyID: str) -> schema.FireDataStatistics:
-    day_res = await get_points("Day")
-    week_res = await get_points("Week")
-    month_res = await get_points("Month")
+async def getFireDataStatistics(companyIDs: List[str]) -> schema.FireDataStatistics:
+    query_dict: Any = {}
+    query_dict["companyID"] = {}
+    query_dict["companyID"]["$in"] = companyIDs
+    partCodes: List[str] = []
+    async for doc in get_col("info").find(query_dict):
+        partCodes.append(doc["partCode"])
+
+    day_res = await get_points("Day", partCodes)
+    week_res = await get_points("Week", partCodes)
+    month_res = await get_points("Month", partCodes)
     data = {
         "Day": {
             "Categories": [
@@ -43,7 +50,7 @@ async def getFireDataStatistics(companyID: str) -> schema.FireDataStatistics:
                 {"Name": "应急疏散系统", "Points": day_res[fireType.EVACU]},
                 {"Name": "火灾探测报警系统", "Points": day_res[fireType.ALARM]},
                 {"Name": "其他", "Points": day_res[fireType.OTHER]},
-            ],
+            ]
         },
         "Week": {
             "Categories": [
@@ -52,7 +59,7 @@ async def getFireDataStatistics(companyID: str) -> schema.FireDataStatistics:
                 {"Name": "应急疏散系统", "Points": week_res[fireType.EVACU]},
                 {"Name": "火灾探测报警系统", "Points": week_res[fireType.ALARM]},
                 {"Name": "其他", "Points": week_res[fireType.OTHER]},
-            ],
+            ]
         },
         "Month": {
             "Categories": [
@@ -61,7 +68,7 @@ async def getFireDataStatistics(companyID: str) -> schema.FireDataStatistics:
                 {"Name": "应急疏散系统", "Points": month_res[fireType.EVACU]},
                 {"Name": "火灾探测报警系统", "Points": month_res[fireType.ALARM]},
                 {"Name": "其他", "Points": month_res[fireType.OTHER]},
-            ],
+            ]
         },
     }
     return schema.FireDataStatistics(**data)  # type: ignore
@@ -323,7 +330,6 @@ async def getAlarmRecordsDay(companyID: str) -> schema.AlarmRecordsDay:
 
 
 METHODNAME_2_METHOD: Dict[str, Callable[[str], Any]] = {
-    "fireDataStatistics": getFireDataStatistics,
     "safetyScore": getSafetyScore,
     "realTimeAlarm": getRealTimeAlarm,
     "giveAlarmRecord": getGiveAlarmRecord,
@@ -334,13 +340,24 @@ METHODNAME_2_METHOD: Dict[str, Callable[[str], Any]] = {
     "rectification": getRectification,
     "alarmRecordsDay": getAlarmRecordsDay,
 }
-
+METHODNAME_2_METHOD_MULTI: Dict[str, Callable[[List[str]], Any]] = {
+    "fireDataStatistics": getFireDataStatistics
+}
 
 # NOTE ok
 async def getData(groupName: str, methodName: str) -> str:
     if methodName not in METHODNAME_2_METHOD.keys():
         raise ValueError()
     res = await METHODNAME_2_METHOD[methodName](groupName)
+    if isinstance(res, BaseModel):
+        return res.json(ensure_ascii=False)
+    return f"[{','.join([item.json(ensure_ascii=False) for item in res])}]"
+
+
+async def getDatas(groupNames: List[str], methodName: str) -> str:
+    if methodName not in METHODNAME_2_METHOD_MULTI.keys():
+        raise ValueError()
+    res = await METHODNAME_2_METHOD_MULTI[methodName](groupNames)
     if isinstance(res, BaseModel):
         return res.json(ensure_ascii=False)
     return f"[{','.join([item.json(ensure_ascii=False) for item in res])}]"
