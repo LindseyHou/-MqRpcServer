@@ -60,6 +60,7 @@ async def get_points(timeslot: str) -> List[List[Dict[str, int]]]:
         query_dict["time"] = {}
         query_dict["time"]["$lte"] = end_date
         query_dict["time"]["$gte"] = start_date
+        query_dict["algoType"]["$in"] = [200, 300]  # NOTE:隐患和预警
         count: List[int] = [
             0,
             0,
@@ -68,11 +69,19 @@ async def get_points(timeslot: str) -> List[List[Dict[str, int]]]:
             0,
         ]  # count[fireType.WATER] refers to the water隐患 in a single time interval
         async for doc in get_col("data").find(query_dict):
-            algo: int = doc["algoType"]
             partType: int = doc["partType"]
-            if algo == 100 or algo == 200 or algo == 300:
-                _fireType = get_fireType(partType=partType)
+            # if algo == 100 or algo == 200 or algo == 300:
+            _fireType = get_fireType(partType=partType)
+            count[_fireType] += 1
+        query_dict["algoType"] = 100  # NOTE:火警，需要去重
+        partCodes = []
+        async for doc in get_col("data").find(query_dict):
+            partCode: str = doc["partCode"]
+            if partCode not in partCodes:
+                partCodes.append(partCode)
+                _fireType = get_fireType(partType=doc["partType"])
                 count[_fireType] += 1
+
         res[fireType.WATER].append({"X": i + 1, "Y": count[fireType.WATER]})
         res[fireType.SMOKE].append({"X": i + 1, "Y": count[fireType.SMOKE]})
         res[fireType.EVACU].append({"X": i + 1, "Y": count[fireType.EVACU]})
