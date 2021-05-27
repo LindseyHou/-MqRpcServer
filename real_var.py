@@ -60,6 +60,7 @@ async def get_points(timeslot: str) -> List[List[Dict[str, int]]]:
         query_dict["time"] = {}
         query_dict["time"]["$lte"] = end_date
         query_dict["time"]["$gte"] = start_date
+        query_dict["algoType"] = {}
         query_dict["algoType"]["$in"] = [200, 300]  # NOTE:隐患和预警
         count: List[int] = [
             0,
