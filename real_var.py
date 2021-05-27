@@ -608,9 +608,18 @@ async def get_riskList(companyID: str) -> List[str]:
 
 
 async def test_real_val() -> None:
+    import time
+
+    start = time.time()
     day_res = await get_points("Day")
+    end_day = time.time()
     week_res = await get_points("Week")
+    end_week = time.time()
     month_res = await get_points("Month")
+    end_month = time.time()
+    print("day: " + str(end_day - start))
+    print("week: " + str(end_week - start))
+    print("month: " + str(end_month - start))
     companyID = sys.argv[1]
 
     wellRateWhole = await get_wellRateWhole(companyID)
