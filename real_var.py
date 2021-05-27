@@ -43,7 +43,7 @@ def get_fireType(partType: int) -> fireType:
 
 
 # from excel 1-15
-async def get_points(timeslot: str) -> List[List[Dict[str, int]]]:
+async def get_points(timeslot: str, partCodes: List[str]) -> List[List[Dict[str, int]]]:
     res: List[List[Dict[str, int]]] = [[] for i in range(5)]
     now = datetime.now()
     interval: relativedelta = relativedelta(days=0)
@@ -57,6 +57,8 @@ async def get_points(timeslot: str) -> List[List[Dict[str, int]]]:
     query_dict: Any = {}
     for i in range(10):
         end_date = start_date + interval
+        query_dict["partCode"] = {}
+        query_dict["partCode"]["$in"] = partCodes
         query_dict["time"] = {}
         query_dict["time"]["$lte"] = end_date
         query_dict["time"]["$gte"] = start_date
@@ -610,17 +612,17 @@ async def get_riskList(companyID: str) -> List[str]:
 async def test_real_val() -> None:
     import time
 
+    companyID = sys.argv[1]
     start = time.time()
-    day_res = await get_points("Day")
+    day_res = await get_points("Day", [companyID])
     end_day = time.time()
-    week_res = await get_points("Week")
+    week_res = await get_points("Week", [companyID])
     end_week = time.time()
-    month_res = await get_points("Month")
+    month_res = await get_points("Month", [companyID])
     end_month = time.time()
     print("day: " + str(end_day - start))
     print("week: " + str(end_week - start))
     print("month: " + str(end_month - start))
-    companyID = sys.argv[1]
 
     wellRateWhole = await get_wellRateWhole(companyID)
     wellRateType = await get_wellRateType(companyID)
