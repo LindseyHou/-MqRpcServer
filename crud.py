@@ -1,5 +1,5 @@
 from asyncio import run
-from logging import info
+from logging import info, warn
 from random import randint
 from typing import Any, Callable, Dict, List, Tuple, Type, Union
 
@@ -76,18 +76,37 @@ async def getFireDataStatistics(companyIDs: List[str]) -> schema.FireDataStatist
     return schema.FireDataStatistics(**data)  # type: ignore
 
 
-async def get_number_by_algoType(companyID: str, algoType: int) -> int:
-    res = 0
+# FIXME 写好这个统计故障、火警、预警的统计函数！
+async def get_number_by_companyID(companyID: str) -> List[int]:
+    alarm_num = 0
+    error_num = 0
+    warn_num = 0
     info_col = get_col("info")
-    part_list = info_col.find_one({"companyID": companyID})["datas"]
+    partCode_list = []
+    for part in info_col.find_one({"companyID": companyID})["datas"]:
+        partCode_list.append(part.partCode)
+
     data_col = get_col("data")
+    for partCode in partCode_list:
+        async for doc in (data_col.find({"partCode": partCode}).sort("time", DESCENDING).limit(1)):
+            if doc["algoType"] == 100:
+                alarm_num += 1
+            elif doc["algoType"] == 200:
+                error_num += 1
+            elif doc["algoType"] == 300:
+                warn_num += 1
+            else:
+                pass
 
-    return res
+    return [alarm_num, error_num, warn_num]
 
 
-# FIXME 去除输入的ID；异常 和 隐患 的统计???
+# FIXME 异常 和 隐患 的统计
 async def getSafetyScore(companyID: str) -> List[schema.SafetyScore]:
     id_list = ["CPYTEMP107747", "CPYTEMP107748", "CPYTEMP116584"]
+    num_list0 = await get_number_by_companyID(id_list[0])
+    num_list1 = await get_number_by_companyID(id_list[1])
+    num_list2 = await get_number_by_companyID(id_list[2])
     datas = [
         {
             "CompanyName": await get_name_by_companyID(id_list[0]),
@@ -95,9 +114,9 @@ async def getSafetyScore(companyID: str) -> List[schema.SafetyScore]:
             "SafetyRating": await get_safetyScore(id_list[0]),
             "ImageUrl": "SHICC.png",
             "SceneName": "SHICC",
-            "FireStatistics": 6,
-            "WarningStatistics": 8,
-            "FailureStatistics": 3,
+            "FireStatistics": num_list0[0],
+            "WarningStatistics": num_list0[1],
+            "FailureStatistics": num_list0[2],
             "AbnormalStatistics": randint(1, 10),
             "HiddenDangerStatistics": randint(1, 10),
         },
@@ -107,9 +126,9 @@ async def getSafetyScore(companyID: str) -> List[schema.SafetyScore]:
             "SafetyRating": await get_safetyScore(id_list[1]),
             "ImageUrl": "MeiShuGuan.png",
             "SceneName": "SHICC",
-            "FireStatistics": 6,
-            "WarningStatistics": 8,
-            "FailureStatistics": 3,
+            "FireStatistics": num_list1[0],
+            "WarningStatistics": num_list1[1],
+            "FailureStatistics": num_list1[2],
             "AbnormalStatistics": randint(1, 10),
             "HiddenDangerStatistics": randint(1, 10),
         },
@@ -119,9 +138,9 @@ async def getSafetyScore(companyID: str) -> List[schema.SafetyScore]:
             "SafetyRating": await get_safetyScore(id_list[2]),
             "ImageUrl": "GangWuDaSha.png",
             "SceneName": "SHICC",
-            "FireStatistics": 6,
-            "WarningStatistics": 8,
-            "FailureStatistics": 3,
+            "FireStatistics": num_list2[0],
+            "WarningStatistics": num_list2[1],
+            "FailureStatistics": num_list2[2],
             "AbnormalStatistics": randint(1, 10),
             "HiddenDangerStatistics": randint(1, 10),
         },
@@ -129,7 +148,7 @@ async def getSafetyScore(companyID: str) -> List[schema.SafetyScore]:
     return [schema.SafetyScore(**data) for data in datas]  # type: ignore
 
 
-# FIXME 和安信沟通如何编造这个假数据
+# FIXME
 async def getRealTimeAlarm(companyID: str) -> List[schema.RealTimeAlarm]:
     datas = [
         {"CompanyName": "上海国际会议中心", "CompanyAddress": "上海市浦东新区滨江大道2727号"},
@@ -142,7 +161,7 @@ async def getRealTimeAlarm(companyID: str) -> List[schema.RealTimeAlarm]:
     return [schema.RealTimeAlarm(**data) for data in datas]
 
 
-# FIXME 和安信沟通如何调用这个假数据
+# FIXME
 async def getGiveAlarmRecord(companyID: str) -> List[schema.GiveAlarmRecord]:
     datas = [
         {
@@ -347,6 +366,8 @@ METHODNAME_2_METHOD_MULTI: Dict[str, Callable[[List[str]], Any]] = {
 }
 
 # NOTE ok
+
+
 async def getData(groupName: str, methodName: str) -> str:
     if methodName not in METHODNAME_2_METHOD.keys():
         raise ValueError()
