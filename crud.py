@@ -107,15 +107,20 @@ async def get_number_by_companyID(companyID: str) -> List[int]:
 
 # NOTE ok
 async def getSafetyScore(companyID: str) -> List[schema.SafetyScore]:
+    from math import isnan
+
     id_list = ["CPYTEMP107747", "CPYTEMP107748", "CPYTEMP116584"]
     num_list0 = await get_number_by_companyID(id_list[0])
     num_list1 = await get_number_by_companyID(id_list[1])
     num_list2 = await get_number_by_companyID(id_list[2])
+    s0 = await get_safetyScore(id_list[0])
+    s1 = await get_safetyScore(id_list[1])
+    s2 = await get_safetyScore(id_list[2])
     datas = [
         {
             "CompanyName": await get_name_by_companyID(id_list[0]),
             "PercentageOfIoT": await get_wellRateWhole(id_list[0]),
-            "SafetyRating": await get_safetyScore(id_list[0]),
+            "SafetyRating":s0 if not isnan(s0) else -1,
             "ImageUrl": "SHICC.png",
             "SceneName": "SHICC",
             "FireStatistics": num_list0[0],
@@ -127,7 +132,7 @@ async def getSafetyScore(companyID: str) -> List[schema.SafetyScore]:
         {
             "CompanyName": await get_name_by_companyID(id_list[1]),
             "PercentageOfIoT": await get_wellRateWhole(id_list[1]),
-            "SafetyRating": await get_safetyScore(id_list[1]),
+            "SafetyRating": s1 if not isnan(s1) else -1,
             "ImageUrl": "MeiShuGuan.png",
             "SceneName": "SHICC",
             "FireStatistics": num_list1[0],
@@ -139,7 +144,7 @@ async def getSafetyScore(companyID: str) -> List[schema.SafetyScore]:
         {
             "CompanyName": await get_name_by_companyID(id_list[2]),
             "PercentageOfIoT": await get_wellRateWhole(id_list[2]),
-            "SafetyRating": await get_safetyScore(id_list[2]),
+            "SafetyRating": s2 if not isnan(s2) else -1,
             "ImageUrl": "GangWuDaSha.png",
             "SceneName": "SHICC",
             "FireStatistics": num_list2[0],
