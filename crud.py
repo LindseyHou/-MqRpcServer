@@ -76,19 +76,23 @@ async def getFireDataStatistics(companyIDs: List[str]) -> schema.FireDataStatist
     return schema.FireDataStatistics(**data)  # type: ignore
 
 
-# FIXME 写好这个统计故障、火警、预警的统计函数！
+# NOTE ok
 async def get_number_by_companyID(companyID: str) -> List[int]:
     alarm_num = 0
     error_num = 0
     warn_num = 0
     info_col = get_col("info")
     partCode_list = []
-    for part in info_col.find_one({"companyID": companyID})["datas"]:
-        partCode_list.append(part.partCode)
+    data_doc = await info_col.find_one({"companyID": companyID})
+    if data_doc == None:
+        return [0, 0, 0]
+    for part in data_doc["datas"]:
+        partCode_list.append(part["partCode"])
 
     data_col = get_col("data")
     for partCode in partCode_list:
-        async for doc in (data_col.find({"partCode": partCode}).sort("time", DESCENDING).limit(1)):
+        async for doc in data_col.find({"partCode": partCode}).sort(
+                "time", DESCENDING).limit(1):
             if doc["algoType"] == 100:
                 alarm_num += 1
             elif doc["algoType"] == 200:
@@ -101,7 +105,7 @@ async def get_number_by_companyID(companyID: str) -> List[int]:
     return [alarm_num, error_num, warn_num]
 
 
-# FIXME 异常 和 隐患 的统计
+# NOTE ok
 async def getSafetyScore(companyID: str) -> List[schema.SafetyScore]:
     id_list = ["CPYTEMP107747", "CPYTEMP107748", "CPYTEMP116584"]
     num_list0 = await get_number_by_companyID(id_list[0])
