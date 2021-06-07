@@ -276,7 +276,9 @@ async def getScoreDetail(companyID: str) -> schema.ScoreDetail:
         errormonthRes.append({"Details": temp})
 
     data = {
+        "CompanyName": await get_name_by_companyID(companyID),
         "RecommendedNames": await get_priorRect(companyID),
+        "Title": "综合得分: " + str(await get_safetyScore(companyID)),
         "WeiHuBaoYang": {
             "Headline": "设施维护保养",
             "HeadlineScore": str(ds[1]),
@@ -353,7 +355,7 @@ async def getAlarmRecordsDay(companyID: str) -> schema.AlarmRecordsDay:
         )
     data = {
         "CompanyName": await get_name_by_companyID(companyID),
-        "MaxAlarmsCount": max(numList),
+        "MaxAlarmsCount": max(numList) * 1.2,
         "DeviceInfos": infoList,
     }
     return schema.AlarmRecordsDay(**data)  # type: ignore
@@ -386,6 +388,7 @@ async def getData(groupName: str, methodName: str) -> str:
     return f"[{','.join([item.json(ensure_ascii=False) for item in res])}]"
 
 
+# FIXME log!
 async def getDatas(groupNames: List[str], methodName: str) -> str:
     if methodName not in METHODNAME_2_METHOD_MULTI.keys():
         raise ValueError()
@@ -398,11 +401,12 @@ async def getDatas(groupNames: List[str], methodName: str) -> str:
 async def test_crud() -> None:
     for k, v in METHODNAME_2_METHOD.items():
         try:
-            res = await getData("CPYTEMP107747", k)
+            res = await getData("CPYTEMP107748", k)
         except ValueError:
             res = "ValueError"
             # if k == "fireDataStatistics":
-            print(k + ": " + res)
+        print(k + ": " + res)
+        print("\n")
 
 
 if __name__ == "__main__":
