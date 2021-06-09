@@ -40,6 +40,7 @@ async def getFireDataStatistics(companyIDs: List[str]) -> schema.FireDataStatist
         datas = doc["datas"]
         for d in datas:
             partCodes.append(d["partCode"])
+    info("partCodes: " + str(partCodes))
 
     day_res = await get_points("Day", partCodes)
     week_res = await get_points("Week", partCodes)
@@ -92,7 +93,8 @@ async def get_number_by_companyID(companyID: str) -> List[int]:
     data_col = get_col("data")
     for partCode in partCode_list:
         async for doc in data_col.find({"partCode": partCode}).sort(
-                "time", DESCENDING).limit(1):
+            "time", DESCENDING
+        ).limit(1):
             if doc["algoType"] == 100:
                 alarm_num += 1
             elif doc["algoType"] == 200:
@@ -120,7 +122,7 @@ async def getSafetyScore(companyID: str) -> List[schema.SafetyScore]:
         {
             "CompanyName": await get_name_by_companyID(id_list[0]),
             "PercentageOfIoT": await get_wellRateWhole(id_list[0]),
-            "SafetyRating":s0 if not isnan(s0) else -1,
+            "SafetyRating": s0 if not isnan(s0) else -1,
             "ImageUrl": "SHICC.png",
             "SceneName": "SHICC",
             "FireStatistics": num_list0[0],
