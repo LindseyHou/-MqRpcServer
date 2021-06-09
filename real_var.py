@@ -77,11 +77,11 @@ async def get_points(timeslot: str, partCodes: List[str]) -> List[List[Dict[str,
             _fireType = get_fireType(partType)
             count[_fireType] += 1
         query_dict["algoType"] = 200  # NOTE:故障，需要去重
-        partCodes = []
+        existing_partCodes = []
         async for doc in get_col("data").find(query_dict):
             partCode: str = doc["partCode"]
-            if partCode not in partCodes:
-                partCodes.append(partCode)
+            if partCode not in existing_partCodes:
+                existing_partCodes.append(partCode)
                 _fireType = get_fireType(doc["partType"])
                 count[_fireType] += 1
         logging.info("From " + str(start_date) + " to " + str(end_date) + ":")
