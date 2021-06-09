@@ -84,8 +84,8 @@ async def get_points(timeslot: str, partCodes: List[str]) -> List[List[Dict[str,
                 existing_partCodes.append(partCode)
                 _fireType = get_fireType(doc["partType"])
                 count[_fireType] += 1
-        logging.info("From " + str(start_date) + " to " + str(end_date) + ":")
-        logging.info(str(count))
+        # logging.info("From " + str(start_date) + " to " + str(end_date) + ":")
+        # logging.info(str(count))
 
         res[fireType.WATER].append({"X": i + 1, "Y": count[fireType.WATER]})
         res[fireType.SMOKE].append({"X": i + 1, "Y": count[fireType.SMOKE]})
