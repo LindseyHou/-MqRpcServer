@@ -74,7 +74,7 @@ async def get_points(timeslot: str, partCodes: List[str]) -> List[List[Dict[str,
         async for doc in get_col("data").find(query_dict):
             partType: int = doc["partType"]
             # if algo == 100 or algo == 200 or algo == 300:
-            _fireType = get_fireType(partType=partType)
+            _fireType = get_fireType(partType)
             count[_fireType] += 1
         query_dict["algoType"] = 200  # NOTE:故障，需要去重
         partCodes = []
@@ -82,8 +82,9 @@ async def get_points(timeslot: str, partCodes: List[str]) -> List[List[Dict[str,
             partCode: str = doc["partCode"]
             if partCode not in partCodes:
                 partCodes.append(partCode)
-                _fireType = get_fireType(partType=doc["partType"])
+                _fireType = get_fireType(doc["partType"])
                 count[_fireType] += 1
+        logging.info("count: " + str(count))
 
         res[fireType.WATER].append({"X": i + 1, "Y": count[fireType.WATER]})
         res[fireType.SMOKE].append({"X": i + 1, "Y": count[fireType.SMOKE]})
