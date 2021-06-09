@@ -73,7 +73,7 @@ async def get_points(timeslot: str, partCodes: List[str]) -> List[List[Dict[str,
         ]  # count[fireType.WATER] refers to the water隐患 in a single time interval
         async for doc in get_col("data").find(query_dict):
             partType: int = doc["partType"]
-            # if algo == 100 or algo == 200 or algo == 300:
+            # if algo == 100 or algo == 300:
             _fireType = get_fireType(partType)
             count[_fireType] += 1
         query_dict["algoType"] = 200  # NOTE:故障，需要去重
@@ -84,7 +84,8 @@ async def get_points(timeslot: str, partCodes: List[str]) -> List[List[Dict[str,
                 partCodes.append(partCode)
                 _fireType = get_fireType(doc["partType"])
                 count[_fireType] += 1
-        logging.info("count: " + str(count))
+        logging.info("From " + str(start_date) + " to " + str(end_date) + ":")
+        logging.info(str(count))
 
         res[fireType.WATER].append({"X": i + 1, "Y": count[fireType.WATER]})
         res[fireType.SMOKE].append({"X": i + 1, "Y": count[fireType.SMOKE]})
