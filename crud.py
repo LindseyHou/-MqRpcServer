@@ -40,7 +40,7 @@ async def getFireDataStatistics(companyIDs: List[str]) -> schema.FireDataStatist
         datas = doc["datas"]
         for d in datas:
             partCodes.append(d["partCode"])
-    info("partCodes: " + str(partCodes))
+    # info("partCodes: " + str(partCodes))
 
     day_res = await get_points("Day", partCodes)
     week_res = await get_points("Week", partCodes)
