@@ -330,11 +330,12 @@ async def getRectification(companyID: str) -> schema.Rectification:
         firesysList.append(
             {"Categories": PARTTYPE2NAME[int(part)], "Amount": numList[i]}
         )
+    numbers = sum([item["Amount"] for item in firesysList])
     if len(firesysList) > 5:
         firesysList = firesysList[:5]
     data = {
         "CompanyName": await get_name_by_companyID(companyID),
-        "Numbers": 10,
+        "Numbers": numbers,
         "Rate": 0,
         "MTTR": await get_avgRectTime(companyID),
         "MTBF": await get_avgRepeatTime(companyID),
