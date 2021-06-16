@@ -334,7 +334,7 @@ async def getRectification(companyID: str) -> schema.Rectification:
         firesysList = firesysList[:5]
     data = {
         "CompanyName": await get_name_by_companyID(companyID),
-        "Numbers": 0,
+        "Numbers": 10,
         "Rate": 0,
         "MTTR": await get_avgRectTime(companyID),
         "MTBF": await get_avgRepeatTime(companyID),
