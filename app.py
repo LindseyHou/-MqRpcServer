@@ -1,3 +1,4 @@
+import json
 import logging
 from typing import List
 
@@ -41,23 +42,20 @@ def is_valid_id(companyID: str) -> bool:
 
 @app.get("/data")
 async def endpoint_get_data(methodName: str, groupName: str = "") -> str:
-    response: str = ""
     logging.info(f" [.] getData({methodName}, {groupName})")
     if not is_valid_id(groupName):
         logging.warning("companyID not valid: " + groupName)
-        response = "InValidID"
+        return "InValidID"
     else:
         try:
-            response = await getData(groupName, methodName)
+            return json.loads(await getData(groupName, methodName))
         except ValueError as e:
             logging.exception("ValueError: ")
-            response = "ValueError"
-    return response
+            return "ValueError"
 
 
 @app.get("/datas")
 async def endpoint_get_datas(methodName: str, groupNames: List[str] = Query([])) -> str:
-    response: str = ""
     logging.info(f" [.] getDatas({methodName}, {', '.join(groupNames)})")
     try:
         for groupName in groupNames:
@@ -65,9 +63,8 @@ async def endpoint_get_datas(methodName: str, groupNames: List[str] = Query([]))
                 logging.warning("companyID not valid: " + groupName)
                 raise ValueError()
     except ValueError:
-        response = "InValidID"
+        return "InValidID"
     try:
-        response = await getDatas(groupNames, methodName)
+        return json.loads(await getDatas(groupNames, methodName))
     except ValueError:
-        response = "ValueError"
-    return response
+        return "ValueError"
