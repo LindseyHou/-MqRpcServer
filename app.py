@@ -49,7 +49,8 @@ async def endpoint_get_data(methodName: str, groupName: str) -> str:
     else:
         try:
             response = await getData(groupName, methodName)
-        except ValueError:
+        except ValueError as e:
+            logging.exception("ValueError: ")
             response = "ValueError"
     return response
 
