@@ -40,7 +40,7 @@ def is_valid_id(companyID: str) -> bool:
 
 
 @app.get("/data")
-async def endpoint_get_data(methodName: str, groupName: str) -> str:
+async def endpoint_get_data(methodName: str, groupName: str = "") -> str:
     response: str = ""
     logging.info(f" [.] getData({methodName}, {groupName})")
     if not is_valid_id(groupName):
@@ -56,9 +56,7 @@ async def endpoint_get_data(methodName: str, groupName: str) -> str:
 
 
 @app.get("/datas")
-async def endpoint_get_datas(
-    methodName: str, groupNames: List[str] = Query(...)
-) -> str:
+async def endpoint_get_datas(methodName: str, groupNames: List[str] = Query([])) -> str:
     response: str = ""
     logging.info(f" [.] getDatas({methodName}, {', '.join(groupNames)})")
     try:
