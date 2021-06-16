@@ -48,7 +48,10 @@ async def endpoint_get_data(methodName: str, groupName: str = "") -> str:
         return "InValidID"
     else:
         try:
-            return json.loads(await getData(groupName, methodName))
+            res = await getData(groupName, methodName)
+            if isinstance(res, str):
+                return json.loads(res)
+            return res
         except ValueError as e:
             logging.exception("ValueError: ")
             return "ValueError"
@@ -65,6 +68,9 @@ async def endpoint_get_datas(methodName: str, groupNames: List[str] = Query([]))
     except ValueError:
         return "InValidID"
     try:
-        return json.loads(await getDatas(groupNames, methodName))
+        res = await getDatas(groupNames, methodName)
+        if isinstance(res, str):
+            return json.loads(res)
+        return res
     except ValueError:
         return "ValueError"
