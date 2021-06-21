@@ -3,8 +3,11 @@ import logging
 from typing import List
 
 from fastapi import FastAPI, Query
+from fastapi_utils.tasks import repeat_every
+from uvicorn.config import logger
 
-from crud import getData, getDatas
+from crud import getData, getDatas, getDeviceAccess
+from mq import send_mq
 
 logging.basicConfig(
     handlers=[logging.FileHandler("mq.log"), logging.StreamHandler()],
@@ -74,3 +77,12 @@ async def endpoint_get_datas(methodName: str, groupNames: List[str] = Query([]))
         return res
     except ValueError:
         return "ValueError"
+
+
+@app.on_event("startup")
+@repeat_every(seconds=5 * 60, logger=logger)  # 5 minutes
+async def device_access_task() -> None:
+    for companyID in ["CPYTEMP107747", "CPYTEMP107748", "CPYTEMP116584"]:
+        send_mq(
+            companyID, "deviceAccess", (await getDeviceAccess(companyID)).schema_json()
+        )
