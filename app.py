@@ -84,5 +84,5 @@ async def endpoint_get_datas(methodName: str, groupNames: List[str] = Query([]))
 async def device_access_task() -> None:
     for companyID in ["CPYTEMP107747", "CPYTEMP107748", "CPYTEMP116584"]:
         res = (await getDeviceAccess(companyID)).schema_json()
-        logger.info(f"data pushed: {res}")
+        logger.info(f"data pushed to {companyID}: {res}")
         send_mq(companyID, "deviceAccess", res)
